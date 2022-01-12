@@ -1,4 +1,5 @@
 import styles from './index.module.css';
+import { SharedUiLayout } from '@ssi-ms/shared-ui-layout';
 
 export function Index() {
   /*
@@ -15,6 +16,7 @@ export function Index() {
               <span> Hello there, </span>
               Welcome ssi-platform 👋
             </h1>
+            <SharedUiLayout />
           </div>
 
           <div id="hero" className="rounded">

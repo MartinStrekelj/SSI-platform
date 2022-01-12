@@ -1,0 +1,28 @@
+{
+  "root": "apps/ssi-platform-e2e",
+  "sourceRoot": "apps/ssi-platform-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/ssi-platform-e2e/cypress.json",
+        "devServerTarget": "ssi-platform:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "ssi-platform:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/ssi-platform-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["ssi-platform"]
+}

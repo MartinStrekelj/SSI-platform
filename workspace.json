@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "ssi-platform": "apps/ssi-platform",
+    "ssi-platform-e2e": "apps/ssi-platform-e2e"
+  }
+}

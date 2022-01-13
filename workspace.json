@@ -3,6 +3,8 @@
   "projects": {
     "shared-ui-layout": "libs/shared-ui-layout",
     "ssi-platform": "apps/ssi-platform",
-    "ssi-platform-e2e": "apps/ssi-platform-e2e"
+    "ssi-platform-e2e": "apps/ssi-platform-e2e",
+    "wallet": "apps/wallet",
+    "wallet-e2e": "apps/wallet-e2e"
   }
 }

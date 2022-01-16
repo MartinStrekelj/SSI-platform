@@ -19,7 +19,8 @@
       "executor": "@nrwl/next:server",
       "options": {
         "buildTarget": "ssi-platform:build",
-        "dev": true
+        "dev": true,
+        "proxyConfig": "apps/ssi-platform/proxy.conf.json"
       },
       "configurations": {
         "production": {

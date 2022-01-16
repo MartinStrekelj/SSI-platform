@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { Button } from '../Button';
+import { Button } from '../../Button';
 
-import t from '../../shared/theme';
+import t from '../../../shared/theme';
 
 interface LoginAttemptModalProps {
   open: boolean;
@@ -19,7 +19,7 @@ export const LoginAttemptModal = ({
 
   return (
     <View style={[t.p4, t.roundedSm, t.border0_5]}>
-      <Text style={[t.fontSansBold, t.textLg, t.pB2]}>
+      <Text testID="heading" style={[t.fontSansBold, t.textLg, t.pB2]}>
         Pending login attempt:
       </Text>
       {/* Todo based on message */}

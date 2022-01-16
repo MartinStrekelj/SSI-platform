@@ -16,6 +16,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <TouchableOpacity
+      testID={`button-${label.toLowerCase()}`}
       style={StyleSheet.compose(
         [
           t.p4,

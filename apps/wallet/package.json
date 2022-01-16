@@ -2,12 +2,50 @@
   "name": "wallet",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "postinstall": "rn-nodeify --install assert,buffer,process,crypto,stream,vm --hack"
+  },
   "dependencies": {
     "@testing-library/jest-native": "*",
     "@testing-library/react-native": "*",
     "react": "*",
     "react-native": "*",
     "react-native-svg": "*",
-    "react-native-whirlwind": "*"
+    "react-native-whirlwind": "*",
+    "react-native-get-random-values": "*",
+    "@ethersproject/shims": "*",
+    "text-encoding": "*",
+    "buffer": "*",
+    "@veramo/core": "*",
+    "@veramo/did-manager": "*",
+    "@veramo/did-provider-ethr": "*",
+    "@veramo/key-manager": "*",
+    "@veramo/kms-local": "*",
+    "@veramo/did-resolver": "*",
+    "ethr-did-resolver": "*",
+    "web-did-resolver": "*",
+    "@veramo/data-store": "*",
+    "@veramo/message-handler": "*",
+    "@veramo/did-comm": "*"
+  },
+  "react-native": {
+    "crypto": "react-native-crypto",
+    "_stream_transform": "readable-stream/transform",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_writable": "readable-stream/writable",
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "stream": "stream-browserify",
+    "vm": "vm-browserify"
+  },
+  "browser": {
+    "crypto": "react-native-crypto",
+    "_stream_transform": "readable-stream/transform",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_writable": "readable-stream/writable",
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "stream": "stream-browserify",
+    "vm": "vm-browserify"
   }
 }

@@ -1,21 +1,15 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import * as express from 'express';
-import { LoginWithWallet } from './app/LoginController';
+import { default as Api } from './app';
 
 const app = express();
-
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to backend!!' });
-});
-
-app.post('/api/login', (req, res) => LoginWithWallet(req, res));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use('/api', Api);
 
 const port = process.env.port || 3333;
 const server = app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}/api`);
 });
 server.on('error', console.error);
+
+export default app;

@@ -18,9 +18,35 @@ const App = () => {
   const [identifiers, setIdentifiers] = useState<Identifier[]>([]);
 
   const createIdentifier = async () => {
-    console.warn('pressed create identifier');
-    const _id = await agent.didManagerCreate();
-    setIdentifiers((s) => s.concat([_id]));
+    console.log('Creating a holder');
+    const holder = await agent.didManagerCreate({ alias: 'holder' });
+    console.log(
+      `Holder with alias: ${holder.alias} | DID: ${holder.did} | created`
+    );
+    console.log('Creating a key agreement key!');
+    // const newKey = await agent.keyManagerCreate({
+    //   kms: 'local',
+    //   type: 'X25519',
+    // });
+
+    // console.log(`Created a new key ~~ ${newKey.publicKeyHex} `);
+
+    // console.log('Add key to manager');
+    // const result = await agent.didManagerAddKey({
+    //   did: holder.did,
+    //   key: newKey,
+    // });
+
+    // console.log(`Key added ${result}`);
+
+    setIdentifiers((s) => s.concat([holder]));
+  };
+
+  const deleteIdentifiers = async () => {
+    console.warn('presesd delete indentifiers');
+    identifiers.map((identifier) => {
+      agent.didManagerDelete({ did: identifier.did });
+    });
   };
 
   useEffect(() => {
@@ -61,12 +87,11 @@ const App = () => {
             ))}
           </ScrollView>
         </View>
-        <Button onPress={createIdentifier} label="credentials" />
+        <Button onPress={createIdentifier} label="create" />
+        <Button onPress={deleteIdentifiers} label="delete" />
+
         {/* Message if someone wants to log in to the platform */}
-        <LoginAttemptModal
-          open={receivedMessage === null}
-          loginAttemptMessage={'foo'}
-        />
+        <LoginAttemptModal open={receivedMessage} loginAttemptMessage={'foo'} />
       </SafeAreaView>
     </>
   );

@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ssi-ms/shared-ui-layout": ["libs/shared-ui-layout/src/index.ts"]
+      "@ssi-ms/shared-ui-layout": ["libs/shared-ui-layout/src/index.ts"],
+      "@ssi-ms/utils": ["libs/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

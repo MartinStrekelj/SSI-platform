@@ -26,7 +26,9 @@
     "web-did-resolver": "*",
     "@veramo/data-store": "*",
     "@veramo/message-handler": "*",
-    "@veramo/did-comm": "*"
+    "@veramo/did-comm": "*",
+    "@veramo/did-provider-key": "*",
+    "crypto": "*"
   },
   "react-native": {
     "crypto": "react-native-crypto",

@@ -2,7 +2,7 @@ type IGeneratePinUtilFunc = () => string;
 type IProbabilyFunc = (p: number) => boolean;
 type ITakeARandomCharFunc = (chars: string) => string;
 
-const PIN_LENGTH = 6;
+export const PIN_LENGTH = 6;
 const NUMBERS = '0123456789';
 const CHARS = 'ABCDEFGIJKLMNOPRSZTUVYZ'; // do not use čžš
 

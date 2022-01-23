@@ -20,15 +20,15 @@ const MESSAGE = {
     '{"protected":"eyJ0eXAiOiJhcHBsaWNhdGlvbi9kaWRjb21tLWVuY3J5cHRlZCtqc29uIiwiZW5jIjoiWEMyMFAifQ","iv":"iRuhGMgsDzX6ofDIcHH6fB_-p5hE71I3","ciphertext":"mgnAg1QGglRNRnRwiaoY42eYulbjCtrYWfqm3-jfUVZOTqQFaZ2HigDR3bHAKFUlCpncwq1lr6qK1wfGevZA5H875fsKFBV3yN6B2Z89HueAdZoXuC2GO01MY4idRpeTOyFOfdgDBUqV3_Qjxwmab0yD_xQYO5FWlB345wRmOEkk3YmisSkzNjk","tag":"ddqsGKrOqG2WARhDFRlDHg","recipients":[{"encrypted_key":"E6BAKt1FHS7qhetrr3rBmFJ4Rz6E8isuOIvkftCu5RE","header":{"alg":"ECDH-ES+XC20PKW","iv":"navnwoYgkX3r1jHJarYL7eo0JYlQKjZF","tag":"c6PeIAS0MhtD348mvOe_Yg","epk":{"kty":"OKP","crv":"X25519","x":"dQ_jfXsekitkNulDNnI8MM3bKZULO6tWOWVy3K3iyHI"},"kid":"did:key:z6MkrUW4hXEH91gWcPD9Ueuq5ud6XvFsizE2f5Xm3ESJ1Ydp#z6LSnWiDurV2vreWwErF2UpwALdNU2tMEsuXsrGkkivGC9Si"}}]}',
 };
 const decodeMessage = async (messageRaw: string) => {
-  // const lzw_decoded = LZW_decode(messageRaw);
-  // const packedMessage = JSON.parse(lzw_decoded);
-  // console.log(packedMessage);
-  const a = await agent.didManagerGetByAlias({ alias: 'holder' });
-  console.debug({ did: a.did });
-  const resolved = await agent.resolveDid({ didUrl: a.did });
-  console.log({ resolved });
-  const decoded = await agent.unpackDIDCommMessage(MESSAGE);
+  const lzw_decoded = LZW_decode(messageRaw);
+  // console.log(lzw_decoded);
+  // const a = await agent.didManagerGetByAlias({ alias: 'holder' });
+  // console.debug({ did: a.did });
+  // const resolved = await agent.resolveDid({ didUrl: a.did });
+  // console.log({ resolved });
+  const decoded = await agent.unpackDIDCommMessage({ message: lzw_decoded });
   console.log(decoded);
+  // console.log(decoded);
   // const decoded = await agent.handleMessage({ raw: MESSAGE.message });
   // console.log({ decoded });
 };

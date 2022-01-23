@@ -36,7 +36,6 @@ describe('POST /login ~ wallet connect', () => {
 });
 
 describe('POST /login + POST /login/2fa', () => {
-
   it('Returns error if body req.body not correct', async () => {
     const response = await request(app).post('/api/login/2fa').send({
       did: VALID_DEV_DID,

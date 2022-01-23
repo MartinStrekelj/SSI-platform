@@ -96,3 +96,5 @@ buck-out/
 node_modules/
 
 apps/wallet-e2e/artifacts
+
+.env

@@ -2,9 +2,11 @@ import * as qrcode from 'qrcode';
 import * as cache from 'memory-cache';
 import { Response, Request } from 'express';
 import { generatePIN, LZW_encode } from '@ssi-ms/utils';
-import { createDIDMessage } from '../Veramo/createMessage';
+import { createDIDMessage } from '../../Veramo/createMessage';
+import { signJWTToken } from '../../Services/JWTService';
 
 const FIVE_MINUTES = 5 * 60 * 1000; // min * s * ms
+const THREE_HOURS = 3 * 60 * 60 * 1000;
 
 // ? move this to shared library
 interface IWalletConnectRequest {
@@ -46,8 +48,6 @@ export const LoginWithWallet = async (req: Request, res: Response) => {
       'anoncrypt'
     );
 
-    console.log(IDIDCommMessage.message);
-
     //* compress message to make QR code size as small as posible
     const compressedMessage = LZW_encode(IDIDCommMessage.message);
 
@@ -74,13 +74,20 @@ export const Wallet2FAuth = async (req: Request, res: Response) => {
     return res.status(400).send({ message: 'No cache hit!' });
   }
 
-  console.debug(cacheHit);
-
   if (cacheHit !== body.PIN) {
     return res.status(400).send({ message: 'Not correct PIN' });
   }
 
-  return res.send({ message: 'success' });
+  const accessToken = signJWTToken(body.did);
+
+  res.cookie('at', accessToken, {
+    httpOnly: true,
+    sameSite: 'none',
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: THREE_HOURS,
+  });
+
+  return res.send({ accessToken });
 };
 
 // ? maybe move this inside util lib -> if need for more qr code gens

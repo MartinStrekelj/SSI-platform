@@ -21,16 +21,8 @@ const MESSAGE = {
 };
 const decodeMessage = async (messageRaw: string) => {
   const lzw_decoded = LZW_decode(messageRaw);
-  // console.log(lzw_decoded);
-  // const a = await agent.didManagerGetByAlias({ alias: 'holder' });
-  // console.debug({ did: a.did });
-  // const resolved = await agent.resolveDid({ didUrl: a.did });
-  // console.log({ resolved });
   const decoded = await agent.unpackDIDCommMessage({ message: lzw_decoded });
   console.log(decoded);
-  // console.log(decoded);
-  // const decoded = await agent.handleMessage({ raw: MESSAGE.message });
-  // console.log({ decoded });
 };
 
 const HomeScreen = ({ route, navigation }: any) => {

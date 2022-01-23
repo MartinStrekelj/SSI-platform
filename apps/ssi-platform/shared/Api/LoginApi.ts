@@ -33,7 +33,10 @@ export const send2FAConfirmation = async (data: ISend2FAConfirmation) => {
     if (response.status >= 400) {
       throw Error(`Something went wrong when logging in with DID: ${data.did}`);
     }
-    return { ok: true, message: 'works!' };
+
+    const { accessToken } = response.data as { accessToken: string };
+
+    return { ok: true, message: accessToken };
   } catch (e) {
     console.error(e);
     return { ok: false, message: e.message };

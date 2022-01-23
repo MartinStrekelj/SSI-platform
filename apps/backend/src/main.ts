@@ -1,8 +1,10 @@
 import * as express from 'express';
+import * as cookieParser from 'cookie-parser';
 import { default as Api } from './app';
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use('/api', Api);
 

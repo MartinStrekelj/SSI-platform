@@ -19,7 +19,6 @@ export const useLoginAttemptContext = () => useContext(LoginAttemptContext);
 export const LoginContextProvider = ({ children }) => {
   const [userDID, setDID] = useState<string | undefined>('ow it works!');
   const [qrcode, setQR] = useState<string | undefined>(undefined);
-  console.log('hello');
   return (
     <LoginAttemptContext.Provider
       value={{

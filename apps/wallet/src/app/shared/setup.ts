@@ -9,14 +9,13 @@ import {
 } from '@veramo/core';
 
 import { MessageHandler } from '@veramo/message-handler';
-import { DIDCommMessageHandler } from '@veramo/did-comm';
+import { DIDComm, DIDCommMessageHandler, IDIDComm } from '@veramo/did-comm';
 
 // Core identity manager plugin
 import { DIDManager } from '@veramo/did-manager';
 
 // Ethr did identity provider
-import { EthrDIDProvider } from '@veramo/did-provider-ethr';
-import { KeyDIDProvider } from '@veramo/did-provider-key';
+import { KeyDIDProvider, getDidKeyResolver } from '@veramo/did-provider-key';
 
 // Core key manager plugin
 import { KeyManager } from '@veramo/key-manager';
@@ -64,7 +63,8 @@ export const agent = createAgent<
     IDataStore &
     IDataStoreORM &
     IResolver &
-    IMessageHandler
+    IMessageHandler &
+    IDIDComm
 >({
   plugins: [
     new KeyManager({
@@ -79,13 +79,6 @@ export const agent = createAgent<
       store: new DIDStore(dbConnection),
       defaultProvider: 'did:key:provider',
       providers: {
-        // 'did:ethr:rinkeby': new EthrDIDProvider({
-        //   defaultKms: 'local',
-        //   network: 'rinkeby',
-        //   rpcUrl: 'https://rinkeby.infura.io/v3/' + INFURA_PROJECT_ID,
-        //   gas: 1000001,
-        //   ttl: 60 * 60 * 24 * 30 * 12 + 1,
-        // }),
         'did:key:provider': new KeyDIDProvider({
           defaultKms: 'local',
         }),
@@ -98,7 +91,9 @@ export const agent = createAgent<
       resolver: new Resolver({
         ...ethrDidResolver({ infuraProjectId: INFURA_PROJECT_ID }),
         ...webDidResolver(),
+        ...getDidKeyResolver(),
       }),
     }),
+    new DIDComm(),
   ],
 });

@@ -37,9 +37,16 @@ export const LoginWithWallet = async (req: Request, res: Response) => {
 
     //* encode PIN to (IDID-COMM)
     const IDIDCommMessage = await createDIDMessage(
-      { to: body.did, body: { PIN }, id: 'login-2fa', type: 'test' },
+      {
+        to: body.did,
+        body: { PIN },
+        id: 'login-2fa',
+        type: 'DIDCommV2Message-sent',
+      },
       'anoncrypt'
     );
+
+    console.log(IDIDCommMessage.message);
 
     //* compress message to make QR code size as small as posible
     const compressedMessage = LZW_encode(IDIDCommMessage.message);

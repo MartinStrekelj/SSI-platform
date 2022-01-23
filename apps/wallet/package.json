@@ -28,7 +28,13 @@
     "@veramo/message-handler": "*",
     "@veramo/did-comm": "*",
     "@veramo/did-provider-key": "*",
-    "crypto": "*"
+    "crypto": "*",
+    "react-native-qrcode-scanner": "*",
+    "react-native-camera": "*",
+    "@react-navigation/native-stack": "*",
+    "react-native-screens": "*",
+    "react-native-safe-area-context": "*",
+    "react-native-randombytes": "*"
   },
   "react-native": {
     "crypto": "react-native-crypto",

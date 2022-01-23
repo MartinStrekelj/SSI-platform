@@ -3,6 +3,7 @@ import {
   IDIDCommMessage,
   DIDCommMessagePacking,
 } from '@veramo/did-comm';
+import { response } from 'express';
 
 import { agent } from './setup';
 

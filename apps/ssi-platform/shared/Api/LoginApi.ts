@@ -2,6 +2,7 @@ import { create } from 'apisauce';
 
 const LoginApi = create({
   baseURL: '/api/login',
+  withCredentials: true,
 });
 
 export const sendDIDforLogin = async (did: string) => {

@@ -1,38 +1,69 @@
-import React, { useLayoutEffect } from 'react';
-import { PinPage } from './page';
+import React, { useEffect } from 'react';
+import {
+  Button,
+  HStack,
+  PinInput,
+  PinInputField,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
+import { PIN_LENGTH } from '@ssi-ms/utils';
+import Link from 'next/link';
 
 import {
   useLoginAttemptContext,
   LoginContextProvider,
 } from 'apps/ssi-platform/shared/lib/LoginAttemptContext';
 import { useRouter } from 'next/router';
-import { send2FAConfirmation } from 'apps/ssi-platform/shared/Api/LoginApi';
-import { useToasts } from 'apps/ssi-platform/shared/hooks/useToasts';
+import CenteredBoxLayout from 'apps/ssi-platform/shared/components/layouts/CenteredBoxLayout';
 
 const Pin = () => {
-  const { qrcode, userDID } = useLoginAttemptContext();
+  const { qrcode, userDID, handleEnteredPin } = useLoginAttemptContext();
   const router = useRouter();
-  const { dangerToast, successToast } = useToasts();
-
-  const handleEnteredPin = async (pin: string) => {
-    const data = { PIN: pin.toUpperCase(), did: userDID };
-    const response = await send2FAConfirmation(data);
-    if (!response.ok) {
-      return dangerToast({ description: response.message });
-    }
-    return successToast({});
-  };
 
   // Go back to initial step if no qrcode present
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (qrcode === undefined || userDID === undefined) {
-      console.log('redirected');
       router.push('/login');
     }
   }, []);
 
-  return <PinPage qrcode={qrcode} onPinEntered={handleEnteredPin} />;
+  return (
+    <VStack>
+      <Text fontSize={['2xl', null, '4xl']}>Welcome_title</Text>
+      <Text fontSize={['lg', null, 'xl']}>Welcome_description</Text>
+      <img src={qrcode} />
+      <HStack>
+        <PinInput
+          type="alphanumeric"
+          colorScheme={'telegram'}
+          variant={'filled'}
+          otp
+          size={'lg'}
+          onComplete={(value: string) => handleEnteredPin(value)}
+        >
+          {[...Array(PIN_LENGTH)].map((_e, i) => (
+            <PinInputField key={i} textTransform={'uppercase'} />
+          ))}
+        </PinInput>
+      </HStack>
+      <Link href={'/login'}>
+        <Button
+          as="a"
+          size="md"
+          cursor={'pointer'}
+          variant={'link'}
+          colorScheme={'telegram'}
+          p={[4, null, 8]}
+          fontSize={['sm', 'md', 'xl']}
+        >
+          Go back
+        </Button>
+      </Link>
+    </VStack>
+  );
 };
 
 export default Pin;
 Pin.provider = LoginContextProvider;
+Pin.layout = CenteredBoxLayout;

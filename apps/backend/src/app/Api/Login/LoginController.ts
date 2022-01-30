@@ -1,28 +1,13 @@
-import * as qrcode from 'qrcode';
 import * as cache from 'memory-cache';
 import { Response, Request } from 'express';
 import { generatePIN, LZW_encode } from '@ssi-ms/utils';
 import { createDIDMessage } from '../../Veramo/createMessage';
 import { signJWTToken } from '../../Services/JWTService';
+import { generateQRfromString } from '../../Services/QRService';
+import { isWalletConnectRequest, isWallet2FARequest } from '@ssi-ms/interfaces';
 
 const FIVE_MINUTES = 5 * 60 * 1000; // min * s * ms
 const THREE_HOURS = 3 * 60 * 60 * 1000;
-
-// ? move this to shared library
-interface IWalletConnectRequest {
-  did: string;
-}
-
-interface IWallet2FARequest {
-  did: string;
-  PIN: string;
-}
-
-const isWalletConnectRequest = (tbd: any): tbd is IWalletConnectRequest =>
-  tbd.did !== undefined;
-
-const isWallet2FARequest = (tbd: any): tbd is IWallet2FARequest =>
-  tbd.did !== undefined && tbd.PIN !== undefined;
 
 export const LoginWithWallet = async (req: Request, res: Response) => {
   const { body } = req;
@@ -83,22 +68,9 @@ export const Wallet2FAuth = async (req: Request, res: Response) => {
   res.cookie('at', accessToken, {
     httpOnly: true,
     sameSite: 'none',
-    secure: process.env.NODE_ENV === 'production',
+    secure: true,
     maxAge: THREE_HOURS,
   });
 
   return res.send({ accessToken });
-};
-
-// ? maybe move this inside util lib -> if need for more qr code gens
-const generateQRfromString = async (
-  value: string,
-  options: qrcode.QRCodeToDataURLOptions = {}
-) => {
-  try {
-    const url = await qrcode.toDataURL(value, options);
-    return url;
-  } catch (e) {
-    console.error(e);
-  }
 };

@@ -1,12 +1,8 @@
+import { IdentityResponse } from '@ssi-ms/interfaces';
 import { Response, Request } from 'express';
 import { resolveJWTToken } from '../../Services/JWTService';
 
 import { agent } from '../../Veramo/setup';
-
-interface IResolvedUserResponse {
-  did: string;
-  metadata?: Object;
-}
 
 // Used in combination with useUser hook on platform
 export const resolveIdentityFromJWT = async (req: Request, res: Response) => {
@@ -21,8 +17,10 @@ export const resolveIdentityFromJWT = async (req: Request, res: Response) => {
       didUrl: resolvedJWT.did,
     });
 
-    const response: IResolvedUserResponse = {
-      did: resolvedJWT.did,
+    const response: IdentityResponse = {
+      identity: {
+        did: resolvedJWT.did,
+      },
     };
 
     return res.send(response);

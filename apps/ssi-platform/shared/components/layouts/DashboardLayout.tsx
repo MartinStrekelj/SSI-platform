@@ -4,7 +4,7 @@ import { SideNav } from '../sidenav';
 
 const DashboardLayout: FC = ({ children }) => {
   return (
-    <Grid templateColumns="repeat(12, 1fr)" minH="100vh" gap={[1, null, 4]}>
+    <Grid templateColumns="repeat(12, 1fr)" h="100vh" gap={[1, null, 4]}>
       <GridItem
         colSpan={[2, null, 4]}
         h={'100%'}
@@ -12,6 +12,7 @@ const DashboardLayout: FC = ({ children }) => {
         borderRight={'1px'}
         borderColor={'blackAlpha.100'}
         boxShadow={'md'}
+        overflowY={'auto'}
       >
         <SideNav />
       </GridItem>
@@ -20,7 +21,7 @@ const DashboardLayout: FC = ({ children }) => {
         h={'100%'}
         w={'100%'}
         padding={[8, null, 16]}
-        bg={'lightblue'}
+        overflowY={'auto'}
       >
         {children}
       </GridItem>

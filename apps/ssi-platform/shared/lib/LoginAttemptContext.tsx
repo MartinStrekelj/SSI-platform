@@ -40,6 +40,12 @@ export const LoginContextProvider = ({ children }) => {
     // update the context
     setDID(didValue);
     setQR(response.message as string);
+
+    // If authority redirect to dashboard
+    if (response.accessGranted) {
+      return router.replace('/dashboard');
+    }
+
     return router.push('/login/pin');
   };
 

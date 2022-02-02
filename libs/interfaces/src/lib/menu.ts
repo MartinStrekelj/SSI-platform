@@ -9,14 +9,14 @@ export enum MenuOptions {
 
 // Card categories
 export interface IMenuCategory {
-  category: string; // eg issue credentials
-  color: string; // color of badge before category name
-  items: INavItem[]; // all of subitems - issue credential | edit credentials
+  category: string // eg issue credentials
+  color: string // color of badge before category name
+  items: INavItem[] // all of subitems - issue credential | edit credentials
 }
 
 // Cards
 export interface INavItem {
-  href: string; // Link to page for action
-  icon: any; // small icon on top of card
-  title: string; // title for action
+  href: string // Link to page for action
+  icon: any // small icon on top of card
+  title: string // title for action
 }

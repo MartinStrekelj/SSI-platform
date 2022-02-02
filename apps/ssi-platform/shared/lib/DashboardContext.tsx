@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { fetchIdentity } from 'apps/ssi-platform/shared/Api/IdentityApi';
 import { IIdentity } from '@ssi-ms/interfaces';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import { FullPageLoader } from '../components/loaders/fullpage';
 import { useToasts } from '../hooks/useToasts';
 
 interface IDashboardContext {
   identity: undefined | IIdentity;
+  router?: NextRouter;
 }
 
 export const DashboardContext = React.createContext<IDashboardContext>({
@@ -36,14 +37,15 @@ export const DashboardContextProvider = ({ children }) => {
     return () => {};
   }, []);
 
-  if (isLoading) {
+  if (!identity || isLoading) {
     return <FullPageLoader />;
   }
 
   return (
     <DashboardContext.Provider
       value={{
-        identity: identity,
+        identity,
+        router,
       }}
     >
       {children}

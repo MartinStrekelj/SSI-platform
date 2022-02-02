@@ -1,3 +1,4 @@
+import { IWallet2FAResponse, IWalletConnectResponse } from '@ssi-ms/interfaces';
 import { create } from 'apisauce';
 
 const LoginApi = create({
@@ -13,9 +14,9 @@ export const sendDIDforLogin = async (did: string) => {
       throw Error(`Something went wrong when logging in with DID: ${did}`);
     }
 
-    const { qrcode } = response.data as { qrcode: string };
+    const { qrcode, accessGranted } = response.data as IWalletConnectResponse;
 
-    return { ok: true, message: qrcode };
+    return { ok: true, message: qrcode, accessGranted };
   } catch (e) {
     console.error(e);
     return { ok: false, message: e.message };
@@ -35,7 +36,7 @@ export const send2FAConfirmation = async (data: ISend2FAConfirmation) => {
       throw Error(`Something went wrong when logging in with DID: ${data.did}`);
     }
 
-    const { accessToken } = response.data as { accessToken: string };
+    const { accessToken } = response.data as IWallet2FAResponse;
 
     return { ok: true, message: accessToken };
   } catch (e) {

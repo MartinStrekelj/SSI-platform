@@ -1,10 +1,8 @@
-import * as express from 'express';
-import { resolveIdentityFromJWT } from './IdentityController';
+import * as express from 'express'
+import { resolveIdentityFromJWT } from './IdentityController'
 
-const router = express.Router({});
+const router = express.Router({})
 
-router.get('/', (req: express.Request, res: express.Response) =>
-  resolveIdentityFromJWT(req, res)
-);
+router.get('/', (req: express.Request, res: express.Response) => resolveIdentityFromJWT(req, res))
 
-export default router;
+export default router

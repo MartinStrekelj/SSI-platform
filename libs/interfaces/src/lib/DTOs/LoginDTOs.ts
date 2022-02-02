@@ -1,23 +1,22 @@
 export interface IWalletConnectRequest {
-  did: string;
+  did: string
 }
-export interface IWalletConnectResponse {}
+export interface IWalletConnectResponse {
+  qrcode?: string
+  accessGranted?: boolean
+}
 
 export interface IWallet2FARequest {
-  did: string;
-  PIN: string;
+  did: string
+  PIN: string
 }
 
 export interface IWallet2FAResponse {
-  did: string;
-  PIN: string;
+  accessToken: string
 }
 
 // GUARDS
 
-export const isWalletConnectRequest = (
-  tbd: any
-): tbd is IWalletConnectRequest => tbd.did !== undefined;
+export const isWalletConnectRequest = (tbd: any): tbd is IWalletConnectRequest => tbd.did !== undefined
 
-export const isWallet2FARequest = (tbd: any): tbd is IWallet2FARequest =>
-  tbd.did !== undefined && tbd.PIN !== undefined;
+export const isWallet2FARequest = (tbd: any): tbd is IWallet2FARequest => tbd.did !== undefined && tbd.PIN !== undefined

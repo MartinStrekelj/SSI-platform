@@ -1,5 +1,5 @@
-import { MenuOptions, IMenuCategory } from '@ssi-ms/interfaces';
-import { Plus, Layout, PlusSquare, Search, FileText } from 'react-feather';
+import { MenuOptions, IMenuCategory } from '@ssi-ms/interfaces'
+import { Plus, Layout, PlusSquare, Search, FileText } from 'react-feather'
 
 /**
  * CREDENTIAL GENERATION
@@ -11,12 +11,12 @@ const CREDENTIAL_GENERATION_CATEGORIES: IMenuCategory[] = [
     items: [
       {
         title: 'Issue new credential',
-        href: '/dashboard/issue/new',
+        href: '/dashboard/issue',
         icon: Plus,
       },
       {
         title: 'Issued credentials',
-        href: '/dashboard/issue',
+        href: '/dashboard/credentials',
         icon: Search,
       },
       {
@@ -42,22 +42,22 @@ const CREDENTIAL_GENERATION_CATEGORIES: IMenuCategory[] = [
       },
     ],
   },
-];
+]
 
 /**
  * CREDENTIAL MANAGEMENT
  */
-const CREDENTIAL_MANAGEMENT_CATEGORIES: IMenuCategory[] = [];
+const CREDENTIAL_MANAGEMENT_CATEGORIES: IMenuCategory[] = []
 
 /**
  * CREDENTIAL VERIFICATION
  */
-const CREDENTIAL_VERIFICATION_CATEGORIES: IMenuCategory[] = [];
+const CREDENTIAL_VERIFICATION_CATEGORIES: IMenuCategory[] = []
 
 export const MENU_ITEMS: Record<MenuOptions, IMenuCategory[]> = {
   credential_management: CREDENTIAL_GENERATION_CATEGORIES,
   credentil_generation: CREDENTIAL_MANAGEMENT_CATEGORIES,
   credential_verification: CREDENTIAL_VERIFICATION_CATEGORIES,
-};
+}
 
 // To get the specific menu: eg. MENU_ITEMS[MenuOptions.CREDENTIAL_GENERATION];

@@ -1,6 +1,7 @@
 import { IVerifiableCredentialDTO } from '@ssi-ms/interfaces'
 import { VerifiableCredential } from '@veramo/core'
 import { ICreateVerifiableCredentialArgs } from '@veramo/credential-w3c'
+import { checkIfAuthorityDid } from './AuthorityDIDs'
 import { agent } from './setup'
 
 const VC_TYPE = 'VerifiableCredential'
@@ -42,10 +43,18 @@ const resolveBothAgents = async ({ issuer, subject }: { issuer: string; subject:
   try {
     const i = await agent.resolveDid({ didUrl: issuer })
     const s = await agent.resolveDid({ didUrl: subject })
-    console.log({ i, s })
+
     if (i.didDocument === null || s.didDocument === null) {
       throw new Error('Error when resolving identifiers')
     }
+
+    // Check authority is the issues
+    const isAuthortiy = await checkIfAuthorityDid(issuer)
+
+    if (!isAuthortiy) {
+      throw new Error('Only authorities can issue verifiable credentials!')
+    }
+
     return true
   } catch (e) {
     console.debug(e)

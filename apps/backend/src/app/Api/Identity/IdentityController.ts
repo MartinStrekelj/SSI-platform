@@ -1,24 +1,19 @@
 import { AUTHORITY_ROLES, IdentityResponse, IIdentityMetadata, ROLES } from '@ssi-ms/interfaces'
 import { Response, Request } from 'express'
-import { resolveJWTToken } from '../../Services/JWTService'
+import { resolveRequestIdentity } from '../../Services/AuthService'
 import { checkIfAuthorityDid } from '../../Veramo/AuthorityDIDs'
 
-import { agent } from '../../Veramo/setup'
-
-// Used in combination with useUser hook on platform
+// Provides identity resolution for platform
 export const resolveIdentityFromJWT = async (req: Request, res: Response) => {
   try {
     const { at } = req.cookies
-    const resolvedJWT = resolveJWTToken(at)
-    if (!resolvedJWT) {
-      throw Error()
+    const requestIdentity = await resolveRequestIdentity(at)
+
+    if (!requestIdentity) {
+      throw new Error()
     }
 
-    await agent.resolveDid({
-      didUrl: resolvedJWT.did,
-    })
-
-    const authority = await checkIfAuthorityDid(resolvedJWT.did)
+    const authority = await checkIfAuthorityDid(requestIdentity)
     const metadata: IIdentityMetadata = {}
 
     if (authority) {
@@ -26,12 +21,12 @@ export const resolveIdentityFromJWT = async (req: Request, res: Response) => {
       metadata.alias = authority.alias
     } else {
       metadata.role = [ROLES.HOLDER]
-      metadata.alias = 'holder'
+      metadata.alias = ROLES.HOLDER
     }
 
     const response: IdentityResponse = {
       identity: {
-        did: resolvedJWT.did,
+        did: requestIdentity,
         metadata,
       },
     }

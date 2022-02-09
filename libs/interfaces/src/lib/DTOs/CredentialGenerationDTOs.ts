@@ -8,6 +8,7 @@ export interface IVerifiableCredentialDTO {
   issuer: string
   subject: string
   expiryDate?: Date
+  issuanceDate?: Date
   type: string
   claims: IClaim[]
 }

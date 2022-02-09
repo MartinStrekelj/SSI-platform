@@ -9,6 +9,12 @@ export const IssueNewCrendetial = async (req: Request, res: Response) => {
     return res.status(400).send({ message: 'Not correct request type' })
   }
 
+  const { did: issuerDid } = res.locals
+
+  if (body.issuer !== issuerDid) {
+    return res.status(401).send({ message: 'Invalid issuer DID' })
+  }
+
   const newVerifiableCredential = await createVerifiableCredential(body)
 
   if (!newVerifiableCredential) {

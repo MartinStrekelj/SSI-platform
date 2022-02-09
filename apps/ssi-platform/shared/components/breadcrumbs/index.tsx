@@ -1,14 +1,19 @@
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
-import { capitalize } from 'lodash';
-import Link from 'next/link';
-import React, { useMemo } from 'react';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react'
+import { capitalize } from 'lodash'
+import Link from 'next/link'
+import React, { useMemo } from 'react'
 
 interface BreadcrumbsProps {
-  pathname: string;
+  pathname: string
 }
 
+/**
+ * Wrapper for breadcrumbs components that
+ * takes pathname and handles the tranformation to
+ * proper link in breadcrumbs
+ */
 export const Breadcrumbs = ({ pathname }: BreadcrumbsProps) => {
-  const breadcrumbs = useMemo(() => handlePathname(pathname), [pathname]);
+  const breadcrumbs = useMemo(() => handlePathname(pathname), [pathname])
   return (
     <Breadcrumb>
       {breadcrumbs.map((b: string, i: number) => (
@@ -19,22 +24,22 @@ export const Breadcrumbs = ({ pathname }: BreadcrumbsProps) => {
         </BreadcrumbItem>
       ))}
     </Breadcrumb>
-  );
-};
+  )
+}
 
 const handlePathname: (pathname: string) => string[] = (pathname: string) => {
-  const splitted = pathname.trim().slice(1).split('/');
-  const breacrumbs = [];
+  const splitted = pathname.trim().slice(1).split('/')
+  const breacrumbs = []
   splitted.reduce((acc: string, item: string) => {
-    const value = `${acc}/${item}`;
-    breacrumbs.push(value);
-    return value;
-  }, '');
-  return breacrumbs;
-};
+    const value = `${acc}/${item}`
+    breacrumbs.push(value)
+    return value
+  }, '')
+  return breacrumbs
+}
 
-const handleTitle: (title: string) => string = (title) => {
-  const splitted = title.split('/');
-  const value = splitted[splitted.length - 1];
-  return capitalize(value);
-};
+const handleTitle: (title: string) => string = (title: string) => {
+  const splitted = title.split('/')
+  const value = splitted[splitted.length - 1]
+  return capitalize(value)
+}

@@ -1,5 +1,6 @@
 import { UniqueVerifiableCredential } from '@veramo/data-store'
 import { Request, Response } from 'express'
+import { prepareVerifiableCredentialsDTOs } from '../../Services/DTOConverter'
 import { checkIfAuthorityDid } from '../../Veramo/AuthorityDIDs'
 import { listCredentialsWhereIssuer, listCredentialsWhereSubject } from '../../Veramo/ListCredentials'
 
@@ -8,7 +9,10 @@ export const listIssuedCredenetials = async (req: Request, res: Response) => {
 }
 
 export const listMyCredentials = async (req: Request, res: Response) => {
-  const did: string = 'did:key:z6MkrUW4hXEH91gWcPD9Ueuq5ud6XvFsizE2f5Xm3ESJ1Ydp'
+  const { did } = res.locals
+
+  console.debug(did)
+
   const isAuthority = await checkIfAuthorityDid(did)
 
   let credentials: UniqueVerifiableCredential[] = []
@@ -19,7 +23,7 @@ export const listMyCredentials = async (req: Request, res: Response) => {
     credentials = await listCredentialsWhereIssuer(isAuthority.did)
   }
 
-  // TODO prepare DTO && RESOLVE ISSUERS IN THE PROCESS
+  const credentialDTOs = prepareVerifiableCredentialsDTOs(credentials)
 
-  return res.send({ message: credentials })
+  return res.send({ credentials: credentialDTOs })
 }

@@ -5,10 +5,11 @@ export enum CLAIM_TYPES {
 }
 
 export interface IVerifiableCredentialDTO {
+  id?: string
   issuer: string
   subject: string
-  expiryDate?: Date
-  issuanceDate?: Date
+  expiryDate?: string
+  issuanceDate?: string
   type: string
   claims: IClaim[]
 }

@@ -6,21 +6,7 @@ const CredentialsApi = create({
   baseURL: '/api/credentials',
 })
 
-const credentialsFetcher = (url) => CredentialsApi.get(url).then((res) => res.data)
-
-// export const fetchIdentity = async () => {
-//   try {
-//     const response = await IdentityApi.get('/')
-//     if (response.status >= 400) {
-//       throw Error('Not authenticated!')
-//     }
-
-//     const { identity } = response.data as IdentityResponse
-//     return { ok: true, identity }
-//   } catch (e) {
-//     return { ok: false, message: e.message }
-//   }
-// }
+const credentialsFetcher = (url: string) => CredentialsApi.get(url).then((res) => res.data)
 
 export const issueNewVerifiableCredential = async (data: IVerifiableCredentialDTO) => {
   try {
@@ -31,6 +17,7 @@ export const issueNewVerifiableCredential = async (data: IVerifiableCredentialDT
     }
 
     const { message } = response.data as IGenericResponse
+
     return { ok: true, message }
   } catch (error) {
     console.error(error.message)
@@ -52,5 +39,15 @@ export const fetchMyCredentials = async () => {
   } catch (error) {
     console.error(error.message)
     return { ok: false, credentials: [] }
+  }
+}
+
+export const useCredentials = () => {
+  const { data, error, isValidating } = useSWR('/', credentialsFetcher)
+
+  return {
+    data: data,
+    isLoading: isValidating || (!error && !data),
+    isError: error,
   }
 }

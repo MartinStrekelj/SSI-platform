@@ -1,7 +1,11 @@
-import { Center, Spinner } from '@chakra-ui/react';
-import React from 'react';
+import { Center, Spinner } from '@chakra-ui/react'
+import React from 'react'
 
-export const FullPageLoader = () => {
+interface IFullPageLoaderProps {
+  relative?: boolean
+}
+
+export const FullPageLoader = ({ relative = false }: IFullPageLoaderProps) => {
   return (
     <Center
       top={0}
@@ -11,10 +15,10 @@ export const FullPageLoader = () => {
       h={'100%'}
       w={'100%'}
       zIndex={100}
-      position={'absolute'}
+      position={relative ? 'relative' : 'absolute'}
       bg={'white'}
     >
       <Spinner size={'xl'} />
     </Center>
-  );
-};
+  )
+}

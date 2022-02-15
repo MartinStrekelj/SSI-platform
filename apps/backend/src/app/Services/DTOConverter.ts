@@ -7,10 +7,11 @@ import { IVerifiableCredentialDTO } from '@ssi-ms/interfaces'
 export const prepareVerifiableCredentialsDTOs = (VCs: UniqueVerifiableCredential[]) => {
   return VCs.map((VC) => {
     const DTO: IVerifiableCredentialDTO = {
+      id: VC.hash,
       issuer: VC.verifiableCredential.issuer.id,
       subject: VC.verifiableCredential.credentialSubject.id,
-      issuanceDate: new Date(VC.verifiableCredential.issuanceDate),
-      expiryDate: VC.verifiableCredential.expirationDate ? new Date(VC.verifiableCredential.expirationDate) : undefined,
+      issuanceDate: VC.verifiableCredential.issuanceDate,
+      expiryDate: VC.verifiableCredential.expirationDate || undefined,
       type: VC.verifiableCredential.type[1],
       claims: JSON.parse(VC.verifiableCredential.credentialSubject.claims),
     }

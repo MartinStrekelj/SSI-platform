@@ -1,5 +1,6 @@
 export * from './lib/menu'
 export * from './lib/roles'
+export * from './lib/messages'
 
 /**
  * DTOs

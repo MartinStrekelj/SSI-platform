@@ -45,12 +45,8 @@ export const CreateNewVCForm = ({ issuer, submitForm, isSubmitting = false }: IC
         issuer: issuer.did,
         subject: values.subject,
         type: values.type,
+        expiryDate: values.expiryDate,
         claims: claimDTOs,
-      }
-
-      if (values.expiryDate) {
-        const expiryDate = new Date(values.expiryDate)
-        payload.expiryDate = expiryDate
       }
 
       return submitForm(payload)

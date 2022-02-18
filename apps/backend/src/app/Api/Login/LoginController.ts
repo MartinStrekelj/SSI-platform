@@ -1,9 +1,9 @@
 import * as cache from 'memory-cache'
 import { Response, Request } from 'express'
-import { generatePIN, LZW_encode } from '@ssi-ms/utils'
+import { generatePIN } from '@ssi-ms/utils'
 import createDIDMessage from '../../Veramo/createDIDMessage'
 import { generateQRfromString } from '../../Services/QRService'
-import { isWalletConnectRequest, isWallet2FARequest, IWalletConnectResponse } from '@ssi-ms/interfaces'
+import { isWalletConnectRequest, isWallet2FARequest, IWalletConnectResponse, MESSAGE_TYPE } from '@ssi-ms/interfaces'
 import { checkIfAuthorityDid } from '../../Veramo/AuthorityDIDs'
 import { setAccessCookie } from '../../Services/CookieService'
 
@@ -40,17 +40,14 @@ export const LoginWithWallet = async (req: Request, res: Response) => {
       {
         to: body.did,
         body: { PIN },
-        id: 'login-2fa',
+        id: MESSAGE_TYPE.LOGIN_2FA,
         type: 'DIDCommV2Message-sent',
       },
       'anoncrypt'
     )
 
-    //* compress message to make QR code size as small as posible
-    const compressedMessage = LZW_encode(IDIDCommMessage.message)
-
     // * encode token to QR
-    const qrcode = await generateQRfromString(compressedMessage)
+    const qrcode = await generateQRfromString(IDIDCommMessage.message)
     const response: IWalletConnectResponse = { qrcode: qrcode }
     return res.send(response)
   } catch (e: unknown) {

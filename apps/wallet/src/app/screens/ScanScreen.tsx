@@ -1,20 +1,18 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import React from 'react'
 
-import QRCodeScanner from 'react-native-qrcode-scanner';
-import { Screens } from '../App';
+import QRCodeScanner from 'react-native-qrcode-scanner'
+import { Screens } from '../App'
 
 const ScanScreen = ({ navigation }: any) => {
-  const onSuccess = (e) =>
-    navigation.navigate(Screens.WALLET, { message: e.data });
+  const onSuccess = (e) => navigation.navigate(Screens.WALLET, { message: e.data })
 
   return (
     <QRCodeScanner
       onRead={onSuccess}
       topContent={
         <Text style={styles.centerText}>
-          Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text>{' '}
-          on your computer and scan the QR code.
+          Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on your computer and scan the QR code.
         </Text>
       }
       bottomContent={
@@ -23,8 +21,8 @@ const ScanScreen = ({ navigation }: any) => {
         </TouchableOpacity>
       }
     />
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   centerText: {
@@ -44,6 +42,6 @@ const styles = StyleSheet.create({
   buttonTouchable: {
     padding: 16,
   },
-});
+})
 
-export default ScanScreen;
+export default ScanScreen

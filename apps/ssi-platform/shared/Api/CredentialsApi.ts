@@ -1,4 +1,11 @@
-import { IGenericResponse, IListCredentialsDTO, IVerifiableCredentialDTO } from '@ssi-ms/interfaces'
+import {
+  IFindCredentialByIdResponse,
+  IGenericResponse,
+  IListCredentialsDTO,
+  ITransferCredentialRequest,
+  ITransferCredentialResponse,
+  IVerifiableCredentialDTO,
+} from '@ssi-ms/interfaces'
 import { create } from 'apisauce'
 import useSWR from 'swr'
 
@@ -27,7 +34,6 @@ export const issueNewVerifiableCredential = async (data: IVerifiableCredentialDT
 
 export const fetchMyCredentials = async () => {
   try {
-    console.log('Fetching credentials')
     const response = await CredentialsApi.get('/', {})
     console.log(response)
     if (response.status >= 400) {
@@ -46,8 +52,34 @@ export const useCredentials = () => {
   const { data, error, isValidating } = useSWR('/', credentialsFetcher)
 
   return {
-    data: data,
+    data: data as IListCredentialsDTO,
     isLoading: isValidating || (!error && !data),
     isError: error,
+  }
+}
+
+export const useCredential = (id: string) => {
+  const { data, error, isValidating } = useSWR(`/${id}`, credentialsFetcher)
+
+  return {
+    data: data as IFindCredentialByIdResponse,
+    isLoading: isValidating || (!error && !data),
+    isError: error,
+  }
+}
+
+export const getCredentialTransferCode = async (hash: string) => {
+  try {
+    const data: ITransferCredentialRequest = { hash }
+    const response = await CredentialsApi.post('/transfer', data)
+    if (response.status >= 400) {
+      throw new Error('Something went wrong!')
+    }
+
+    const { qrcode } = response.data as ITransferCredentialResponse
+    return { ok: true, message: qrcode }
+  } catch (e: any) {
+    console.error(e.message)
+    return { ok: false, message: e.message as string }
   }
 }

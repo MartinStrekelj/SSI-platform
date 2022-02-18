@@ -34,7 +34,9 @@
     "@react-navigation/native-stack": "*",
     "react-native-screens": "*",
     "react-native-safe-area-context": "*",
-    "react-native-randombytes": "*"
+    "react-native-randombytes": "*",
+    "react-native-vector-icons": "*",
+    "react-native-paper": "*"
   },
   "react-native": {
     "crypto": "react-native-crypto",

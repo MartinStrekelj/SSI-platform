@@ -4,7 +4,7 @@ import { agent } from './setup'
 
 const createDIDMessage = async (
   message: IDIDCommMessage,
-  packing: DIDCommMessagePacking = 'none'
+  packing: DIDCommMessagePacking = 'anoncrypt'
 ): Promise<IPackedDIDCommMessage> =>
   await agent.packDIDCommMessage({
     packing,

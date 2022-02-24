@@ -21,33 +21,22 @@ const HomeScreen = ({ route, navigation }: any) => {
     handleScanMessage(route.params.message)
   }
 
-  const [receivedMessage, setMessage] = useState<any | null>(null)
   const [identifiers, setIdentifiers] = useState<Identifier[]>([])
 
-  const createIdentifier = async () => {
-    console.log('Creating a holder')
-    const holder = await agent.didManagerCreate({ alias: 'holder' })
-    console.log(`Holder with alias: ${holder.alias} | DID: ${holder.did} | created`)
-    console.log('Creating a key agreement key!')
-
-    setIdentifiers((s) => s.concat([holder]))
-  }
-
-  const deleteIdentifiers = async () => {
-    console.warn('presesd delete indentifiers')
-    identifiers.map((identifier) => {
-      agent.didManagerDelete({ did: identifier.did })
-    })
-  }
-
   useEffect(() => {
-    const getIdentifiers = async () => {
+    const onAppInit = async () => {
+      try {
+        const holder = await agent.didManagerCreate({ alias: 'holder' })
+        setIdentifiers((s) => s.concat([holder]))
+      } catch (e) {
+        // Ignore error, since this means that we already have an DID for this phone
+      }
       const _ids = await agent.didManagerFind()
       console.log(_ids)
       setIdentifiers(_ids)
     }
 
-    getIdentifiers()
+    onAppInit()
   }, [])
 
   return (
@@ -65,11 +54,8 @@ const HomeScreen = ({ route, navigation }: any) => {
             ))}
           </ScrollView>
         </View>
-        <Button onPress={createIdentifier} label="create" />
-        <Button onPress={deleteIdentifiers} label="delete" />
         <Button onPress={() => navigation.navigate(Screens.CREDENTIALS)} label="credentials" />
         <Button onPress={() => navigation.navigate(Screens.SCANNER)} label="scan" />
-        <LoginAttemptModal open={receivedMessage} loginAttemptMessage={'foo'} />
       </SafeAreaView>
     </>
   )

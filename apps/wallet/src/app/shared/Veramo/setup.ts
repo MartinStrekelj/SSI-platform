@@ -37,6 +37,7 @@ import {
 
 // TypeORM is installed with '@veramo/data-store'
 import { createConnection } from 'typeorm'
+import { CredentialIssuer, ICredentialIssuer } from '@veramo/credential-w3c'
 
 const INFURA_PROJECT_ID = 'fafaa91460c845668f9a320ccb90a916'
 const dbEncryptionKey = '34a89015e491a984bfe6e38e7623833209de9065a36124564aded4144ffb1291'
@@ -52,7 +53,7 @@ const dbConnection = createConnection({
 })
 
 export const agent = createAgent<
-  IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & IMessageHandler & IDIDComm
+  IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & IMessageHandler & IDIDComm & ICredentialIssuer
 >({
   plugins: [
     new KeyManager({
@@ -83,5 +84,6 @@ export const agent = createAgent<
     new DIDComm(),
     new DataStore(dbConnection),
     new DataStoreORM(dbConnection),
+    new CredentialIssuer(),
   ],
 })

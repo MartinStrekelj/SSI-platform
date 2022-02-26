@@ -36,7 +36,8 @@
     "react-native-safe-area-context": "*",
     "react-native-randombytes": "*",
     "react-native-vector-icons": "*",
-    "react-native-paper": "*"
+    "react-native-paper": "*",
+    "@veramo/credential-w3c": "*"
   },
   "react-native": {
     "crypto": "react-native-crypto",

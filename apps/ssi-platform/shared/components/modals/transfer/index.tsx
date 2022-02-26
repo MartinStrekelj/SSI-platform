@@ -17,9 +17,15 @@ interface ITrasferCredentialProps {
   credentialTransferCode?: string | undefined
   onOpen?: () => void
   onClose?: () => void
+  label?: string
 }
 
-export const TransferCredentialModal = ({ credentialTransferCode, onOpen, onClose }: ITrasferCredentialProps) => {
+export const TransferCredentialModal = ({
+  credentialTransferCode,
+  onOpen,
+  onClose,
+  label = 'Transfer credential',
+}: ITrasferCredentialProps) => {
   const modalActions = useDisclosure()
 
   const handleOpenModal = () => {
@@ -34,21 +40,18 @@ export const TransferCredentialModal = ({ credentialTransferCode, onOpen, onClos
 
   return (
     <>
-      <Button onClick={handleOpenModal}>Open Modal</Button>
+      <Button size={'lg'} onClick={handleOpenModal}>
+        {label}
+      </Button>
 
       <Modal isOpen={modalActions.isOpen} onClose={handleOnClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Scan me</ModalHeader>
+          <ModalHeader>{label}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody p={2}>
             <Center>{credentialTransferCode ? <img src={credentialTransferCode} /> : <Spinner />}</Center>
           </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleOnClose}>
-              Close
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

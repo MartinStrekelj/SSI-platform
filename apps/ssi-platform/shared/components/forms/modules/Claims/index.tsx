@@ -1,76 +1,65 @@
-import {
-  FormControl,
-  FormLabel,
-  SimpleGrid,
-  useDisclosure,
-} from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { ClaimsModal } from './ClaimsModal';
-import { AddClaimsBox, ClaimsBox } from './ClaimsBox';
-import { FormikValues } from 'formik';
-import { IClaim } from '@ssi-ms/interfaces';
-import produce from 'immer';
+import { FormControl, FormLabel, SimpleGrid, useDisclosure } from '@chakra-ui/react'
+import React, { useState } from 'react'
+import { ClaimsModal } from './ClaimsModal'
+import { AddClaimsBox, ClaimsBox } from './ClaimsBox'
+import { FormikValues } from 'formik'
+import { IClaim } from '@ssi-ms/interfaces'
+import produce from 'immer'
 
 interface IClaimsModuleProps {
-  formik: FormikValues;
+  formik: FormikValues
 }
 
 export const ClaimsFormModule = ({ formik }: IClaimsModuleProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedClaim, setSelectedClaim] = useState<null | IClaim>(null);
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [selectedClaim, setSelectedClaim] = useState<null | IClaim>(null)
 
   const onEditModalOpen = (claim: IClaim) => {
-    setSelectedClaim(claim);
-    onOpen();
-  };
+    setSelectedClaim(claim)
+    onOpen()
+  }
 
   const onCloseModal = () => {
-    setSelectedClaim(null);
-    onClose();
-  };
+    setSelectedClaim(null)
+    onClose()
+  }
 
   const addClaim = (newClaim: IClaim) => {
     formik.values.claims = produce(formik.values.claims, (draft: IClaim[]) => {
-      draft.push(newClaim);
-    });
-    onClose();
-  };
+      draft.push(newClaim)
+    })
+    onClose()
+  }
 
   const editClaim = (editClaim: IClaim) => {
     formik.values.claims = produce(formik.values.claims, (draft: IClaim[]) => {
-      const index = draft.findIndex((claim) => claim.id === editClaim.id);
+      const index = draft.findIndex((claim) => claim.id === editClaim.id)
       if (index !== -1)
         draft[index] = {
           ...editClaim,
-        };
-    });
-    onClose();
-  };
+        }
+    })
+    onClose()
+  }
 
   const removeClaim = (removedClaim: IClaim) => {
     formik.values.claims = produce(formik.values.claims, (draft: IClaim[]) => {
-      const index = draft.findIndex((claim) => claim.id === removedClaim.id);
-      if (index !== -1) draft.splice(index, 1);
-    });
-    onClose();
-  };
+      const index = draft.findIndex((claim) => claim.id === removedClaim.id)
+      if (index !== -1) draft.splice(index, 1)
+    })
+    onClose()
+  }
 
   const renderModal = () => {
-    let action = addClaim;
+    let action = addClaim
     if (selectedClaim !== null) {
-      action = editClaim;
+      action = editClaim
     }
 
     return (
-      <ClaimsModal
-        claim={selectedClaim}
-        open={isOpen}
-        onClose={onCloseModal}
-        onSave={action}
-        onRemove={removeClaim}
-      />
-    );
-  };
+      <ClaimsModal claim={selectedClaim} open={isOpen} onClose={onCloseModal} onSave={action} onRemove={removeClaim} />
+    )
+  }
 
   return (
     <>
@@ -85,5 +74,5 @@ export const ClaimsFormModule = ({ formik }: IClaimsModuleProps) => {
       </FormControl>
       {renderModal()}
     </>
-  );
-};
+  )
+}

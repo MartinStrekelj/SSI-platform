@@ -1,7 +1,6 @@
 export enum CLAIM_TYPES {
-  EQUALS = 'equals',
-  MORE_THAN = 'more_than',
-  LESS_THAN = 'less_than',
+  NUMERIC = 'numeric',
+  BINARY = 'binary',
 }
 
 export interface IVerifiableCredentialDTO {
@@ -16,7 +15,7 @@ export interface IVerifiableCredentialDTO {
 
 export interface IClaim {
   id?: number
-  type: CLAIM_TYPES
+  type?: CLAIM_TYPES
   title: string
   value: string | number
 }

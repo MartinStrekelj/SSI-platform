@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 import {
   Modal,
   ModalOverlay,
@@ -13,82 +13,60 @@ import {
   Select,
   Input,
   VStack,
-} from '@chakra-ui/react';
-import { CLAIM_TYPES, IClaim } from '@ssi-ms/interfaces';
-import { useFormik } from 'formik';
-import { generateRandomNumberId } from '@ssi-ms/utils';
+} from '@chakra-ui/react'
+import { CLAIM_TYPES, IClaim } from '@ssi-ms/interfaces'
+import { useFormik } from 'formik'
 
 interface IAddClaimModelProps {
-  open: boolean;
-  onClose: () => void;
-  onSave: (newClaim: IClaim) => void;
-  onRemove: (removedClaim: IClaim) => void;
-  claim?: IClaim;
+  open: boolean
+  onClose: () => void
+  onSave: (newClaim: IClaim) => void
+  onRemove: (removedClaim: IClaim) => void
+  claim?: IClaim
 }
 
-export const ClaimsModal = ({
-  open,
-  onClose,
-  onSave,
-  claim = null,
-  onRemove,
-}: IAddClaimModelProps) => {
+export const ClaimsModal = ({ open, onClose, onSave, claim = null, onRemove }: IAddClaimModelProps) => {
   const formik = useFormik({
     initialValues: {
-      id: claim ? claim.id : Date.now(),
-      type: claim ? claim.type : CLAIM_TYPES.EQUALS,
-      title: claim ? claim.title : '',
-      value: claim ? claim.value : '',
+      id: !!claim ? claim.id : Date.now(),
+      type: !!claim ? claim.type : CLAIM_TYPES.BINARY,
+      title: !!claim ? claim.title : '',
+      value: !!claim ? claim.value : undefined,
     },
     onSubmit: (values) => {
       if (formik.dirty) {
-        onSave(values);
+        onSave(values)
       }
 
-      formik.resetForm();
+      formik.resetForm()
     },
-  });
+  })
 
   useEffect(() => {
     formik.setValues({
       id: claim ? claim.id : Date.now(),
-      type: claim ? claim.type : CLAIM_TYPES.EQUALS,
+      type: claim ? claim.type : CLAIM_TYPES.BINARY,
       title: claim ? claim.title : '',
       value: claim ? claim.value : '',
-    });
-  }, [claim]);
+    })
+  }, [claim])
 
   return (
-    <Modal
-      blockScrollOnMount
-      isOpen={open}
-      onClose={onClose}
-      motionPreset="slideInBottom"
-      size="2xl"
-    >
+    <Modal blockScrollOnMount isOpen={open} onClose={onClose} motionPreset="slideInBottom" size="2xl">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{claim !== null ? 'Edit Claim' : 'Add Claim'}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <VStack spacing={2}>
+          <VStack spacing={4}>
             <FormControl isRequired>
               <FormLabel htmlFor="title">Title</FormLabel>
               <Input
+                required
                 id="title"
                 type="text"
                 name="title"
                 value={formik.values.title}
-                onChange={formik.handleChange}
-              />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel htmlFor="value">Value</FormLabel>
-              <Input
-                id="value"
-                type="text"
-                name="value"
-                value={formik.values.value}
                 onChange={formik.handleChange}
               />
             </FormControl>
@@ -107,6 +85,19 @@ export const ClaimsModal = ({
                 ))}
               </Select>
             </FormControl>
+            {formik.values.type === CLAIM_TYPES.NUMERIC && (
+              <FormControl isRequired>
+                <FormLabel htmlFor="value">Value</FormLabel>
+                <Input
+                  required
+                  id="value"
+                  type="text"
+                  name="value"
+                  value={formik.values.value}
+                  onChange={formik.handleChange}
+                />
+              </FormControl>
+            )}
           </VStack>
         </ModalBody>
         <ModalFooter>
@@ -121,5 +112,5 @@ export const ClaimsModal = ({
         </ModalFooter>
       </ModalContent>
     </Modal>
-  );
-};
+  )
+}

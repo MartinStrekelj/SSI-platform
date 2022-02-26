@@ -12,8 +12,9 @@ import {
 import { IClaim, IIdentity, IVerifiableCredentialDTO } from '@ssi-ms/interfaces'
 import React from 'react'
 import { useFormik } from 'formik'
-import { Plus, Repeat } from 'react-feather'
 import { ClaimsFormModule } from '../modules/Claims'
+import { FormActions } from '../modules/FormActions'
+import FormBody from '../modules/FormBody'
 
 interface ICreateNewVCFormProps {
   issuer: IIdentity
@@ -56,7 +57,7 @@ export const CreateNewVCForm = ({ issuer, submitForm, isSubmitting = false }: IC
   return (
     <form onSubmit={formik.handleSubmit}>
       {/* FORM VALUES */}
-      <VStack gap={4} w={'100%'} maxW={750}>
+      <FormBody>
         <FormControl isRequired isDisabled>
           <FormLabel htmlFor="issuer">Issuer</FormLabel>
           <Input id="issuer" type="text" name="issuer" value={formik.values.issuer} />
@@ -86,31 +87,12 @@ export const CreateNewVCForm = ({ issuer, submitForm, isSubmitting = false }: IC
         <ClaimsFormModule formik={formik} />
 
         {/* Submit button */}
-
-        <Divider />
-        <ButtonGroup w={['100%', null, 'fit-content']} alignSelf={'flex-end'} flexWrap={'wrap-reverse'} gap={4}>
-          <Button
-            onClick={formik.handleReset}
-            w={['100%', null, 'fit-content']}
-            type="reset"
-            size="lg"
-            rightIcon={<Icon as={Repeat} />}
-            fontSize={['md', 'lg', 'xl']}
-          >
-            Reset form
-          </Button>
-          <Button
-            isLoading={isSubmitting}
-            w={['100%', null, 'fit-content']}
-            type="submit"
-            size="lg"
-            rightIcon={<Icon as={Plus} />}
-            fontSize={['md', 'lg', 'xl']}
-          >
-            Create new credential
-          </Button>
-        </ButtonGroup>
-      </VStack>
+        <FormActions
+          handleReset={formik.handleReset}
+          isSubmitting={isSubmitting}
+          submitLabel={'Create new credential'}
+        />
+      </FormBody>
     </form>
   )
 }

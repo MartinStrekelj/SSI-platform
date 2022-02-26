@@ -1,5 +1,5 @@
 import { MenuOptions, IMenuCategory } from '@ssi-ms/interfaces'
-import { Plus, Layout, PlusSquare, Search, FileText } from 'react-feather'
+import { Plus, Layout, PlusSquare, Trello, FileText, List, PenTool } from 'react-feather'
 
 /**
  * CREDENTIAL GENERATION
@@ -11,35 +11,30 @@ const CREDENTIAL_GENERATION_CATEGORIES: IMenuCategory[] = [
     items: [
       {
         title: 'Issue new credential',
-        href: '/dashboard/issue',
+        href: '/dashboard/issue/new',
         icon: Plus,
       },
-      {
-        title: 'Issued credentials',
-        href: '/dashboard/credentials',
-        icon: Search,
-      },
-      {
-        title: 'Issue credentials with import',
-        href: 'dashboard/issue/import',
-        icon: FileText,
-      },
+      // {
+      //   title: 'Issue credentials with import',
+      //   href: 'dashboard/issue/import',
+      //   icon: FileText,
+      // },
     ],
   },
   {
     category: 'Credential templates',
     color: 'orange',
     items: [
-      {
-        title: 'Create new template',
-        href: '/dashboard/template/new',
-        icon: PlusSquare,
-      },
-      {
-        title: 'All templates',
-        href: '/dashboard/template/all',
-        icon: Layout,
-      },
+      // {
+      //   title: 'Create new template',
+      //   href: '/dashboard/template/new',
+      //   icon: PlusSquare,
+      // },
+      // {
+      //   title: 'All templates',
+      //   href: '/dashboard/template/all',
+      //   icon: Layout,
+      // },
     ],
   },
 ]
@@ -47,12 +42,41 @@ const CREDENTIAL_GENERATION_CATEGORIES: IMenuCategory[] = [
 /**
  * CREDENTIAL MANAGEMENT
  */
-const CREDENTIAL_MANAGEMENT_CATEGORIES: IMenuCategory[] = []
+const CREDENTIAL_MANAGEMENT_CATEGORIES: IMenuCategory[] = [
+  {
+    category: 'Manage credentials',
+    color: 'blue',
+    items: [
+      {
+        title: 'List of credentials',
+        href: '/dashboard/credentials',
+        icon: Trello,
+      },
+    ],
+  },
+]
 
 /**
  * CREDENTIAL VERIFICATION
  */
-const CREDENTIAL_VERIFICATION_CATEGORIES: IMenuCategory[] = []
+const CREDENTIAL_VERIFICATION_CATEGORIES: IMenuCategory[] = [
+  {
+    category: 'Credential verification',
+    color: 'red',
+    items: [
+      {
+        title: 'Create new verification policy',
+        href: '/dashboard/verification/new',
+        icon: PenTool,
+      },
+      // {
+      //   title: 'All verification policies',
+      //   href: '/dashboard/verification/list',
+      //   icon: List,
+      // },
+    ],
+  },
+]
 
 export const MENU_ITEMS: Record<MenuOptions, IMenuCategory[]> = {
   credential_management: CREDENTIAL_GENERATION_CATEGORIES,

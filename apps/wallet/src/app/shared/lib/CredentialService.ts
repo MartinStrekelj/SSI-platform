@@ -11,6 +11,7 @@ export const handleScanMessage = async (encodedMessage: string) => {
   switch (message.message.id) {
     case MESSAGE_TYPE.LOGIN_2FA:
       const { PIN } = message.message.body as LOGIN_2FA_BODY
+      console.warn(PIN)
       return { PIN }
 
     case MESSAGE_TYPE.TRANSFER:

@@ -1,27 +1,31 @@
 import { SafeAreaView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import t from '../shared/theme'
 
-import { AnimatedFAB, Button, Divider, Headline, Modal, Portal, Subheading, Text } from 'react-native-paper'
+import { AnimatedFAB, Divider, Headline, Portal, Subheading } from 'react-native-paper'
 import { ListCredentials } from '../components/credential/list'
-import { Screens } from '../App'
 import { IClaim } from '@ssi-ms/interfaces'
 import { UniqueVerifiableCredential } from '@veramo/data-store'
 import SelectClaimsModal from '../components/modals/SelectClaimsModal'
+import { RootStackParamList, Screens } from '../types'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
 const MIN_NUMBER_OF_CLAIMS = 1
+
+type IPresentationScreenProps = NativeStackScreenProps<RootStackParamList, Screens.PRESENTATION>
 
 /**
  * Prepare a presentation from selected credentials & presentations
  */
-const PresentationScreen = ({ navigation, route }: any) => {
+const PresentationScreen = ({ navigation, route }: IPresentationScreenProps) => {
   const [visible, setVisible] = useState<boolean>(false)
   const [presentationClaims, setClaim] = useState<IClaim[]>([])
   const [selected, setSelected] = useState<IClaim[] | null>(null)
 
   if (!route.params) {
-    return navigation.navigate(Screens.WALLET)
+    navigation.navigate(Screens.WALLET)
+    return null
   }
 
   // Let user select which claims he wants to add to presentation

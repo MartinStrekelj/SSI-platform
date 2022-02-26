@@ -2,10 +2,13 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 
 import QRCodeScanner from 'react-native-qrcode-scanner'
-import { Screens } from '../App'
+import { RootStackParamList, Screens } from '../types'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
-const ScanScreen = ({ navigation }: any) => {
-  const onSuccess = (e) => navigation.navigate(Screens.WALLET, { message: e.data })
+type IScanScreenProps = NativeStackScreenProps<RootStackParamList, Screens.SCANNER>
+
+const ScanScreen = ({ navigation }: IScanScreenProps) => {
+  const onSuccess = (e) => navigation.replace(Screens.MODAL, { message: e.data as string })
 
   return (
     <QRCodeScanner

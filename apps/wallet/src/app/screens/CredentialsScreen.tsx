@@ -6,7 +6,7 @@ import { ListCredentials } from '../components/credential/list'
 
 import t from '../shared/theme'
 import { ActivityIndicator, AnimatedFAB, Colors, Headline, Subheading, Switch } from 'react-native-paper'
-import { Screens } from '../App'
+import { Screens } from '../types'
 
 const MIN_NUMBER_FOR_PRESENTATION = 1
 

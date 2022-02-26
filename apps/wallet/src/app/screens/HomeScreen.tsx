@@ -1,26 +1,22 @@
-import { LZW_decode } from '@ssi-ms/utils'
 import React, { useState, useEffect } from 'react'
 
-import { SafeAreaView, Text, StatusBar, View, ScrollView } from 'react-native'
-import { Screens } from '../App'
+import { SafeAreaView, Text, View, ScrollView } from 'react-native'
 import { Button } from '../components/Button'
-import { LoginAttemptModal } from '../components/modals/LoginAttemptModal'
 
 // Import agent from setup
 import { agent } from '../shared/Veramo/setup'
 
 import t from '../shared/theme'
-import { handleScanMessage } from '../shared/lib/CredentialService'
+import { RootStackParamList, Screens } from '../types'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
 interface Identifier {
   did: string
 }
 
-const HomeScreen = ({ route, navigation }: any) => {
-  if (route.params) {
-    handleScanMessage(route.params.message)
-  }
+type IHomeScreenProps = NativeStackScreenProps<RootStackParamList, Screens.WALLET>
 
+const HomeScreen = ({ route, navigation }: IHomeScreenProps) => {
   const [identifiers, setIdentifiers] = useState<Identifier[]>([])
 
   useEffect(() => {

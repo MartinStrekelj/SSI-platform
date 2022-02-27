@@ -2,7 +2,7 @@ import { SafeAreaView, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { UniqueVerifiableCredential } from '@veramo/data-store'
 import getLocalCredentials from '../shared/Veramo/getLocalCredentials'
-import { ListCredentials } from '../components/credential/list'
+import { ListCredentials } from '../shared/components/credential/list'
 
 import t from '../shared/theme'
 import { ActivityIndicator, AnimatedFAB, Colors, Headline, Subheading, Switch } from 'react-native-paper'

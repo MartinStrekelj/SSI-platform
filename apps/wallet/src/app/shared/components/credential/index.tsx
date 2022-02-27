@@ -1,8 +1,8 @@
 import React from 'react'
 import { UniqueVerifiableCredential } from '@veramo/data-store'
-import { Card, Title, Paragraph, Colors } from 'react-native-paper'
+import { Card, Title, Paragraph } from 'react-native-paper'
 
-import t from '../../shared/theme'
+import t from '../../theme'
 interface ICredentialProps {
   credential: UniqueVerifiableCredential
   onPress: (c: UniqueVerifiableCredential) => void

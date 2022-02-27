@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { IClaim } from '@ssi-ms/interfaces'
 import { Switch } from 'react-native-paper'
 
-import t from '../../../shared/theme'
+import t from '../../../theme'
 
 interface IClaimOptionProps {
   claim: IClaim

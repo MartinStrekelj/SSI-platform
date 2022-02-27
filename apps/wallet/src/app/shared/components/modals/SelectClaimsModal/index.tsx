@@ -2,7 +2,7 @@ import { ScrollView } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { Button, Modal } from 'react-native-paper'
 
-import t from '../../../shared/theme'
+import t from '../../../theme'
 import { IClaim } from '@ssi-ms/interfaces'
 import ClaimOption from './option'
 
@@ -13,7 +13,7 @@ interface ISelectClaimsProps {
   visible: boolean
 }
 
-const SelectClaimsModal = ({ selected, hideModal, onSubmit, visible }: ISelectClaimsProps) => {
+export const SelectClaimsModal = ({ selected, hideModal, onSubmit, visible }: ISelectClaimsProps) => {
   const [selectedClaims, setClaims] = useState<IClaim[]>([])
 
   const handleAddClaim = (c: IClaim) => setClaims([...selectedClaims, c])
@@ -38,5 +38,3 @@ const SelectClaimsModal = ({ selected, hideModal, onSubmit, visible }: ISelectCl
     </Modal>
   )
 }
-
-export default SelectClaimsModal

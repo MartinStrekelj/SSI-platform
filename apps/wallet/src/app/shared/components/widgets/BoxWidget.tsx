@@ -2,7 +2,7 @@ import { View } from 'react-native'
 import React, { useCallback } from 'react'
 import { DataTable, Title } from 'react-native-paper'
 
-import t from '../../shared/theme'
+import t from '../../theme'
 
 interface IBoxWidgetProps {
   title?: string

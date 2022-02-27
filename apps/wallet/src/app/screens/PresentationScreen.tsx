@@ -1,13 +1,13 @@
 import { SafeAreaView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import t from '../shared/theme'
 
 import { AnimatedFAB, Divider, Headline, Portal, Subheading } from 'react-native-paper'
-import { ListCredentials } from '../components/credential/list'
+import { ListCredentials } from '../shared/components/credential/list'
 import { IClaim } from '@ssi-ms/interfaces'
 import { UniqueVerifiableCredential } from '@veramo/data-store'
-import SelectClaimsModal from '../components/modals/SelectClaimsModal'
+import { SelectClaimsModal } from '../shared/components/modals/SelectClaimsModal'
 import { RootStackParamList, Screens } from '../types'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 

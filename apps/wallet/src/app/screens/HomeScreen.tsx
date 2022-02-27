@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { SafeAreaView, Text, View, ScrollView } from 'react-native'
-import { Button } from '../components/Button'
+import { Button } from '../shared/components/Button'
 
 // Import agent from setup
 import { agent } from '../shared/Veramo/setup'

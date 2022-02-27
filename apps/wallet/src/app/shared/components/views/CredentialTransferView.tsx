@@ -2,11 +2,11 @@ import { VerifiableCredential } from '@veramo/core'
 import React, { useState } from 'react'
 import { ScrollView, View } from 'react-native'
 import { Button, Divider, Headline } from 'react-native-paper'
-import { CredentialBasicInfo } from '../credential/basicInfo'
 
-import t from '../../shared/theme'
+import t from '../../theme'
 import ClaimsInfo from '../credential/claimsInfo'
-import storeCredential from '../../shared/Veramo/storeCredential'
+import storeCredential from '../../Veramo/storeCredential'
+import { CredentialBasicInfo } from '../credential/basicInfo'
 
 interface ICredentialTransferProps {
   credential: VerifiableCredential

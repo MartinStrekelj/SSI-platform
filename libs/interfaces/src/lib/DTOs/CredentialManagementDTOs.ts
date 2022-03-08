@@ -1,4 +1,4 @@
-import { IVerifiableCredentialDTO } from './CredentialGenerationDTOs'
+import { IPresentationClaim, IVerifiableCredentialDTO } from './CredentialGenerationDTOs'
 
 export interface IListCredentialsDTO {
   credentials: IVerifiableCredentialDTO[]
@@ -16,7 +16,17 @@ export interface ITransferCredentialResponse {
   qrcode: string
 }
 
+export interface ICreatePresentationRequest {
+  claims: IPresentationClaim[]
+}
+
+export interface ICreatePresentationResponse {
+  message: string
+}
+
 /**
  * GUARDS
  */
 export const isTransferCredentialRequest = (tbd: any): tbd is ITransferCredentialRequest => tbd.hash !== undefined
+
+export const isCreatePresentationRequest = (tbd: any): tbd is ICreatePresentationRequest => tbd.claims !== undefined

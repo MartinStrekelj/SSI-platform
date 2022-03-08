@@ -20,6 +20,8 @@ export interface IClaim {
   value: string | number
 }
 
+export type IPresentationClaim = IClaim & { vc: string }
+
 /**
  * GUARDS
  */

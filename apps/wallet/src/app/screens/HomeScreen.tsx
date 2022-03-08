@@ -9,6 +9,7 @@ import { agent } from '../shared/Veramo/setup'
 import t from '../shared/theme'
 import { RootStackParamList, Screens } from '../types'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 interface Identifier {
   did: string
@@ -16,7 +17,7 @@ interface Identifier {
 
 type IHomeScreenProps = NativeStackScreenProps<RootStackParamList, Screens.WALLET>
 
-const HomeScreen = ({ route, navigation }: IHomeScreenProps) => {
+const HomeScreen = ({navigation }: IHomeScreenProps) => {
   const [identifiers, setIdentifiers] = useState<Identifier[]>([])
 
   useEffect(() => {

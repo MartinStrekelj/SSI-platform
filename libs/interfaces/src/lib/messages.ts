@@ -3,6 +3,7 @@ import { VerifiableCredential } from '@veramo/core'
 export enum MESSAGE_TYPE {
   LOGIN_2FA = 'login-2fa',
   TRANSFER = 'credential-transfer',
+  PRESENTATION = 'presentation',
 }
 
 export interface LOGIN_2FA_BODY {

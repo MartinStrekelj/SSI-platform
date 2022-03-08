@@ -16,7 +16,7 @@ export const Credential = ({ credential, onPress, marked = false }: ICredentialP
       onPress={() => onPress(credential)}
       mode={'elevated'}
       style={[
-        t.mY10,
+        t.mY4,
         t.p5,
         t.roundedLg,
         t.bgPrimaryDark,
@@ -33,5 +33,3 @@ export const Credential = ({ credential, onPress, marked = false }: ICredentialP
     </Card>
   )
 }
-
-// { marginVertical: 10, padding: 5, borderRadius: 10, backgroundColor: Colors.blue500 }

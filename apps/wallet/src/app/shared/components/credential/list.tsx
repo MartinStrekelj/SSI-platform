@@ -2,7 +2,6 @@ import { ScrollView, Text } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { UniqueVerifiableCredential } from '@veramo/data-store'
 import { Searchbar } from 'react-native-paper'
-
 import { Credential } from './index'
 
 interface IListCredentialsProps {
@@ -48,12 +47,11 @@ export const ListCredentials = ({
 
   const onChangeSearch = (query: string) => setSearchQuery(query)
 
-  console.log({ credentials, filtered })
   return (
     <>
       {withSearchBar && <Searchbar placeholder="Search" onChangeText={onChangeSearch} value={searchQuery} />}
-      <ScrollView>{filtered && filtered.map(renderCredential)}</ScrollView>
       <Text>{filtered && filtered.length === 0 && 'No credentials found'}</Text>
+      <ScrollView>{filtered && filtered.map(renderCredential)}</ScrollView>
     </>
   )
 }

@@ -12,9 +12,9 @@ type IHandleScanMessage = (msg: string) => Promise<IScanMessagePayload>
 
 // Every QR message received is first LZW encoded -> then IDID message encoded & protected
 export const handleScanMessage: IHandleScanMessage = async (encodedMessage: string) => {
+  console.log({ encodedMessage })
   const lzw_decoded = LZW_decode(encodedMessage)
   const message = await unpackDIDMessage(lzw_decoded)
-
   switch (message.message.id) {
     case MESSAGE_TYPE.LOGIN_2FA:
       const { PIN } = message.message.body as LOGIN_2FA_BODY

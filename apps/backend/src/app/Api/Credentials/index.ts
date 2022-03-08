@@ -1,7 +1,7 @@
 import * as express from 'express'
-import { AuthGuard } from '../../Middleware/AuthMiddleware'
+import { AuthGuard, MobileAuthGuard } from '../../Middleware/AuthMiddleware'
 import { IssueNewCrendetial } from './GenerateController'
-import { listMyCredentials, transferCredential, findCredentialById } from './ManagementController'
+import { listMyCredentials, transferCredential, findCredentialById, createPresentation } from './ManagementController'
 
 const router = express.Router({})
 
@@ -17,6 +17,9 @@ router.get('/', AuthGuard, (req: express.Request, res: express.Response) => list
 router.get('/:id', AuthGuard, (req: express.Request, res: express.Response) => findCredentialById(req, res))
 
 router.post('/transfer', AuthGuard, (req: express.Request, res: express.Response) => transferCredential(req, res))
+router.post('/presentation', MobileAuthGuard, (req: express.Request, res: express.Response) =>
+  createPresentation(req, res)
+)
 
 /**
  * CREDENTIAL VERIFICATION

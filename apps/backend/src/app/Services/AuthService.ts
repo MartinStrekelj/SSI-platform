@@ -1,4 +1,4 @@
-import { agent } from '../Veramo/setup'
+import { resolveDID } from '../Veramo/DIDResolver'
 import { resolveJWTToken } from './JWTService'
 
 type IResolveRequestIdentity = (jwt: string) => Promise<string | false>
@@ -10,9 +10,7 @@ export const resolveRequestIdentity: IResolveRequestIdentity = async (jwt: strin
       throw Error('JWT could not be resolved!')
     }
 
-    await agent.resolveDid({
-      didUrl: resolvedJWT.did,
-    })
+    await resolveDID(resolvedJWT.did)
 
     return resolvedJWT.did
   } catch (error) {

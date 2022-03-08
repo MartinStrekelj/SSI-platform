@@ -1,6 +1,6 @@
 import { isCreateVerifiableCredentialRequest } from '@ssi-ms/interfaces'
 import { Request, Response } from 'express'
-import createVerifiableCredential from '../../Veramo/CreateVerifiableCredential'
+import { createVerifiableCredential } from '../../Veramo/IssueCredentials'
 
 export const IssueNewCrendetial = async (req: Request, res: Response) => {
   const { body } = req

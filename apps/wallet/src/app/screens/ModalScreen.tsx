@@ -22,9 +22,11 @@ const ModalScreen = ({ navigation, route }: IModalScreenProps) => {
       try {
         const result = await handleScanMessage(route.params.message)
         setData(result)
-        setLoading(false)
       } catch (e) {
+        console.error(e.message)
         // Do nothing
+      } finally {
+        setLoading(false)
       }
     }
 

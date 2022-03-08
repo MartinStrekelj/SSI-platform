@@ -1,25 +1,25 @@
 import {
   IFindCredentialByIdResponse,
-  IGenericResponse,
   isTransferCredentialRequest,
   ITransferCredentialResponse,
   MESSAGE_TYPE,
+  isCreatePresentationRequest,
+  ICreatePresentationResponse,
 } from '@ssi-ms/interfaces'
 import { UniqueVerifiableCredential } from '@veramo/data-store'
 import { Request, Response } from 'express'
-import {
-  prepareDTOFromVC,
-  prepareVerifiableCredentialsDTO,
-  prepareVerifiableCredentialsDTOs,
-} from '../../Services/DTOConverter'
+import { prepareDTOFromVC, prepareVerifiableCredentialsDTOs } from '../../Services/DTOConverter'
 import { generateQRfromString } from '../../Services/QRService'
 import { checkIfAuthorityDid } from '../../Veramo/AuthorityDIDs'
 import createDIDMessage from '../../Veramo/createDIDMessage'
+import { createVCforPresentation } from '../../Veramo/IssueCredentials'
 import findCredential from '../../Veramo/findCredential'
 import { listCredentialsWhereIssuer, listCredentialsWhereSubject } from '../../Veramo/ListCredentials'
+import { IDIDCommMessage } from '@veramo/did-comm'
 
 export const listIssuedCredenetials = async (req: Request, res: Response) => {
   const { did } = req.params as { did: string }
+  return res.status(400).send({ message: 'Not implemented!' })
 }
 
 export const listMyCredentials = async (req: Request, res: Response) => {
@@ -85,5 +85,34 @@ export const transferCredential = async (req: Request, res: Response) => {
   } catch (err: any) {
     console.error(err.message)
     return res.status(400).send({ message: 'something went wrong!' })
+  }
+}
+
+export const createPresentation = async (req: Request, res: Response) => {
+  const { body } = req
+  const { did } = res.locals as { did: string }
+  try {
+    if (!isCreatePresentationRequest(body)) {
+      throw new Error('Bad body')
+    }
+
+    const vc = await createVCforPresentation(body.claims, did)
+
+    const message: IDIDCommMessage = {
+      body: vc,
+      to: did,
+      id: MESSAGE_TYPE.PRESENTATION,
+      type: 'DIDCommV2Message-sent',
+    }
+
+    const didMessage = await createDIDMessage(message)
+
+    const response: ICreatePresentationResponse = {
+      message: didMessage.message,
+    }
+
+    return res.send(response)
+  } catch (e) {
+    return res.status(400).send({ message: e.message })
   }
 }

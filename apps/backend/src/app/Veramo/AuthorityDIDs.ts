@@ -9,3 +9,5 @@ export const checkIfAuthorityDid = async (did: string) => {
 
   return searchAuthorityDID || false
 }
+
+export const getAuthority = async (alias: string) => await agent.didManagerGetByAlias({ alias })

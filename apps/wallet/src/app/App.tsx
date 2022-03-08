@@ -9,6 +9,7 @@ import CredentialsScreen from './screens/CredentialsScreen'
 import PresentationScreen from './screens/PresentationScreen'
 import ModalScreen from './screens/ModalScreen'
 import { Screens } from './types'
+import PresentationCreateContextProvider from './shared/lib/PresentationCreateContext'
 
 const PAPER_THEME = {
   ...DefaultTheme,
@@ -21,9 +22,9 @@ const App = () => (
   <PaperProvider theme={PAPER_THEME}>
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name={Screens.WALLET} component={HomeScreen} options={{ headerShown: false }} />
-        <Stack.Screen name={Screens.SCANNER} component={ScanScreen} />
         <Stack.Screen name={Screens.CREDENTIALS} component={CredentialsScreen} options={{ title: null }} />
+        <Stack.Screen name={Screens.WALLET} component={HomeScreen} options={{ title: 'My wallet information' }} />
+        <Stack.Screen name={Screens.SCANNER} component={ScanScreen} />
         <Stack.Screen name={Screens.PRESENTATION} component={PresentationScreen} options={{ title: null }} />
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen name={Screens.MODAL} component={ModalScreen} options={{ title: 'Scan result' }} />

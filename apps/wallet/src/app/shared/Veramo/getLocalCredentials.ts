@@ -1,8 +1,11 @@
 import { agent } from './setup'
 
-const getLocalCredentials = async () => {
+export const getLocalCredentials = async () => {
   const credentials = await agent.dataStoreORMGetVerifiableCredentials()
   return credentials
 }
 
-export default getLocalCredentials
+export const getLocalPresentations = async () => {
+  const presentations = await agent.dataStoreORMGetVerifiablePresentations()
+  return presentations
+}

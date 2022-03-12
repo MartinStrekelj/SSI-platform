@@ -1,8 +1,6 @@
 import React from 'react'
 import { UniqueVerifiableCredential } from '@veramo/data-store'
-import { Card, Title, Paragraph } from 'react-native-paper'
-
-import t from '../../theme'
+import { CardComponent } from '../card'
 interface ICredentialProps {
   credential: UniqueVerifiableCredential
   onPress: (c: UniqueVerifiableCredential) => void
@@ -11,25 +9,22 @@ interface ICredentialProps {
 
 export const Credential = ({ credential, onPress, marked = false }: ICredentialProps) => {
   const { verifiableCredential } = credential
+  const title = verifiableCredential.type[1]
+
+  /**
+   * Credential is part of presentation
+   * so no need to display it here
+   */
+  if (!title) {
+    return null
+  }
+
   return (
-    <Card
+    <CardComponent
+      title={title}
+      content={verifiableCredential.credentialSubject.claims}
+      marked={marked}
       onPress={() => onPress(credential)}
-      mode={'elevated'}
-      style={[
-        t.mY4,
-        t.p5,
-        t.roundedLg,
-        t.bgPrimaryDark,
-        t.shadow2xl,
-        marked ? t.border2 : t.border0,
-        t.borderPrimaryLight,
-      ]}
-    >
-      <Card.Title title={verifiableCredential.type[1]} />
-      <Card.Content>
-        <Title>{verifiableCredential.credentialSubject.id}</Title>
-        <Paragraph>{verifiableCredential.credentialSubject.claims}</Paragraph>
-      </Card.Content>
-    </Card>
+    />
   )
 }

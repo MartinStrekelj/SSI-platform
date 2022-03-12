@@ -1,7 +1,6 @@
 import { SafeAreaView, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { UniqueVerifiableCredential } from '@veramo/data-store'
-import getLocalCredentials from '../shared/Veramo/getLocalCredentials'
 import { ListCredentials } from '../shared/components/credential/list'
 
 import t from '../shared/theme'
@@ -10,17 +9,16 @@ import { RootStackParamList, Screens } from '../types'
 import { FloatingMenu } from '../shared/components/FloatingMenu'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useIsFocused } from '@react-navigation/native'
+import { useCredentials } from '../shared/hooks/useCredentials'
 
 const MIN_NUMBER_FOR_PRESENTATION = 1
 
 type ICredentialsScreenProps = NativeStackScreenProps<RootStackParamList, Screens.CREDENTIALS>
 
 const CredentialsScreen = ({ navigation }: ICredentialsScreenProps) => {
-  const [myCredentials, setCredentials] = useState<undefined | UniqueVerifiableCredential[]>(undefined)
   const [selectedForMerge, setForMerge] = useState<undefined | UniqueVerifiableCredential[]>([])
   const isFocused = useIsFocused()
-
-  const [isLoading, setLoading] = useState<boolean>(true)
+  const { myCredentials, myPresentations, isLoading } = useCredentials()
   const [isCreatePresentationOn, setIsSwitchOn] = useState<boolean>(false)
 
   const onCancelMergePress = () => {
@@ -42,15 +40,6 @@ const CredentialsScreen = ({ navigation }: ICredentialsScreenProps) => {
     // Add new
     setForMerge([...selectedForMerge, newCredential])
   }
-
-  useEffect(() => {
-    const fetchLocalCredentials = async () => {
-      const credentials = await getLocalCredentials()
-      setCredentials(credentials)
-      setLoading(false)
-    }
-    fetchLocalCredentials()
-  }, [])
 
   const handleMenuScannerPress = () => navigation.push(Screens.SCANNER)
 
@@ -81,6 +70,7 @@ const CredentialsScreen = ({ navigation }: ICredentialsScreenProps) => {
       )}
       <ListCredentials
         credentials={myCredentials}
+        presentations={myPresentations}
         marked={selectedForMerge.map((vc) => vc.hash)}
         withSearchBar
         onCredentialClick={isCreatePresentationOn ? handleMarkForMerge : goToCredentialDetailPage}

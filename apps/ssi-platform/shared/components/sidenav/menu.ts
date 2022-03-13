@@ -1,5 +1,5 @@
 import { MenuOptions, IMenuCategory } from '@ssi-ms/interfaces'
-import { Plus, Layout, PlusSquare, Trello, FileText, List, PenTool } from 'react-feather'
+import { Plus, Trello, PenTool, Framer } from 'react-feather'
 
 /**
  * CREDENTIAL GENERATION
@@ -22,14 +22,14 @@ const CREDENTIAL_GENERATION_CATEGORIES: IMenuCategory[] = [
     ],
   },
   {
-    category: 'Credential templates',
+    category: 'Credential schemas',
     color: 'orange',
     items: [
-      // {
-      //   title: 'Create new template',
-      //   href: '/dashboard/template/new',
-      //   icon: PlusSquare,
-      // },
+      {
+        title: 'Create new schema',
+        href: '/dashboard/issue/schema',
+        icon: Framer,
+      },
       // {
       //   title: 'All templates',
       //   href: '/dashboard/template/all',

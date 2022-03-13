@@ -1,5 +1,5 @@
 import { Box, SimpleGrid } from '@chakra-ui/react'
-import { hasAuthorityRoles, hasRoleHolder } from '@ssi-ms/interfaces'
+import { hasRoleHolder } from '@ssi-ms/interfaces'
 import { getCredentialTransferCode, useCredential } from 'apps/ssi-platform/shared/Api/CredentialsApi'
 import { Breadcrumbs } from 'apps/ssi-platform/shared/components/breadcrumbs'
 import DashboardLayout from 'apps/ssi-platform/shared/components/layouts/DashboardLayout'

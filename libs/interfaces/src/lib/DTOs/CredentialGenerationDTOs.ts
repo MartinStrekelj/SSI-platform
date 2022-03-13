@@ -1,6 +1,7 @@
 export enum CLAIM_TYPES {
   NUMERIC = 'numeric',
-  BINARY = 'binary',
+  SELECT = 'select',
+  CHECKBOX = 'checkbox',
 }
 
 export interface IVerifiableCredentialDTO {

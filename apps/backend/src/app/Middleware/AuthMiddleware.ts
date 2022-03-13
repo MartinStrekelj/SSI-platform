@@ -12,6 +12,16 @@ export const AuthGuard = async (req: Request, res: Response, next: NextFunction)
   return next()
 }
 
+// TODO -> then replace AuthGuard where necesarry
+export const AuthorityAuthGuard = async (req: Request, res: Response, next: NextFunction) => {
+  return next()
+  console.log(req.cookies)
+  return await AuthGuard(req, res, () => {
+    console.log(res.locals.did)
+    return next()
+  })
+}
+
 export const MobileAuthGuard = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.headers.authorization) {
     throw new Error('No auth token')

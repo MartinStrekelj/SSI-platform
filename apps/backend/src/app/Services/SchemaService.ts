@@ -43,7 +43,7 @@ export const updateSchema = async ({ uuid, data }: IUpdateSchemaArgs) => {
   const updatedSchemaData: ISchema = { ...data, display: !!data.display }
 
   const { data: schemas, error } = await supabase
-    .from('ssi-schemas')
+    .from(SCHEMAS_TABLE)
     .update({ ...updatedSchemaData, updated_at: new Date() })
     .eq('id', uuid)
 

@@ -27,7 +27,12 @@ describe('Schema service tests', () => {
       { title: 'dummy', type: CLAIM_TYPES.NUMERIC },
       { title: 'dummy2', type: CLAIM_TYPES.NUMERIC },
     ]
-    const newSchema = await insertNewSchema({ title: 'Schema tests', fields: { data: dummyClaims }, display: true })
+    const newSchema = await insertNewSchema({
+      author: 'test',
+      title: 'Schema tests',
+      fields: { data: dummyClaims },
+      display: true,
+    })
     expect(newSchema.title).toBe('Schema tests')
     expect(newSchema.fields.data.length).toEqual(2)
     expect(newSchema.fields.data[0].title).toEqual('dummy')
@@ -39,7 +44,7 @@ describe('Schema service tests', () => {
 
     const updatedSchema = await updateSchema({
       uuid: testSchemaUUID,
-      data: { title: 'Schema tests ~ 2', fields: { data: fields } },
+      data: { title: 'Schema tests ~ 2', author: 'test', fields: { data: fields } },
     })
 
     expect(updatedSchema.title).toBe('Schema tests ~ 2')

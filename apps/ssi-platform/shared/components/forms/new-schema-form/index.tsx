@@ -20,7 +20,17 @@ export const NewSchemaForm = ({ authority, isSubmitting, handleFormSubmit }: INe
       display: true,
       fields: [],
     },
-    onSubmit: (values) => console.log(values), // handleFormSubmit
+    onSubmit: (values) => {
+      if (!formik.dirty) {
+        return
+      }
+      const newSchema: ISchema = {
+        ...values,
+        author: authority.did,
+        fields: { data: values.fields as ISchemaField[] },
+      }
+      return handleFormSubmit(newSchema)
+    },
   })
   return (
     <form onSubmit={formik.handleSubmit}>

@@ -41,6 +41,13 @@ export const postSchema = async (req: Request, res: Response) => {
     if (!isAddSchemaRequest(body)) {
       throw new Error('Not correct request type')
     }
+
+    const authorMatchesIdentity = res.locals.did === body.author
+
+    if (!authorMatchesIdentity) {
+      throw new Error('Author does not match identity')
+    }
+
     const schema = await insertNewSchema(body)
 
     if (schema === null) {

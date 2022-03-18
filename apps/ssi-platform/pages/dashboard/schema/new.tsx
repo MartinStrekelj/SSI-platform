@@ -1,7 +1,7 @@
 import { ISchema } from '@ssi-ms/interfaces'
 import { createNewSchemaRequest } from 'apps/ssi-platform/shared/Api/SchemasApi'
 import { Breadcrumbs } from 'apps/ssi-platform/shared/components/breadcrumbs'
-import { NewSchemaForm } from 'apps/ssi-platform/shared/components/forms/new-schema-form'
+import { NewSchemaForm } from 'apps/ssi-platform/shared/components/forms/NewSchemaForm'
 import DashboardLayout from 'apps/ssi-platform/shared/components/layouts/DashboardLayout'
 import { PageTitle } from 'apps/ssi-platform/shared/components/pagetitle'
 import { useToasts } from 'apps/ssi-platform/shared/hooks/useToasts'

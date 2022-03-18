@@ -4,7 +4,7 @@ import { useFormik } from 'formik'
 import React from 'react'
 import { FormActions } from '../modules/FormActions'
 import FormBody from '../modules/FormBody'
-import { SchemaFields } from '../modules/schema-fields'
+import { SchemaFields } from '../modules/SchemaFields'
 
 interface INewSchemaFormProps {
   authority: IIdentity

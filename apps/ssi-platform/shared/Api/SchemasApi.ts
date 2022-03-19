@@ -1,6 +1,6 @@
 import { ISchema, ISchemaResponse } from '@ssi-ms/interfaces'
 import { create } from 'apisauce'
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 
 const SchemasApi = create({
   baseURL: '/api/schemas',
@@ -24,7 +24,7 @@ export const createNewSchemaRequest = async (schema: ISchema) => {
 }
 
 export const useSchemas = () => {
-  const { data, error, isValidating } = useSWR('/', schemasFetcher)
+  const { data, error, isValidating } = useSWRImmutable('/?schemas', schemasFetcher)
 
   return {
     data: data as { schemas: ISchema[] },

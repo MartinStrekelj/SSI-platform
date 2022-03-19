@@ -1,6 +1,7 @@
 export enum CLAIM_TYPES {
   NUMERIC = 'numeric',
-  BINARY = 'binary',
+  SELECT = 'select',
+  CHECKBOX = 'checkbox',
 }
 
 export interface IVerifiableCredentialDTO {
@@ -9,6 +10,7 @@ export interface IVerifiableCredentialDTO {
   subject: string
   expiryDate?: string
   issuanceDate?: string
+  schema?: string
   type: string
   claims: IClaim[]
 }
@@ -17,8 +19,10 @@ export interface IClaim {
   id?: number
   type?: CLAIM_TYPES
   title: string
-  value: string | number
+  value: IClaimValueTypes
 }
+
+export type IClaimValueTypes = string | number | boolean
 
 export type IPresentationClaim = IClaim & { vc: string }
 

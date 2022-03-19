@@ -49,7 +49,7 @@ export const fetchMyCredentials = async () => {
 }
 
 export const useCredentials = () => {
-  const { data, error, isValidating } = useSWR('/', credentialsFetcher)
+  const { data, error, isValidating } = useSWR('/?credentials', credentialsFetcher)
 
   return {
     data: data as IListCredentialsDTO,
@@ -59,7 +59,7 @@ export const useCredentials = () => {
 }
 
 export const useCredential = (id: string) => {
-  const { data, error, isValidating } = useSWR(`/${id}`, credentialsFetcher)
+  const { data, error, isValidating } = useSWR(`/${id}?credentials`, credentialsFetcher)
 
   return {
     data: data as IFindCredentialByIdResponse,

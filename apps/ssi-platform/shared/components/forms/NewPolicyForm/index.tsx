@@ -59,7 +59,7 @@ export const NewPolicyForm = ({ verifier, isSubmitting }: INewPolicyProps) => {
 
         <FormActions
           handleReset={formik.resetForm}
-          isSubmitting={false}
+          isSubmitting={isSubmitting}
           submitLabel={'Create new verification policy'}
         />
       </FormBody>

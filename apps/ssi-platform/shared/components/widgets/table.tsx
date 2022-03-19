@@ -28,9 +28,9 @@ export const TableWidget = ({ head, body, title, ...styleProps }: ITableWidgetPr
         <Tbody>
           {!!body.length &&
             body.map((values: any[], j) => (
-              <Tr key={j}>
+              <Tr key={`row-${j}`}>
                 {values.map((value, i) => (
-                  <Td key={JSON.stringify(`${i}`)}>{!!value ? value : 'N/A'}</Td>
+                  <Td key={JSON.stringify(`value-${i}`)}>{!!value ? value : 'N/A'}</Td>
                 ))}
               </Tr>
             ))}

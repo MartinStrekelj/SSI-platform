@@ -1,5 +1,5 @@
 import { Box, SimpleGrid } from '@chakra-ui/react'
-import { hasAuthorityRoles, hasRoleHolder } from '@ssi-ms/interfaces'
+import { hasRoleHolder, IClaimValueTypes } from '@ssi-ms/interfaces'
 import { getCredentialTransferCode, useCredential } from 'apps/ssi-platform/shared/Api/CredentialsApi'
 import { Breadcrumbs } from 'apps/ssi-platform/shared/components/breadcrumbs'
 import DashboardLayout from 'apps/ssi-platform/shared/components/layouts/DashboardLayout'
@@ -22,7 +22,7 @@ const CredentialDetailPage = () => {
   const isHolder = hasRoleHolder(identity.metadata.role)
 
   const onTransferCredential = async () => {
-    if (transferCode) {
+    if (!!transferCode) {
       return
     }
 
@@ -48,7 +48,7 @@ const CredentialDetailPage = () => {
 
   const claimsInfo = {
     head: ['#', 'title', 'type', 'value'],
-    body: [...data.credential.claims.map((claim, i) => [i + 1, claim.title, claim.type, claim.value])],
+    body: [...data.credential.claims.map((claim, i) => [i + 1, claim.title, claim.type, displayValue(claim.value)])],
   }
 
   return (
@@ -70,6 +70,14 @@ const CredentialDetailPage = () => {
       </SimpleGrid>
     </>
   )
+}
+
+const displayValue = (value: IClaimValueTypes) => {
+  if (typeof value === 'boolean') {
+    return value ? 'True' : 'False'
+  }
+
+  return value
 }
 
 export default CredentialDetailPage

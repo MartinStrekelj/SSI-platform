@@ -1,6 +1,6 @@
 import { supabase } from '../Supabase/setup'
 import { v4 as uuidv4 } from 'uuid'
-import { IVerificationPolicy, IVerificationPolicyDTO } from '@ssi-ms/interfaces'
+import { IClaim, ISchema, IVerificationPolicy, IVerificationPolicyDTO } from '@ssi-ms/interfaces'
 
 const VERIFICATON_POLICY_TABLE = 'ssi-verification-policies'
 
@@ -54,6 +54,12 @@ export const removeVerificationPolicy = async (uuid: string) => {
   if (error !== null) {
     console.error(error.message)
   }
+}
+
+export const checkPolicyClaimsMatchSchema = async (claims: IClaim[], schema: ISchema) => {
+  return claims.every((claim) => {
+    return schema.fields.data.some((f) => f.title === claim.title)
+  })
 }
 
 const createEntityFromDTO = (dto: IVerificationPolicyDTO) => {

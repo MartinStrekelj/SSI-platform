@@ -18,4 +18,4 @@ export interface IVerificationPolicy {
 }
 
 export const isAddVerificationPolicyRequest = (tbd: any): tbd is IVerificationPolicyDTO =>
-  tbd.issuer !== undefined && tbd.fields !== undefined && tbd.fields.data.length >= 1 && tbd.schema !== undefined
+  tbd.issuer !== undefined && tbd.claims !== undefined && tbd?.claims?.length && tbd.schema !== undefined

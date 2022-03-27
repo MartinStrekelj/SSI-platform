@@ -29,3 +29,23 @@ export interface IVerificationPolicyResponse {
 
 export const isAddVerificationPolicyRequest = (tbd: any): tbd is IVerificationPolicyDTO =>
   tbd.issuer !== undefined && tbd.claims !== undefined && tbd?.claims?.length && tbd.schema !== undefined
+
+export enum SDR_STATUS {
+  PENDING = 'pending',
+  REJECTED = 'rejected',
+  APPROVED = 'approved',
+}
+
+export interface ISingleDisclosureDTO {
+  id: string
+  metadata: {
+    verifier: string
+    title?: string // title of the policy
+  }
+  sdr: string
+}
+
+export type ICachedSDRequest = ISingleDisclosureDTO & {
+  status: SDR_STATUS
+  expiresAt: Date
+}

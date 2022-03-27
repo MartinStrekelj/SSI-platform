@@ -2,6 +2,7 @@ import * as express from 'express'
 import { AuthGuard, MobileAuthGuard } from '../../Middleware/AuthMiddleware'
 import { IssueNewCrendetial } from './GenerateController'
 import { listMyCredentials, transferCredential, findCredentialById, createPresentation } from './ManagementController'
+import { useVerificationPolicy } from './VerificationController'
 
 const router = express.Router({})
 
@@ -24,5 +25,6 @@ router.post('/presentation', MobileAuthGuard, (req: express.Request, res: expres
 /**
  * CREDENTIAL VERIFICATION
  */
+router.post('/verify', (req: express.Request, res: express.Response) => useVerificationPolicy(req, res))
 
 export default router

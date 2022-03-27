@@ -27,9 +27,6 @@ export interface IVerificationPolicyResponse {
   policy: IVerificationPolicy | null
 }
 
-export const isAddVerificationPolicyRequest = (tbd: any): tbd is IVerificationPolicyDTO =>
-  tbd.issuer !== undefined && tbd.claims !== undefined && tbd?.claims?.length && tbd.schema !== undefined
-
 export enum SDR_STATUS {
   PENDING = 'pending',
   REJECTED = 'rejected',
@@ -49,3 +46,19 @@ export type ICachedSDRequest = ISingleDisclosureDTO & {
   status: SDR_STATUS
   expiresAt: Date
 }
+
+export interface IUseVerificationPolicyRequest {
+  sdrKey: string
+}
+
+export interface IUseVerificationPolicyResponse {
+  message: string
+  qrcode: null | string
+  id: null | string
+}
+
+export const isAddVerificationPolicyRequest = (tbd: any): tbd is IVerificationPolicyDTO =>
+  tbd.issuer !== undefined && tbd.claims !== undefined && tbd?.claims?.length && tbd.schema !== undefined
+
+export const isUseVerificationPolicyRequest = (tbd: any): tbd is IUseVerificationPolicyRequest =>
+  tbd.sdrKey !== undefined

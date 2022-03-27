@@ -16,9 +16,7 @@ export const createSDRfromPolicy = async (policy: IVerificationPolicy) => {
   return data
 }
 
-export const handleSDRRequest = async () => {
-    
-}
+export const handleSDRRequest = async (id: string) => {}
 
 const extendWithCustomData = (sdr: string) => {
   const dto: ISingleDisclosureDTO = {

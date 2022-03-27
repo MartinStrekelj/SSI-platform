@@ -12,6 +12,7 @@ import { agent } from '../app/Veramo/setup'
 import { isBefore, isAfter, add } from 'date-fns'
 import { readCacheKey } from '../app/Services/CacheService'
 import { generateQRfromString } from '../app/Services/QRService'
+import { ICredentialRequestInput } from '@veramo/selective-disclosure'
 
 const SCHEMA_ID = '330af147-9fbb-41e4-b721-0623133079a7'
 
@@ -72,30 +73,12 @@ describe('SDR tests', () => {
     expect(qrcode.startsWith('data:image/png;base64')).toBeTruthy()
   })
 
-  it('SDR tests ~ Validate credential to SDR', async () => {
-    const JWT = await agent.createSelectiveDisclosureRequest({
-      data: {
-        issuer: issuerDID,
-        tag: 'sdr-one',
-        claims: [
-          {
-            reason: 'We need it',
-            claimType: 'name',
-            essential: true,
-          },
-        ],
-      },
-    })
-    console.log({ JWT })
-
-    const message = await agent.handleMessage({
-      raw: JWT,
-      save: false,
-    })
-
-    // const message = await agent.handleMessage({ raw: cachedValue.sdr, save: false })
-    console.log({ message })
-    expect(1).toBe(1)
+  it('SDR tests ~ SDR message should match policy', async () => {
+    const message = await agent.handleMessage({ raw: cachedValue.sdr, save: false })
+    const { claims: sdrClaims } = message.data as { claims: ICredentialRequestInput[] }
+    expect(sdrClaims.length).toBe(policy.fields.data.length)
+    expect(sdrClaims[0].claimType).toBe(policy.fields.data[0].title)
+    expect(sdrClaims[0].claimValue).toBe(JSON.stringify(policy.fields.data[0].value))
   })
 
   afterAll(async () => {

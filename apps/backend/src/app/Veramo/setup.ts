@@ -98,6 +98,6 @@ export const agent = createAgent<
     new DataStore(dbConnection),
     new DataStoreORM(dbConnection),
     new SelectiveDisclosure(),
-    new MessageHandler({ messageHandlers: [new SdrMessageHandler(), new JwtMessageHandler()] }),
+    new MessageHandler({ messageHandlers: [new JwtMessageHandler(), new SdrMessageHandler()] }),
   ],
 })

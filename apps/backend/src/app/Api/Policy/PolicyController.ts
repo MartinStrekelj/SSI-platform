@@ -4,7 +4,7 @@ import { getSchemaByUUID } from '../../Services/SchemaService'
 import {
   checkPolicyClaimsMatchSchema,
   createVerificationPolicy,
-  getAllVerificationPolicies,
+  getVerificationPoliciesByIssuer,
   getVerificationPolicyByUUID,
   removeVerificationPolicy,
   updateVerificationPolicy,
@@ -13,7 +13,8 @@ import { checkIfAuthorityDid } from '../../Veramo/AuthorityDIDs'
 
 export const allPolicies = async (req: Request, res: Response) => {
   try {
-    const policies = await getAllVerificationPolicies()
+    const { did } = res.locals as { did: string }
+    const policies = await getVerificationPoliciesByIssuer(did)
     return res.send({ message: 'Success', policies })
   } catch (error) {
     return res.status(400).send({ message: 'Error', policies: [] })
@@ -23,16 +24,21 @@ export const allPolicies = async (req: Request, res: Response) => {
 export const getPolicy = async (req: Request, res: Response) => {
   try {
     const { uuid } = req.params as { uuid: string }
+
     if (!uuid) {
       throw new Error('No uuid given')
     }
+
     const policy = await getVerificationPolicyByUUID(uuid)
 
     if (policy === null) {
       throw new Error('Policy not found')
     }
 
-    return res.send({ message: 'Success', policy })
+    // For frontend the schema title is more important than id
+    const schemaUsed = await getSchemaByUUID(policy.schema)
+
+    return res.send({ message: 'Success', policy: { ...policy, schema: schemaUsed.title } })
   } catch (e) {
     return res.status(400).send({ message: `Error: ${e.message}`, policy: null })
   }

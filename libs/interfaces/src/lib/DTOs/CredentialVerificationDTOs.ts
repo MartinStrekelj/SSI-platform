@@ -17,5 +17,15 @@ export interface IVerificationPolicy {
   updated_at?: Date
 }
 
+export interface IVerificationPoliciesResponse {
+  message: string
+  policies: IVerificationPolicy[]
+}
+
+export interface IVerificationPolicyResponse {
+  message: string
+  policy: IVerificationPolicy | null
+}
+
 export const isAddVerificationPolicyRequest = (tbd: any): tbd is IVerificationPolicyDTO =>
   tbd.issuer !== undefined && tbd.claims !== undefined && tbd?.claims?.length && tbd.schema !== undefined

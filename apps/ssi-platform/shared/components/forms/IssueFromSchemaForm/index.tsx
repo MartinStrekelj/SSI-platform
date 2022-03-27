@@ -23,6 +23,7 @@ import { TableWidget } from '../../widgets/table'
 import { FormActions } from '../modules/FormActions'
 import FormBody from '../modules/FormBody'
 import produce from 'immer'
+import { useSchemaFields } from 'apps/ssi-platform/shared/hooks/useSchemaFields'
 
 interface IIssueFromSchemaProps {
   isSubmitting: boolean
@@ -38,7 +39,8 @@ export const IssueFromSchemaForm = ({
   const { data, isLoading, isError } = useSchemas()
   const [claimFields, setFields] = useState<(React.ReactNode | string)[][] | undefined>(undefined)
   const dataReady = !isLoading && !isError
-  console.log({ data, isLoading })
+  const { createSchemaFieldsFromSchema } = useSchemaFields()
+
   const formik = useFormik({
     initialValues: {
       issuer: authority.metadata.alias,
@@ -48,6 +50,7 @@ export const IssueFromSchemaForm = ({
       type: '', // Type of credential -> eg. Dokazilo o statusu izjemnega športnika
       claims: [],
     },
+
     onSubmit: (values) => {
       if (!formik.dirty) {
         return
@@ -82,46 +85,11 @@ export const IssueFromSchemaForm = ({
     const { schema: schemaId } = formik.values
 
     const selectedSchema = data.schemas.find((schema) => schema.id === schemaId)
-    let emptyClaimsFields = []
 
-    const schemaFields: (React.ReactNode | string)[][] = selectedSchema.fields.data.reduce(
-      (acc, field, idx: number) => {
-        let component: React.ReactNode
-        let defaultValue: IClaimValueTypes
-        switch (field.type) {
-          case CLAIM_TYPES.CHECKBOX:
-            defaultValue = false
-            component = <Checkbox size={'lg'} onChange={(e) => handleClaimValueChange(idx, e.target.checked)} />
-            break
-          case CLAIM_TYPES.NUMERIC:
-            defaultValue = 0
-            component = (
-              <NumberInput onChange={(value: string) => handleClaimValueChange(idx, parseInt(value, 10))} min={0}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            )
-            break
-          default:
-            break
-        }
-
-        if (!component) {
-          console.error(`Could not render component for ${field.title}`)
-          return acc
-        }
-
-        const newClaim: IClaim = { title: field.title, type: field.type, value: defaultValue }
-
-        emptyClaimsFields = [...emptyClaimsFields, newClaim]
-
-        return [...acc, [field.title, component]]
-      },
-      []
-    )
+    const { schemaFields, emptyClaimsFields } = createSchemaFieldsFromSchema({
+      schema: selectedSchema,
+      handleClaimValueChange,
+    })
 
     formik.values.claims = emptyClaimsFields
     setFields(schemaFields)

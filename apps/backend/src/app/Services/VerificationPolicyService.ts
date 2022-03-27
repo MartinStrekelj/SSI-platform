@@ -34,6 +34,15 @@ export const getVerificationPolicyByUUID = async (uuid: string) => {
   return policies[0] as IVerificationPolicy
 }
 
+export const getVerificationPoliciesByIssuer = async (issuer: string) => {
+  const { data: policies, error } = await supabase.from(VERIFICATON_POLICY_TABLE).select('*').eq('issuer', issuer)
+  if (error !== null) {
+    return []
+  }
+
+  return policies as IVerificationPolicy[]
+}
+
 export const updateVerificationPolicy = async (policy: IVerificationPolicyDTO) => {
   const updatedPolicy = createEntityFromDTO(policy)
   const { data: policies, error } = await supabase

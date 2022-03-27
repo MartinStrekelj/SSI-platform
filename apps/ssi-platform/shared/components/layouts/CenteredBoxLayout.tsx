@@ -1,20 +1,19 @@
-import { Box, Container } from '@chakra-ui/react';
-import React from 'react';
+import { Box, Container, Icon } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
+import React from 'react'
+import { ChevronLeft, ChevronsLeft, X } from 'react-feather'
 
 interface ILayoutProps {
-  children: React.ReactElement | React.ReactElement[];
+  children: React.ReactElement | React.ReactElement[]
 }
 
 const CenteredBoxLayout = ({ children }: ILayoutProps) => {
+  const router = useRouter()
+  const goHome = () => router.push('/')
+
   return (
-    <Container
-      h={'100%'}
-      maxH={500}
-      maxW={'container.lg'}
-      mt={[12, null, 24]}
-      w={'100%'}
-      mx={'auto'}
-    >
+    <Container h={'100%'} maxH={500} maxW={'container.lg'} mt={[12, null, 24]} w={'100%'} mx={'auto'}>
+      <Icon as={ChevronLeft} _hover={{ cursor: 'pointer' }} w={8} h={8} position="absolute" onClick={goHome} />
       <Box
         rounded={'md'}
         px={[4, 12, 24]}
@@ -29,7 +28,7 @@ const CenteredBoxLayout = ({ children }: ILayoutProps) => {
         {children}
       </Box>
     </Container>
-  );
-};
+  )
+}
 
-export default CenteredBoxLayout;
+export default CenteredBoxLayout

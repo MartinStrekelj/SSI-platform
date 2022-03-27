@@ -34,8 +34,7 @@ export const issueNewVerifiableCredential = async (data: IVerifiableCredentialDT
 
 export const fetchMyCredentials = async () => {
   try {
-    const response = await CredentialsApi.get('/', {})
-    console.log(response)
+    const response = await CredentialsApi.get('/')
     if (response.status >= 400) {
       throw new Error('Something went wrong')
     }

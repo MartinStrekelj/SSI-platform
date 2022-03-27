@@ -1,5 +1,5 @@
 import { MenuOptions, IMenuCategory } from '@ssi-ms/interfaces'
-import { Plus, Trello, PenTool, Framer, Box } from 'react-feather'
+import { Plus, Trello, PenTool, Framer, Box, List } from 'react-feather'
 
 /**
  * CREDENTIAL GENERATION
@@ -69,11 +69,11 @@ const CREDENTIAL_VERIFICATION_CATEGORIES: IMenuCategory[] = [
         href: '/dashboard/verification/new',
         icon: PenTool,
       },
-      // {
-      //   title: 'All verification policies',
-      //   href: '/dashboard/verification/list',
-      //   icon: List,
-      // },
+      {
+        title: 'All verification policies',
+        href: '/dashboard/verification',
+        icon: List,
+      },
     ],
   },
 ]

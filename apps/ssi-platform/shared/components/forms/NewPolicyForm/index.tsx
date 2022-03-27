@@ -1,61 +1,144 @@
-import { FormControl, FormHelperText, FormLabel, Input, VStack } from '@chakra-ui/react'
-import { IIdentity } from '@ssi-ms/interfaces'
-import { useDashboardContext } from 'apps/ssi-platform/shared/lib/DashboardContext'
+import { Box, FormControl, FormLabel, Icon, Input, Select } from '@chakra-ui/react'
+import { IClaim, IClaimValueTypes, IIdentity, IVerificationPolicyDTO } from '@ssi-ms/interfaces'
+import { useSchemas } from 'apps/ssi-platform/shared/Api/SchemasApi'
+import { useSchemaFields } from 'apps/ssi-platform/shared/hooks/useSchemaFields'
 import { useFormik } from 'formik'
-import React from 'react'
-import { ClaimsFormModule } from '../modules/Claims'
+import produce from 'immer'
+import React, { useEffect, useState } from 'react'
+import { ChevronDown, Loader } from 'react-feather'
+import { TableWidget } from '../../widgets/table'
 import { FormActions } from '../modules/FormActions'
 import FormBody from '../modules/FormBody'
-
-/**
- * Information we need
- * Verifier (auto completed)
- * Issuer
- * Claims requested
- * Domain where this will be used
- */
 
 interface INewPolicyProps {
   verifier: IIdentity
   isSubmitting?: boolean
+  handleSubmit: (policy: IVerificationPolicyDTO) => void
 }
 
-export const NewPolicyForm = ({ verifier, isSubmitting }: INewPolicyProps) => {
+export const NewPolicyForm = ({ verifier, isSubmitting, handleSubmit }: INewPolicyProps) => {
+  const { data, isLoading, isError } = useSchemas()
+  const [claimFields, setFields] = useState<(React.ReactNode | string)[][] | undefined>(undefined)
+  const [disabledClaims, setDisabledClaims] = useState<number[]>([])
+  const dataReady = !isLoading && !isError
+  const { createSchemaFieldsFromSchema } = useSchemaFields()
+
   const formik = useFormik({
     initialValues: {
+      schema: '',
       verifier: verifier.metadata.alias,
-      issuer: '',
-      domain: '',
       claims: [],
     },
-    onSubmit: (values) => console.log(values),
+    onSubmit: (values) => {
+      if (!formik.dirty) {
+        return
+      }
+
+      const dto: IVerificationPolicyDTO = {
+        issuer: verifier.did,
+        claims: values.claims,
+        schema: values.schema,
+      }
+
+      return handleSubmit(dto)
+    },
   })
+
+  useEffect(() => {
+    if (!formik.values.schema) {
+      resetSchemaFields()
+      return
+    }
+    const { schema: schemaId } = formik.values
+
+    const selectedSchema = data.schemas.find((schema) => schema.id === schemaId)
+
+    const { schemaFields, emptyClaimsFields } = createSchemaFieldsFromSchema({
+      schema: selectedSchema,
+      handleClaimValueChange,
+      onDisable: handleDisable,
+    })
+
+    formik.values.claims = emptyClaimsFields
+    setFields(schemaFields)
+  }, [formik.values.schema])
+
+  const handleClaimValueChange = (idx: number, newValue: IClaimValueTypes) => {
+    const updatedClaims = produce(formik.values.claims, (draft: IClaim[]) => {
+      if (idx !== -1) {
+        draft[idx] = {
+          ...draft[idx],
+          value: newValue,
+        }
+      }
+    })
+
+    formik.values.claims = updatedClaims
+    formik.setFieldValue('claims', updatedClaims)
+  }
+
+  // !FIXME
+  const handleDisable = (idx: number, value: boolean) => {
+    const uniqueDisabled = new Set(disabledClaims)
+
+    if (value) {
+      uniqueDisabled.add(idx)
+    } else {
+      uniqueDisabled.delete(idx)
+    }
+
+    setDisabledClaims([...uniqueDisabled])
+  }
+
+  const handleOnSchemaChange = (schemaId: string) => {
+    if (!!formik.values.schema) {
+      resetSchemaFields()
+    }
+    formik.setFieldValue('schema', schemaId)
+  }
+
+  const resetSchemaFields = () => {
+    formik.setFieldValue('claims', [])
+    setFields(undefined)
+  }
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <FormBody>
-        <FormControl>
-          <FormLabel htmlFor="verifier">Verifier</FormLabel>
-          <Input
-            onChange={formik.handleChange}
-            disabled
-            id="verifier"
-            type="text"
-            value={formik.values.verifier}
-            name="verifier"
-          />
-          <FormHelperText>We'll never share your email.</FormHelperText>
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="email">Issuer</FormLabel>
-          <Input onChange={formik.handleChange} id="email" type="text" value={formik.values.issuer} name="issuer" />
-          <FormHelperText>Specify if claims have to be issued by a specific issuer</FormHelperText>
-        </FormControl>
         <FormControl isRequired>
-          <FormLabel htmlFor="email">Domain</FormLabel>
-          <Input onChange={formik.handleChange} id="email" type="text" value={formik.values.domain} name="domain" />
-          <FormHelperText>Domain of the page you intend to put the verification policy</FormHelperText>
+          <FormLabel>Selected schema</FormLabel>
+          <Select
+            onChange={(e) => handleOnSchemaChange(e.target.value)}
+            placeholder="Select a predefined schema..."
+            icon={isLoading ? <Icon as={Loader} /> : <Icon as={ChevronDown} />}
+          >
+            {dataReady &&
+              data.schemas.map((schema) => (
+                <option key={schema.id} value={schema.id}>
+                  {schema.title}
+                </option>
+              ))}
+          </Select>
         </FormControl>
-        <ClaimsFormModule formik={formik} />
+        {!!formik.values.schema && (
+          <FormControl>
+            <FormLabel htmlFor="verifier">Verifier</FormLabel>
+            <Input
+              onChange={formik.handleChange}
+              disabled
+              id="verifier"
+              type="text"
+              value={formik.values.verifier}
+              name="verifier"
+            />
+          </FormControl>
+        )}
+
+        {claimFields && (
+          <Box w="100%">
+            <TableWidget head={['title', 'value', 'enabled']} body={claimFields} />
+          </Box>
+        )}
 
         <FormActions
           handleReset={formik.resetForm}

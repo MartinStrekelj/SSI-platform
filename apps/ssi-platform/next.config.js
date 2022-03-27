@@ -17,11 +17,6 @@ const nextConfig = {
         destination: '/dashboard/issue/new',
         permanent: true,
       },
-      {
-        source: '/dashboard/schema',
-        destination: '/dashboard/schema/new',
-        permanent: true,
-      },
     ]
   },
   nx: {

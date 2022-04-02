@@ -1,7 +1,13 @@
-import { ICachedSDRequest, isSendVerifiableDataForSDRequest, isUseVerificationPolicyRequest } from '@ssi-ms/interfaces'
+import {
+  ICachedSDRequest,
+  isSendVerifiableDataForSDRequest,
+  isUseVerificationPolicyRequest,
+  SDR_COMPLETED,
+  SDR_STATUS,
+} from '@ssi-ms/interfaces'
 import { ok } from 'assert'
 import { Request, Response } from 'express'
-import { readCacheKey } from '../../Services/CacheService'
+import { readCacheKey, removeFromCache } from '../../Services/CacheService'
 import { generateQRfromString } from '../../Services/QRService'
 import { createSDRfromPolicy, handleSDRRequest } from '../../Services/SDRService'
 import { getVerificationPolicyByUUID } from '../../Services/VerificationPolicyService'
@@ -38,7 +44,7 @@ export const verifyVerifiableData = async (req: Request, res: Response) => {
     const cacheHit = readCacheKey({ key: body.sdrKey }) as string | null
 
     if (cacheHit === null) {
-      throw new Error('SDR not found or expired!')
+      throw new Error('Verification request not found or expired!')
     }
 
     const sdrValue = JSON.parse(cacheHit) as ICachedSDRequest
@@ -53,5 +59,35 @@ export const verifyVerifiableData = async (req: Request, res: Response) => {
   } catch (e) {
     console.error(e.message)
     return res.status(400).send({ message: e.message })
+  }
+}
+
+export const confirmVerificationProcess = async (req: Request, res: Response) => {
+  const { body } = req
+  try {
+    if (!isUseVerificationPolicyRequest(body)) {
+      throw new Error('Bad request body!')
+    }
+
+    const cacheHit = readCacheKey({ key: body.sdrKey }) as string | null
+
+    if (cacheHit === null) {
+      throw new Error('Verification request not found or expired!')
+    }
+
+    const sdrValue = JSON.parse(cacheHit) as ICachedSDRequest
+
+    // Clear cache value when user confirm the process and process completed
+    if (SDR_COMPLETED.includes(sdrValue.status)) {
+      removeFromCache({ key: body.sdrKey })
+    }
+
+    if (sdrValue.status === SDR_STATUS.REJECTED) {
+      throw new Error('The verification process was rejected!')
+    }
+
+    return res.send({ message: sdrValue.status })
+  } catch (error) {
+    return res.status(400).send({ message: error.message })
   }
 }

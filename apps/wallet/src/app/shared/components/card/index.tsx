@@ -17,7 +17,7 @@ export const CardComponent = (props: ICardComponentProps) => (
     style={[
       t.mY4,
       t.p5,
-      t.roundedLg,
+      t.rounded,
       t.bgPrimaryDark,
       t.shadow2xl,
       !!props.marked ? t.border2 : t.border0,

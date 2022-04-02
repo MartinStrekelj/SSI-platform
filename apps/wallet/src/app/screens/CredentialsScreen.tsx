@@ -45,9 +45,7 @@ const CredentialsScreen = ({ navigation }: ICredentialsScreenProps) => {
 
   const handleMenuWalletPress = () => navigation.push(Screens.WALLET)
 
-  const handleMenuMergePress = () => {
-    setIsSwitchOn(true)
-  }
+  const handleMenuMergePress = () => setIsSwitchOn(true)
 
   if (isLoading) {
     return <ActivityIndicator color={Colors.blue400} />

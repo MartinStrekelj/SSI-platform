@@ -1,4 +1,5 @@
 import { IClaim } from '@ssi-ms/interfaces'
+import { VerifiablePresentation } from '@veramo/core'
 import { ICredentialRequestInput, ISelectiveDisclosureRequest } from '@veramo/selective-disclosure'
 import { agent } from './setup'
 
@@ -18,6 +19,10 @@ export const createSDR = async (args: ICreateSDRArgs) => {
   }
   const sdr = await agent.createSelectiveDisclosureRequest({ data })
   return sdr
+}
+
+export const validateSDR = async (presentation: VerifiablePresentation, sdr: ISelectiveDisclosureRequest) => {
+  return await agent.validatePresentationAgainstSdr({ presentation, sdr })
 }
 
 const convertClaimsToSDRInput = (claims: IClaim[], reason = DEFAULT_REASON) => {

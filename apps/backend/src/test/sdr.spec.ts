@@ -2,19 +2,23 @@ import {
   CLAIM_TYPES,
   ICachedSDRequest,
   ISingleDisclosureDTO,
+  IVerifiableData,
   IVerificationPolicy,
   IVerificationPolicyDTO,
   SDR_STATUS,
 } from '@ssi-ms/interfaces'
 import { createVerificationPolicy, removeVerificationPolicy } from '../app/Services/VerificationPolicyService'
-import { CONFIG, createSDRfromPolicy } from '../app/Services/SDRService'
+import { CONFIG, createSDRfromPolicy, handleSDRRequest } from '../app/Services/SDRService'
 import { agent } from '../app/Veramo/setup'
 import { isBefore, isAfter, add } from 'date-fns'
 import { readCacheKey } from '../app/Services/CacheService'
 import { generateQRfromString } from '../app/Services/QRService'
 import { ICredentialRequestInput } from '@veramo/selective-disclosure'
+import { UniqueVerifiableCredential, UniqueVerifiablePresentation } from '@veramo/data-store'
+import { brotliDecompressSync } from 'zlib'
 
 const SCHEMA_ID = '330af147-9fbb-41e4-b721-0623133079a7'
+const VALID_HOLDER_DID = 'did:key:z6MkrUW4hXEH91gWcPD9Ueuq5ud6XvFsizE2f5Xm3ESJ1Ydp'
 
 describe('SDR tests', () => {
   let issuerDID: string
@@ -79,6 +83,35 @@ describe('SDR tests', () => {
     expect(sdrClaims.length).toBe(policy.fields.data.length)
     expect(sdrClaims[0].claimType).toBe(policy.fields.data[0].title)
     expect(sdrClaims[0].claimValue).toBe(JSON.stringify(policy.fields.data[0].value))
+  })
+
+  it('SDR tests ~ handle SDR request', async () => {
+    const credential = await agent.createVerifiableCredential({
+      proofFormat: 'jwt',
+      save: false,
+      credential: {
+        issuer: issuerDID,
+        credentialSubject: {
+          claims: JSON.stringify(policy.fields.data),
+        },
+      },
+    })
+
+    const presentation = await agent.createVerifiablePresentation({
+      presentation: {
+        verifiableCredential: [credential],
+        holder: issuerDID,
+      },
+      proofFormat: 'jwt',
+      save: false,
+    })
+
+    const c: UniqueVerifiableCredential = { verifiableCredential: credential, hash: '1' }
+    const p: UniqueVerifiablePresentation = { verifiablePresentation: presentation, hash: '2' }
+
+    const data: IVerifiableData[] = [c, p]
+
+    expect(1).toBe(1)
   })
 
   afterAll(async () => {

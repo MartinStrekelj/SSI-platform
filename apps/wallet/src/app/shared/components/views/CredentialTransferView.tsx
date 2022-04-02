@@ -19,7 +19,6 @@ export const CredentialTransferView = ({ credential, redirect }: ICredentialTran
     setLoading(true)
     try {
       await storeCredential(credential)
-      setLoading(false)
       redirect()
     } catch (e) {
       console.error(e)

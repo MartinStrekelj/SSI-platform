@@ -5,11 +5,13 @@ import { RootStackParamList, Screens } from '../types'
 import { handleScanMessage, IScanMessagePayload } from '../shared/lib/CredentialService'
 import { ActivityIndicator, Colors } from 'react-native-paper'
 import { ErrorComponent } from '../shared/components/Error'
-import { MESSAGE_TYPE } from '@ssi-ms/interfaces'
+import { ISingleDisclosureDTO, MESSAGE_TYPE } from '@ssi-ms/interfaces'
 import { CredentialTransferView } from '../shared/components/views/CredentialTransferView'
 import { VerifiableCredential } from '@veramo/core'
 
 import t from '../shared/theme'
+import SDRequestView from '../shared/components/views/SDRequestView'
+import { SDRResponseContextProvider } from '../shared/lib/SDRResponseContext'
 
 type IModalScreenProps = NativeStackScreenProps<RootStackParamList, Screens.MODAL>
 
@@ -51,6 +53,13 @@ const ModalScreen = ({ navigation, route }: IModalScreenProps) => {
             credential={data.payload as VerifiableCredential}
             redirect={() => navigation.goBack()}
           />
+        )
+
+      case MESSAGE_TYPE.SDR:
+        return (
+          <SDRResponseContextProvider>
+            <SDRequestView sdrDTO={data.payload as ISingleDisclosureDTO} />
+          </SDRResponseContextProvider>
         )
 
       default:

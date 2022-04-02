@@ -4,6 +4,7 @@ import { UniqueVerifiableCredential, UniqueVerifiablePresentation } from '@veram
 import { Searchbar } from 'react-native-paper'
 import { Credential } from './index'
 import { PresentationCard } from './presentation'
+import { isPresentation, IVerifiableData } from '@ssi-ms/interfaces'
 
 interface IListCredentialsProps {
   credentials?: UniqueVerifiableCredential[]
@@ -11,28 +12,30 @@ interface IListCredentialsProps {
   marked?: string[]
   withSearchBar?: boolean
   onCredentialClick?: (c: UniqueVerifiableCredential) => void
+  onPresentationClick?: (c: UniqueVerifiablePresentation) => void
 }
-
-type IResultType = UniqueVerifiableCredential | UniqueVerifiablePresentation
-
-const isPresentation = (result: any): result is UniqueVerifiablePresentation =>
-  result.verifiablePresentation !== undefined
 
 export const ListCredentials = ({
   credentials = [],
   presentations = [],
   withSearchBar = true,
-  onCredentialClick,
+  onCredentialClick = () => {},
+  onPresentationClick = () => {},
   marked,
 }: IListCredentialsProps) => {
   const [searchQuery, setSearchQuery] = useState<string>('')
   const allResults = useMemo(() => [...credentials, ...presentations], [credentials, presentations])
-  const [filtered, setFiltered] = useState<IResultType[] | undefined>(allResults)
+  const [filtered, setFiltered] = useState<IVerifiableData[] | undefined>(allResults)
 
   const renderCredential = useCallback(
-    (credential: IResultType) =>
+    (credential: IVerifiableData) =>
       isPresentation(credential) ? (
-        <PresentationCard presentation={credential} />
+        <PresentationCard
+          key={credential.hash}
+          presentation={credential}
+          onPress={onPresentationClick}
+          marked={marked && marked.includes(credential.hash)}
+        />
       ) : (
         <Credential
           key={credential.hash}

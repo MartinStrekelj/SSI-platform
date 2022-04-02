@@ -1,12 +1,10 @@
 import { SafeAreaView, ScrollView } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 
 import t from '../shared/theme'
 
-import { AnimatedFAB, Divider, Headline, Portal, Subheading } from 'react-native-paper'
-import { IClaim } from '@ssi-ms/interfaces'
+import { AnimatedFAB, Divider, Headline, Subheading } from 'react-native-paper'
 import { UniqueVerifiableCredential } from '@veramo/data-store'
-import { SelectClaimsModal } from '../shared/components/modals/SelectClaimsModal'
 import { RootStackParamList, Screens } from '../types'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { SelectClaims } from '../shared/components/claims/select'

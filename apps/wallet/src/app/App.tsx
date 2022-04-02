@@ -9,7 +9,6 @@ import CredentialsScreen from './screens/CredentialsScreen'
 import PresentationScreen from './screens/PresentationScreen'
 import ModalScreen from './screens/ModalScreen'
 import { Screens } from './types'
-import PresentationCreateContextProvider from './shared/lib/PresentationCreateContext'
 
 const PAPER_THEME = {
   ...DefaultTheme,

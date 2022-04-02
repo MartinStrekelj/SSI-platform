@@ -1,4 +1,6 @@
+import { VerifiablePresentation } from '@veramo/core'
 import { IClaim } from './CredentialGenerationDTOs'
+import { IVerifiableData } from './CredentialManagementDTOs'
 
 export interface IVerificationPolicyDTO {
   id?: string
@@ -37,6 +39,7 @@ export interface ISingleDisclosureDTO {
   id: string
   metadata: {
     verifier: string
+    verifierDID: string
     title?: string // title of the policy
   }
   sdr: string
@@ -57,8 +60,17 @@ export interface IUseVerificationPolicyResponse {
   id: null | string
 }
 
+export interface ISendVerifiableDataForSDR {
+  sdrKey: string
+  data?: IVerifiableData[]
+  presentation?: VerifiablePresentation
+}
+
 export const isAddVerificationPolicyRequest = (tbd: any): tbd is IVerificationPolicyDTO =>
   tbd.issuer !== undefined && tbd.claims !== undefined && tbd?.claims?.length && tbd.schema !== undefined
 
 export const isUseVerificationPolicyRequest = (tbd: any): tbd is IUseVerificationPolicyRequest =>
   tbd.sdrKey !== undefined
+
+export const isSendVerifiableDataForSDRequest = (tbd: any): tbd is ISendVerifiableDataForSDR =>
+  tbd.sdrKey !== undefined && tbd.data !== undefined && tbd.data.length >= 1

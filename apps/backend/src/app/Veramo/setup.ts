@@ -18,6 +18,10 @@ import { Resolver } from 'did-resolver'
 import { getResolver as ethrDidResolver } from 'ethr-did-resolver'
 import { getResolver as webDidResolver } from 'web-did-resolver'
 
+import { ISelectiveDisclosure, SelectiveDisclosure, SdrMessageHandler } from '@veramo/selective-disclosure'
+
+import { JwtMessageHandler } from '@veramo/did-jwt'
+
 // Storage plugin using TypeOrm
 import {
   Entities,
@@ -35,12 +39,13 @@ import { createConnection } from 'typeorm'
 import { DIDComm, IDIDComm } from '@veramo/did-comm'
 import { getDidKeyResolver } from '@veramo/did-provider-key'
 import { CredentialIssuer, ICredentialIssuer } from '@veramo/credential-w3c'
+import { MessageHandler } from '@veramo/message-handler'
 
 // This will be the name for the local sqlite database for demo purposes
 const DATABASE_FILE = 'database.sqlite'
 
-const INFURA_PROJECT_ID = 'fafaa91460c845668f9a320ccb90a916'
-const dbEncryptionKey = '34a89015e491a984bfe6e38e7623833209de9065a36124564aded4144ffb1291'
+const INFURA_PROJECT_ID = process.env.INFURA_PROJECT_ID
+const dbEncryptionKey = process.env.INFURA_DB_KEY
 
 const dbConnection = createConnection({
   type: 'sqlite',
@@ -53,7 +58,15 @@ const dbConnection = createConnection({
 })
 
 export const agent = createAgent<
-  IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & IDIDComm & IMessageHandler & ICredentialIssuer
+  IDIDManager &
+    IKeyManager &
+    IDataStore &
+    IDataStoreORM &
+    IResolver &
+    IDIDComm &
+    IMessageHandler &
+    ICredentialIssuer &
+    ISelectiveDisclosure
 >({
   plugins: [
     new KeyManager({
@@ -84,5 +97,7 @@ export const agent = createAgent<
     new CredentialIssuer(),
     new DataStore(dbConnection),
     new DataStoreORM(dbConnection),
+    new SelectiveDisclosure(),
+    new MessageHandler({ messageHandlers: [new JwtMessageHandler(), new SdrMessageHandler()] }),
   ],
 })

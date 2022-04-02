@@ -39,7 +39,11 @@ import {
 import { createConnection } from 'typeorm'
 import { CredentialIssuer, ICredentialIssuer } from '@veramo/credential-w3c'
 
+import { ISelectiveDisclosure, SdrMessageHandler, SelectiveDisclosure } from '@veramo/selective-disclosure'
+import { JwtMessageHandler } from '@veramo/did-jwt'
+
 const INFURA_PROJECT_ID = 'fafaa91460c845668f9a320ccb90a916'
+
 const dbEncryptionKey = '34a89015e491a984bfe6e38e7623833209de9065a36124564aded4144ffb1291'
 
 const dbConnection = createConnection({
@@ -53,7 +57,15 @@ const dbConnection = createConnection({
 })
 
 export const agent = createAgent<
-  IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & IMessageHandler & IDIDComm & ICredentialIssuer
+  IDIDManager &
+    IKeyManager &
+    IDataStore &
+    IDataStoreORM &
+    IResolver &
+    IMessageHandler &
+    IDIDComm &
+    ICredentialIssuer &
+    ISelectiveDisclosure
 >({
   plugins: [
     new KeyManager({
@@ -71,9 +83,6 @@ export const agent = createAgent<
         }),
       },
     }),
-    new MessageHandler({
-      messageHandlers: [new DIDCommMessageHandler()],
-    }),
     new DIDResolverPlugin({
       resolver: new Resolver({
         ...ethrDidResolver({ infuraProjectId: INFURA_PROJECT_ID }),
@@ -85,5 +94,7 @@ export const agent = createAgent<
     new DataStore(dbConnection),
     new DataStoreORM(dbConnection),
     new CredentialIssuer(),
+    new SelectiveDisclosure(),
+    new MessageHandler({ messageHandlers: [new JwtMessageHandler(), new SdrMessageHandler()] }),
   ],
 })

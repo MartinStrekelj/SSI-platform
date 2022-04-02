@@ -14,10 +14,10 @@ export const BoxWidget = ({ head, title, body }: IBoxWidgetProps) => {
   const renderHead = useCallback((value, i) => <DataTable.Title key={i}>{value}</DataTable.Title>, [head])
   const renderBody = useCallback(
     (body) =>
-      body.map((values, i) => (
-        <DataTable.Row key={i}>
-          {values.map((value, j) => (
-            <DataTable.Cell key={j}>{value}</DataTable.Cell>
+      body.map((values, i: number) => (
+        <DataTable.Row key={`row-${i}`}>
+          {values.map((value, j: number) => (
+            <DataTable.Cell key={`cell-${j}-${i}`}>{value}</DataTable.Cell>
           ))}
         </DataTable.Row>
       )),

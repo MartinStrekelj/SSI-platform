@@ -38,7 +38,9 @@
     "react-native-vector-icons": "*",
     "react-native-paper": "*",
     "@veramo/credential-w3c": "*",
-    "apisauce": "*"
+    "apisauce": "*",
+    "@veramo/selective-disclosure": "*",
+    "@veramo/did-jwt": "*"
   },
   "react-native": {
     "crypto": "react-native-crypto",

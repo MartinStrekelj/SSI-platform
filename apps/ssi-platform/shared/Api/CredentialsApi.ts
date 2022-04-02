@@ -4,6 +4,7 @@ import {
   IListCredentialsDTO,
   ITransferCredentialRequest,
   ITransferCredentialResponse,
+  IUseVerificationPolicyResponse,
   IVerifiableCredentialDTO,
 } from '@ssi-ms/interfaces'
 import { create } from 'apisauce'
@@ -80,5 +81,22 @@ export const getCredentialTransferCode = async (hash: string) => {
   } catch (e: any) {
     console.error(e.message)
     return { ok: false, message: e.message as string }
+  }
+}
+
+export const startPolicyVerificationProcess = async (sdrKey: string) => {
+  try {
+    const data = { sdrKey }
+    const response = await CredentialsApi.post('/verify', data)
+    const { data: responseData } = response as { data: IUseVerificationPolicyResponse }
+
+    if (response.status >= 400) {
+      throw new Error(responseData.message)
+    }
+
+    return { ok: true, id: responseData.id, qrcode: responseData.qrcode }
+  } catch (err) {
+    console.error(err.message)
+    return { ok: false, id: null, qrcode: null }
   }
 }

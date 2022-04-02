@@ -10,8 +10,11 @@ import {
   Input,
   VStack,
 } from '@chakra-ui/react'
-import { SDR_STATUS } from '@ssi-ms/interfaces'
-import { startPolicyVerificationProcess } from 'apps/ssi-platform/shared/Api/CredentialsApi'
+import { SDR_COMPLETED, SDR_STATUS } from '@ssi-ms/interfaces'
+import {
+  confirmPolicyVerificationProcess,
+  startPolicyVerificationProcess,
+} from 'apps/ssi-platform/shared/Api/CredentialsApi'
 import CenteredBoxLayout from 'apps/ssi-platform/shared/components/layouts/CenteredBoxLayout'
 import { useToasts } from 'apps/ssi-platform/shared/hooks/useToasts'
 import React, { useEffect, useState } from 'react'
@@ -28,7 +31,7 @@ const DemoForVerificationProcess = () => {
   const [id, setId] = useState<string>('')
   const [status, setStatus] = useState<SDR_STATUS | null>(null)
   const [isLoading, setLoading] = useState<boolean>(false)
-  const { dangerToast, successToast } = useToasts()
+  const { dangerToast, successToast, infoToast } = useToasts()
 
   useEffect(() => {
     const queryString = window.location.search
@@ -49,7 +52,26 @@ const DemoForVerificationProcess = () => {
     }
   }, [sdrKey])
 
-  const handleConfirmProcessComplete = () => {}
+  const handleConfirmProcessComplete = async () => {
+    setLoading(true)
+    const response = await confirmPolicyVerificationProcess(id)
+    setLoading(false)
+
+    if (!response.ok) {
+      dangerToast({ description: response.message })
+      return setStatus(SDR_STATUS.REJECTED)
+    }
+
+    if (response.message === SDR_STATUS.PENDING) {
+      return infoToast({
+        description:
+          'The verification request is still pending, please follow the instructions to continue with the process',
+      })
+    }
+
+    successToast({})
+    setStatus(SDR_STATUS.APPROVED)
+  }
 
   const startProcess = async () => {
     setLoading(true)
@@ -67,6 +89,13 @@ const DemoForVerificationProcess = () => {
     setStatus(SDR_STATUS.PENDING)
   }
 
+  const finishProcess = () => {
+    setStatus(null)
+    setQR('')
+    setId('')
+    setKey('')
+  }
+
   let icon: FeatherIcon
   let buttonLabel: string
   let action: () => void
@@ -74,12 +103,12 @@ const DemoForVerificationProcess = () => {
     case SDR_STATUS.REJECTED:
       icon = X
       buttonLabel = 'Verification process failed. Please try again!'
-      action = () => setStatus(null)
+      action = finishProcess
       break
     case SDR_STATUS.APPROVED:
       icon = Check
       buttonLabel = 'Successfully completed verification process'
-      action = () => setStatus(null)
+      action = finishProcess
       break
     case SDR_STATUS.PENDING:
       icon = HelpCircle
@@ -98,12 +127,17 @@ const DemoForVerificationProcess = () => {
         <FormLabel htmlFor="key">Enter verification policy key</FormLabel>
         <Input id="key" type="text" value={sdrKey} onChange={(e) => setKey(e.target.value)} />
       </FormControl>
-      <FormControl>
-        <FormLabel htmlFor="key">Verification request QR Code</FormLabel>
-        <Flex justify={'center'} alignItems={'center'}>
-          <img src={qrcode} alt="QR code will be generated here when you start process with a valid policy key" />
-        </Flex>
-      </FormControl>
+      {SDR_COMPLETED.includes(status) ? (
+        <CompletedNotification state={status} />
+      ) : (
+        <FormControl>
+          <FormLabel htmlFor="key">Verification request QR Code</FormLabel>
+          <Flex justify={'center'} alignItems={'center'}>
+            <img src={qrcode} alt="QR code will be generated here when you start process with a valid policy key" />
+          </Flex>
+        </FormControl>
+      )}
+
       <FormControl>
         <ButtonGroup size="lg" isAttached variant="outline" w={'100%'}>
           <IconButton isDisabled aria-label="Add to friends" icon={<Icon as={icon} />} />
@@ -119,6 +153,23 @@ const DemoForVerificationProcess = () => {
         )}
       </FormControl>
     </VStack>
+  )
+}
+
+const CompletedNotification = ({ state }) => {
+  const isApproved = state === SDR_STATUS.APPROVED
+  return (
+    <Flex
+      w={'100%'}
+      h={300}
+      bg={isApproved ? 'green.500' : 'red.500'}
+      justify={'center'}
+      alignItems={'center'}
+      color={'white'}
+      rounded={'md'}
+    >
+      <Icon as={isApproved ? Check : X} w={24} h={24} />
+    </Flex>
   )
 }
 

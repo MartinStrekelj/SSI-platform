@@ -35,6 +35,8 @@ export enum SDR_STATUS {
   APPROVED = 'approved',
 }
 
+export const SDR_COMPLETED = [SDR_STATUS.APPROVED, SDR_STATUS.REJECTED]
+
 export interface ISingleDisclosureDTO {
   id: string
   metadata: {

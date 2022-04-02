@@ -43,7 +43,7 @@ const updateCachedValue = (isValid: boolean, cachedValue: ICachedSDRequest) => {
     status,
   }
 
-  saveToCache({ key: cachedValue.id, value: JSON.stringify(cachedValue), duration: CONFIG.APPROVED_EXPIRY_TIME })
+  saveToCache({ key: cachedValue.id, value: JSON.stringify(updatedValue), duration: CONFIG.APPROVED_EXPIRY_TIME })
 }
 
 const preparePresentationForValidation = (presentation: VerifiablePresentation) => {

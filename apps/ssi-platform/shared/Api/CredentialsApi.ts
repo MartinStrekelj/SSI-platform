@@ -100,3 +100,20 @@ export const startPolicyVerificationProcess = async (sdrKey: string) => {
     return { ok: false, id: null, qrcode: null }
   }
 }
+
+export const confirmPolicyVerificationProcess = async (sdrKey: string) => {
+  try {
+    const data = { sdrKey }
+    const response = await CredentialsApi.post('/verify/confirm', data)
+    const { message: responseMessage } = response.data as IGenericResponse
+
+    if (response.status >= 400) {
+      throw new Error(responseMessage)
+    }
+
+    return { ok: true, message: responseMessage }
+  } catch (error) {
+    console.error(error.message)
+    return { ok: false, message: error.message }
+  }
+}

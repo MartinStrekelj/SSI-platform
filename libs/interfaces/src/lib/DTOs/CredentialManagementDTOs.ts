@@ -27,6 +27,17 @@ export interface ICreatePresentationResponse {
 
 export type IVerifiableData = UniqueVerifiableCredential | UniqueVerifiablePresentation
 
+export interface IVerifiableCredentialRevocationDTO {
+  credential: string
+  issuer: string
+  reason?: string
+}
+
+export type IVerifiableCredentialRevocation = IVerifiableCredentialRevocationDTO & {
+  id: number
+  created_at: string
+}
+
 /**
  * GUARDS
  */

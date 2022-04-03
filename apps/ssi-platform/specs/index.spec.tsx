@@ -1,11 +1,11 @@
 import React from 'react';
 import { findByText, render } from '@testing-library/react';
 
-import Index from '../pages/index';
+import LandingPage from '../pages/index';
 
 describe('Index', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Index />);
+    const { baseElement } = render(<LandingPage />);
     expect(baseElement).toBeTruthy();
   });
 });

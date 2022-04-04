@@ -4,6 +4,7 @@ import {
   HowItWorksSection,
   PreviewOfWalletSection,
   Footer,
+  HowToStartSection,
 } from '../shared/components/landing'
 
 export function LandingPage() {
@@ -12,7 +13,8 @@ export function LandingPage() {
       <NavigationBar />
       <HeroSection />
       <HowItWorksSection />
-      <PreviewOfWalletSection />
+      <HowToStartSection />
+      {/* <PreviewOfWalletSection /> */}
       <Footer />
     </>
   )

@@ -1,24 +1,30 @@
-import { Icon, IconButton } from '@chakra-ui/react'
+import { Button, Icon, IconButton } from '@chakra-ui/react'
 import React from 'react'
 import { GitHub } from 'react-feather'
+import { GITHUB_LINK } from '..'
 
-const GITHUB_LINK = 'https://github.com/MartinStrekelj/SSI-platform'
+interface IGithubButtonProps {
+  withLabel?: boolean
+}
 
-const GithubButton = () => {
-  const redirect = () => {
-    location.href = GITHUB_LINK
+const GithubButton = ({ withLabel = false }) => {
+  if (withLabel) {
+    return (
+      <Button size={'lg'} rightIcon={<Icon as={GitHub} />} as={'a'} href={GITHUB_LINK} variant={'github'}>
+        See Github
+      </Button>
+    )
   }
 
   return (
     <IconButton
-      onClick={redirect}
+      target={'_blank'}
+      as={'a'}
+      href={GITHUB_LINK}
       size={'lg'}
-      rounded={'full'}
       aria-label="See Github"
-      color={'white'}
-      background={'blackAlpha.800'}
-      _hover={{ color: 'black', background: 'ghostwhite', border: '1px solid black' }}
       icon={<Icon as={GitHub} w={6} h={6} />}
+      variant="github"
     />
   )
 }

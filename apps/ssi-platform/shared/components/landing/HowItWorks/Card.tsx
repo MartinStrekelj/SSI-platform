@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Heading, Text, Box } from '@chakra-ui/react'
+import { Flex, Heading, Text, Box, useBreakpointValue } from '@chakra-ui/react'
 import Image from 'next/image'
 
 interface ILandingCardProps {
@@ -12,14 +12,16 @@ interface ILandingCardProps {
 export const Card = ({ size = 'half', title, subtitle, image }: ILandingCardProps) => {
   const getSize = () => {
     if (size === 'half') {
-      return ['100%', '100%', '48%']
+      return ['100%', '100%', '100%', '48%']
     }
 
     return '100%'
   }
 
+  const imageSize = useBreakpointValue({ base: 250, xl: 450 })
+
   return (
-    <Flex p={8} rounded={'lg'} shadow="2xl" background={'white'} minH={300} w={getSize()}>
+    <Flex p={8} rounded={'lg'} shadow="2xl" background={'white'} minH={300} w={getSize()} flexGrow={1}>
       <Flex flexDirection={['column', 'column', 'row']} gap={4}>
         <Box w={['100%', '100%', '48%']}>
           <Heading>{title}</Heading>
@@ -30,8 +32,8 @@ export const Card = ({ size = 'half', title, subtitle, image }: ILandingCardProp
           )}
         </Box>
         {image && (
-          <Flex flexGrow={1} w={['100%', '100%', '48%']} justifyContent="center" alignItems={'center'}>
-            <Image height={250} width={250} src={image} layout="fixed" />
+          <Flex flexGrow={1} w={['100%', '100%', '100%', '48%']} justifyContent="center" alignItems={'center'}>
+            <Image height={250} width={size === 'full' ? imageSize : 250} src={image} layout="fixed" />
           </Flex>
         )}
       </Flex>

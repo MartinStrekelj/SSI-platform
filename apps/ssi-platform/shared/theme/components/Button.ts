@@ -13,6 +13,12 @@ const Button: ComponentStyleConfig = {
       _hover: { color: 'gray.200' },
       textTransform: 'uppercase',
     },
+    github: {
+      rounded: 'full',
+      color: 'white',
+      background: 'blackAlpha.800',
+      _hover: { color: 'black', background: 'ghostwhite', border: '1px solid black' },
+    },
     ghost: {
       ...theme.components.Button.variants.ghost,
       rounded: 'full',

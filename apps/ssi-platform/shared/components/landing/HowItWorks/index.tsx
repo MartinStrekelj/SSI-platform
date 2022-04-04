@@ -7,14 +7,14 @@ import PlatformForIssuers from '../../../../public/assets/platform-for-issuers.s
 
 const HowItWorksSection = () => {
   return (
-    <Box as="section" minH={[null, '75vh']} w="100%" bgGradient={'linear(to-r, primary.500, secondary.500)'}>
+    <Box as="section" w="100%" bgGradient={'linear(to-r, primary.500, secondary.500)'}>
       <Heading textAlign={'center'} pt={8} pb={4} color={'white'} fontSize={['4xl', '6xl']}>
         How it works
       </Heading>
       <Container
         h={'100%'}
         w={'100%'}
-        maxW="container.lg"
+        maxW="container.xl"
         py={8}
         display="flex"
         gap={8}
@@ -30,12 +30,12 @@ const HowItWorksSection = () => {
         />
         <Card
           title="Platform for issuers"
-          subtitle="Authorities can issue new credential to holders or create verification policies to test any claim that is in the SSI ecosystem schema."
+          subtitle="Authorities can issue new credential to holders or create verification policies to test any claim that belongs to a schema in the SSI ecosystem."
           image={PlatformForIssuers}
         />
         <Card
           title="Platform for holders"
-          subtitle="Holders can use the SSI platform to tranfer the credentails to his mobile wallet."
+          subtitle="Holders can use the SSI platform to tranfer the credentails to their mobile wallet."
           image={PlatformForHolders}
         />
       </Container>

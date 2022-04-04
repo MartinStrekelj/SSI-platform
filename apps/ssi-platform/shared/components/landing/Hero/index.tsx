@@ -5,7 +5,7 @@ import { LandingImage } from './Image'
 
 const HeroSection = () => {
   return (
-    <Container as="section" maxW={'container.xl'} minH={['unset', 'unset', '75vh']}>
+    <Container as="section" maxW={'container.xl'}>
       <Flex w={'100%'} h="100%" gap={'10px'} justifyContent="space-evenly" pt={28} alignItems="center" pb={8}>
         <LandingCTA />
         <LandingImage />

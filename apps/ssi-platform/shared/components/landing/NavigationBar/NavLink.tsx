@@ -9,7 +9,7 @@ interface INavLinkProps {
 export const NavLink = ({ label, href = '' }: INavLinkProps) => {
   return (
     <a href={`#${href}`}>
-      <Text fontWeight={'600'} fontSize={['md', null, 'xl']} _hover={{ color: 'primary.400' }}>
+      <Text textAlign={'center'} fontWeight={'600'} fontSize={['md', null, 'xl']} _hover={{ color: 'primary.400' }}>
         {label}
       </Text>
     </a>

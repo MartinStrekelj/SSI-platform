@@ -18,7 +18,7 @@ export const Credential = ({ credential, isLink = false }: ICredentialProps) => 
   return (
     <ConditionalWrapper
       condition={isLink}
-      wrapper={(children) => (
+      wrapper={(children: React.ReactNode) => (
         <LinkBox _hover={{ cursor: 'pointer' }}>
           <Link passHref href={`/dashboard/credentials/${credential.id}`}>
             <LinkOverlay>{children}</LinkOverlay>

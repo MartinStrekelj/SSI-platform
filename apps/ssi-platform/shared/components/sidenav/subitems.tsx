@@ -1,37 +1,34 @@
+import { Box, Wrap, Badge, Text, Flex, Icon, SlideFade } from '@chakra-ui/react'
+import { IMenuCategory, INavItem } from '@ssi-ms/interfaces'
+import Link from 'next/link'
+import React, { useCallback } from 'react'
 import {
-  Box,
-  Wrap,
-  Badge,
-  Text,
-  Flex,
-  Icon,
-  SlideFade,
-} from '@chakra-ui/react';
-import { IMenuCategory, INavItem } from '@ssi-ms/interfaces';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React, { useCallback } from 'react';
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+} from '@chakra-ui/react'
+import Logo from '../logo'
 
 interface INavItemsProps {
-  categories: IMenuCategory[];
+  categories: IMenuCategory[]
+  isOpen: boolean
+  onClose: () => void
 }
 
-export const SubItems = ({ categories }: INavItemsProps) => {
+export const SubItems = ({ categories, isOpen, onClose }: INavItemsProps) => {
   if (categories.length <= 0) {
-    return null;
+    return null
   }
 
   const renderCategory = useCallback(
     (category: IMenuCategory) => (
       <Box key={category.category} paddingBottom={8}>
         <Flex alignItems={'center'}>
-          <Badge
-            colorScheme={category.color}
-            w={4}
-            h={4}
-            rounded={'full'}
-            mx={2}
-          />
+          <Badge colorScheme={category.color} w={4} h={4} rounded={'full'} mx={2} />
           <Text fontSize={['md', 'lg', '2xl']} fontWeight="bold">
             {category.category}
           </Text>
@@ -40,17 +37,16 @@ export const SubItems = ({ categories }: INavItemsProps) => {
       </Box>
     ),
     [categories]
-  );
+  )
 
   const renderCategoryItem = useCallback(
     (item: INavItem) => (
       <Link href={item.href} key={item.href}>
-        <a>
+        <Box as="a" onClick={() => onClose()} flexGrow={1} maxW="49%">
           <SlideFade in={true} offsetY={'20px'}>
             <Box
               h={150}
-              w={['100%', 250]}
-              maxW={250}
+              w={['100%']}
               bg={'gray.100'}
               rounded={'md'}
               padding={4}
@@ -62,11 +58,24 @@ export const SubItems = ({ categories }: INavItemsProps) => {
               </Text>
             </Box>
           </SlideFade>
-        </a>
+        </Box>
       </Link>
     ),
     [categories]
-  );
+  )
 
-  return <>{categories.map(renderCategory)}</>;
-};
+  return (
+    <>
+      <Drawer isOpen={isOpen} placement="left" onClose={onClose} size="lg">
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>
+            <Logo />
+          </DrawerHeader>
+          <DrawerBody>{categories.map(renderCategory)}</DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </>
+  )
+}

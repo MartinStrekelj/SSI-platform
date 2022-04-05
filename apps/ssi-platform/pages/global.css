@@ -1,0 +1,36 @@
+html {
+    scroll-behavior: smooth;
+}
+
+
+
+
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #3182CE #E2E8F0;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #E2E8F0;        /* color of the tracking area */
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #3182CE;    /* color of the scroll thumb */
+    border-radius: 4px;       /* roundness of the scroll thumb */
+}
+
+body {
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll; 
+}
+
+body::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+}

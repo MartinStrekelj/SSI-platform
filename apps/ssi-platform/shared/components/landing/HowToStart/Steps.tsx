@@ -5,7 +5,12 @@ import { Check } from 'react-feather'
 const Steps = () => {
   return (
     <Flex flexDir={'column'} h="100%" flexGrow={1}>
-      <Heading color={'black'} textAlign={['center', 'center', 'left', 'left']} fontSize={['4xl', '4xl', '4xl', '6xl']}>
+      <Heading
+        id="howToStart"
+        color={'black'}
+        textAlign={['center', 'center', 'left', 'left']}
+        fontSize={['4xl', '4xl', '4xl', '6xl']}
+      >
         How to start
       </Heading>
       <List spacing={8} py={4}>

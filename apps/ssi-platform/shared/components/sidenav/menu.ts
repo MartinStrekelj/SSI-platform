@@ -79,8 +79,8 @@ const CREDENTIAL_VERIFICATION_CATEGORIES: IMenuCategory[] = [
 ]
 
 export const MENU_ITEMS: Record<MenuOptions, IMenuCategory[]> = {
-  credential_management: CREDENTIAL_GENERATION_CATEGORIES,
-  credentil_generation: CREDENTIAL_MANAGEMENT_CATEGORIES,
+  credential_management: CREDENTIAL_MANAGEMENT_CATEGORIES,
+  credential_generation: CREDENTIAL_GENERATION_CATEGORIES,
   credential_verification: CREDENTIAL_VERIFICATION_CATEGORIES,
 }
 

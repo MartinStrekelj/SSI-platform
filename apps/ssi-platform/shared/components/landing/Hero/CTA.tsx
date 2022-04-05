@@ -12,6 +12,7 @@ export const LandingCTA = () => {
         fontWeight="extrabold"
         textTransform={'capitalize'}
         mb={4}
+        id="about"
       >
         Self-sovereign identity platform
       </Heading>

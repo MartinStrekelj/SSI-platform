@@ -25,6 +25,7 @@ export const FormActions = ({
           onClick={handleReset}
           w={['100%', null, 'fit-content']}
           type="reset"
+          variant={'ghost'}
           size="lg"
           rightIcon={<Icon as={Repeat} />}
           fontSize={['md', 'lg', 'xl']}
@@ -32,6 +33,7 @@ export const FormActions = ({
           {resetLabel}
         </Button>
         <Button
+          variant={'primary'}
           isLoading={isSubmitting}
           w={['100%', null, 'fit-content']}
           type="submit"

@@ -8,7 +8,7 @@ import PlatformForIssuers from '../../../../public/assets/platform-for-issuers.s
 const HowItWorksSection = () => {
   return (
     <Box as="section" w="100%" bgGradient={'linear(to-r, primary.500, secondary.500)'}>
-      <Heading textAlign={'center'} pt={8} pb={4} color={'white'} fontSize={['4xl', '6xl']}>
+      <Heading id={'howItWorks'} textAlign={'center'} pt={8} pb={4} color={'white'} fontSize={['4xl', '6xl']}>
         How it works
       </Heading>
       <Container

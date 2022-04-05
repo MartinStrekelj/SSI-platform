@@ -40,7 +40,8 @@
     "@veramo/credential-w3c": "*",
     "apisauce": "*",
     "@veramo/selective-disclosure": "*",
-    "@veramo/did-jwt": "*"
+    "@veramo/did-jwt": "*",
+    "date-fns": "*"
   },
   "react-native": {
     "crypto": "react-native-crypto",

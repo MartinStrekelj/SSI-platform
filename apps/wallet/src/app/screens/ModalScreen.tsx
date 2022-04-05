@@ -75,7 +75,12 @@ const ModalScreen = ({ navigation, route }: IModalScreenProps) => {
     return <ActivityIndicator color={Colors.blue400} />
   }
 
-  return <View style={[t.p4]}>{!!data ? renderModalContent() : <ErrorComponent />}</View>
+  return (
+    <>
+      <View style={[t.p4, t.justifyCenter]}>{!!data ? renderModalContent() : <ErrorComponent />}</View>
+      <View style={[t.negativeZ, t.absolute, t.top0, t.bottom0, t.left0, t.right0, t.bgPrimary]} />
+    </>
+  )
 }
 
 export default ModalScreen

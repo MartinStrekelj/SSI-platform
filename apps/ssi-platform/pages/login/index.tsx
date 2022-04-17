@@ -1,25 +1,15 @@
-import React, { useState } from 'react';
-import {
-  useLoginAttemptContext,
-  LoginContextProvider,
-} from 'apps/ssi-platform/shared/lib/LoginAttemptContext';
-import CenteredBoxLayout from 'apps/ssi-platform/shared/components/layouts/CenteredBoxLayout';
-import { Flex, Text, Input, VStack, Button } from '@chakra-ui/react';
-import Link from 'next/link';
+import React, { useState } from 'react'
+import { useLoginAttemptContext, LoginContextProvider } from 'apps/ssi-platform/shared/lib/LoginAttemptContext'
+import CenteredBoxLayout from 'apps/ssi-platform/shared/components/layouts/CenteredBoxLayout'
+import { Flex, Input, VStack, Button, Heading } from '@chakra-ui/react'
 
 export const Login = () => {
-  const [publicDID, updatePublicDid] = useState<string>('');
-  const { onConnectWallet, onDownloadWallet } = useLoginAttemptContext();
+  const [publicDID, updatePublicDid] = useState<string>('')
+  const { onConnectWallet, onDownloadWallet } = useLoginAttemptContext()
   return (
     <>
-      <Flex
-        flexDirection={'column'}
-        alignItems={'center'}
-        justifyContent={'flex-start'}
-        mb={4}
-      >
-        <Text fontSize={['2xl', null, '4xl']}>Welcome_title</Text>
-        <Text fontSize={['lg', null, 'xl']}>Welcome_description</Text>
+      <Flex flexDirection={'column'} alignItems={'center'} justifyContent={'flex-start'} mb={4}>
+        <Heading fontSize={['2xl', null, '4xl']}>Enter SSI Platform application</Heading>
       </Flex>
       <Input
         size={'lg'}
@@ -31,8 +21,7 @@ export const Login = () => {
         <Button
           w={'100%'}
           size="lg"
-          colorScheme={'telegram'}
-          bg={'blue.400'}
+          variant={'primary'}
           p={[4, null, 8]}
           fontSize={['md', 'lg', '2xl']}
           onClick={() => onConnectWallet(publicDID)}
@@ -42,32 +31,18 @@ export const Login = () => {
         <Button
           w={'100%'}
           size="lg"
-          variant={'outline'}
-          colorScheme={'telegram'}
+          variant={'ghost'}
           p={[4, null, 8]}
           fontSize={['md', 'lg', '2xl']}
           onClick={onDownloadWallet}
         >
           Download mobile wallet
         </Button>
-        <Link href={'/'}>
-          <Button
-            as="a"
-            size="md"
-            cursor={'pointer'}
-            variant={'link'}
-            colorScheme={'telegram'}
-            p={[4, null, 8]}
-            fontSize={['sm', 'md', 'xl']}
-          >
-            Go back
-          </Button>
-        </Link>
       </VStack>
     </>
-  );
-};
+  )
+}
 
-export default Login;
-Login.provider = LoginContextProvider;
-Login.layout = CenteredBoxLayout;
+export default Login
+Login.provider = LoginContextProvider
+Login.layout = CenteredBoxLayout

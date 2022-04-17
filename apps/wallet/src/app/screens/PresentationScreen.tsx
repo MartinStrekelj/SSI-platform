@@ -40,7 +40,6 @@ const PresentationScreen = ({ navigation, route }: IPresentationScreenProps) => 
   return (
     <SafeAreaView style={[t.pX4, t.pT2, t.hFull]}>
       <PresentationCreateContextProvider>
-        <Headline style={[t.text5xl, t.pT4, t.textPrimary]}>Create presentation</Headline>
         <Subheading style={[t.textBlack]}>Please select credential claims to costruct presentation</Subheading>
         <Divider accessible style={[t.bgGray400, t.p0_5, t.rounded, t.mY2]} />
         <ScrollView>{data.map(renderCredentialClaimsSelect)}</ScrollView>

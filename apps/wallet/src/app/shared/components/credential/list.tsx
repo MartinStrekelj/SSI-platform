@@ -1,10 +1,11 @@
-import { ScrollView, Text } from 'react-native'
+import { FlatList, ScrollView, Text } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { UniqueVerifiableCredential, UniqueVerifiablePresentation } from '@veramo/data-store'
 import { Searchbar } from 'react-native-paper'
 import { Credential } from './index'
 import { PresentationCard } from './presentation'
 import { isPresentation, IVerifiableData } from '@ssi-ms/interfaces'
+import t from '../../theme'
 
 interface IListCredentialsProps {
   credentials?: UniqueVerifiableCredential[]
@@ -54,8 +55,9 @@ export const ListCredentials = ({
     }
 
     setFiltered(
-      credentials.filter((credential) =>
-        credential.verifiableCredential.type[1].toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
+      credentials.filter(
+        (credential) =>
+          !!credential.verifiableCredential.type[1]?.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
       )
     )
   }, [searchQuery])
@@ -64,9 +66,16 @@ export const ListCredentials = ({
 
   return (
     <>
-      {withSearchBar && <Searchbar placeholder="Search" onChangeText={onChangeSearch} value={searchQuery} />}
-      <Text>{filtered && filtered.length === 0 && 'No results found'}</Text>
-      <ScrollView>{filtered && filtered.map(renderCredential)}</ScrollView>
+      {withSearchBar && (
+        <Searchbar style={[t.mB1]} placeholder="Find credential..." onChangeText={onChangeSearch} value={searchQuery} />
+      )}
+      <FlatList
+        ListEmptyComponent={<Text>No results found!</Text>}
+        data={filtered}
+        renderItem={({ item }) => renderCredential(item)}
+        keyExtractor={({ hash }) => hash}
+        showsVerticalScrollIndicator={false}
+      />
     </>
   )
 }

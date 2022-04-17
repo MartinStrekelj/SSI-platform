@@ -6,6 +6,7 @@ import { useCredentials } from '../../Api/CredentialsApi'
 import { FullPageLoader } from '../loaders/fullpage'
 import { TableWidget } from '../widgets/table'
 import { Eye } from 'react-feather'
+import { formatDate } from '@ssi-ms/utils'
 
 export const CredentialsTable = () => {
   const { data, isLoading, isError } = useCredentials()
@@ -30,8 +31,8 @@ export const CredentialsTable = () => {
       ...credentials.map((credential, idx) => [
         idx + 1,
         credential.type,
-        credential.issuanceDate,
-        credential.expiryDate,
+        formatDate(credential.issuanceDate),
+        formatDate(credential.expiryDate),
         <RowActions id={credential.id} />,
       ]),
     ],

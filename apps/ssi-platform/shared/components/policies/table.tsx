@@ -5,6 +5,7 @@ import { Eye, Trash2 } from 'react-feather'
 import { usePolicies } from '../../Api/PolicyApi'
 import { FullPageLoader } from '../loaders/fullpage'
 import { TableWidget } from '../widgets/table'
+import { formatDate } from '@ssi-ms/utils'
 
 export const VerificationPoliciesTable = () => {
   const { data, isLoading, isError } = usePolicies()
@@ -25,7 +26,7 @@ export const VerificationPoliciesTable = () => {
 
   const tableValues = {
     head: ['Key', 'Created at', 'Actions'],
-    body: [...policies.map((policy) => [policy.id, policy.created_at, <RowActions id={policy.id} />])],
+    body: [...policies.map((policy) => [policy.id, formatDate(policy.created_at), <RowActions id={policy.id} />])],
   }
 
   return <TableWidget head={tableValues.head} body={tableValues.body} />

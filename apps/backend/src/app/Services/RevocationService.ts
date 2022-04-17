@@ -1,4 +1,8 @@
-import { IVerifiableCredentialRevocation, IVerifiableCredentialRevocationDTO } from '@ssi-ms/interfaces'
+import {
+  IVerifiableCredentialDTO,
+  IVerifiableCredentialRevocation,
+  IVerifiableCredentialRevocationDTO,
+} from '@ssi-ms/interfaces'
 import { UniqueVerifiableCredential } from '@veramo/data-store'
 import { supabase } from '../Supabase/setup'
 
@@ -54,4 +58,21 @@ export const filterRevokedCredentials = async (credentials: UniqueVerifiableCred
   const revokedVCs = data.map((datum) => datum.credential)
 
   return credentials.filter((credential) => !revokedVCs.includes(credential.hash))
+}
+
+/**
+ * from list of credentials return the unrevoked ones
+ */
+export const applyIsRevokedCheck = async (credentials: IVerifiableCredentialDTO[]) => {
+  const { data, error } = await supabase.from(REVOCATIONS_TABLE).select('credential')
+  if (error !== null || !data.length) {
+    return credentials
+  }
+
+  const revokedVCs = data.map((datum) => datum.credential) as string[]
+
+  return credentials.map((credential) => {
+    const isRevoked = revokedVCs.includes(credential.id)
+    return { ...credential, isRevoked }
+  })
 }

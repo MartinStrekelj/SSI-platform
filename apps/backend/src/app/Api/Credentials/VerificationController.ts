@@ -5,7 +5,6 @@ import {
   SDR_COMPLETED,
   SDR_STATUS,
 } from '@ssi-ms/interfaces'
-import { ok } from 'assert'
 import { Request, Response } from 'express'
 import { readCacheKey, removeFromCache } from '../../Services/CacheService'
 import { generateQRfromString } from '../../Services/QRService'

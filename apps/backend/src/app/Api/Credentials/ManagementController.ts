@@ -16,6 +16,7 @@ import { createVCforPresentation } from '../../Veramo/IssueCredentials'
 import findCredential from '../../Veramo/findCredential'
 import { listCredentialsWhereIssuer, listCredentialsWhereSubject } from '../../Veramo/ListCredentials'
 import { IDIDCommMessage } from '@veramo/did-comm'
+import { applyIsRevokedCheck, isCredentialRevoked } from '../../Services/RevocationService'
 
 export const listIssuedCredenetials = async (req: Request, res: Response) => {
   const { did } = req.params as { did: string }
@@ -35,7 +36,8 @@ export const listMyCredentials = async (req: Request, res: Response) => {
     credentials = await listCredentialsWhereIssuer(isAuthority.did)
   }
 
-  const credentialDTOs = prepareVerifiableCredentialsDTOs(credentials)
+  let credentialDTOs = prepareVerifiableCredentialsDTOs(credentials)
+  credentialDTOs = await applyIsRevokedCheck(credentialDTOs)
 
   return res.send({ credentials: credentialDTOs })
 }
@@ -51,6 +53,9 @@ export const findCredentialById = async (req: Request, res: Response) => {
   }
 
   const credentialDTO = prepareDTOFromVC(credential)
+
+  const isRevoked = await isCredentialRevoked(id)
+  credentialDTO.isRevoked = isRevoked
 
   const response: IFindCredentialByIdResponse = { credential: credentialDTO }
   return res.send(response)

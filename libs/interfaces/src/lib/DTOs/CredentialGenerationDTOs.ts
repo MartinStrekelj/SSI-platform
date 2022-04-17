@@ -11,6 +11,7 @@ export interface IVerifiableCredentialDTO {
   expiryDate?: string
   issuanceDate?: string
   schema?: string
+  isRevoked?: boolean
   type: string
   claims: IClaim[]
 }

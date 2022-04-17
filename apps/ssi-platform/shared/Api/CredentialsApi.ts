@@ -59,12 +59,13 @@ export const useCredentials = () => {
 }
 
 export const useCredential = (id: string) => {
-  const { data, error, isValidating } = useSWR(`/${id}?credentials`, credentialsFetcher)
+  const { data, error, isValidating, mutate } = useSWR(`/${id}?credentials`, credentialsFetcher)
 
   return {
     data: data as IFindCredentialByIdResponse,
     isLoading: isValidating || (!error && !data),
     isError: error,
+    mutate,
   }
 }
 

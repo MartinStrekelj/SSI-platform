@@ -1,5 +1,5 @@
-import { Box, SimpleGrid } from '@chakra-ui/react'
-import { hasRoleHolder, IClaimValueTypes } from '@ssi-ms/interfaces'
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, SimpleGrid } from '@chakra-ui/react'
+import { hasRoleHolder, IClaimValueTypes, IVerifiableCredentialRevocationDTO } from '@ssi-ms/interfaces'
 import { getCredentialTransferCode, useCredential } from 'apps/ssi-platform/shared/Api/CredentialsApi'
 import { Breadcrumbs } from 'apps/ssi-platform/shared/components/breadcrumbs'
 import DashboardLayout from 'apps/ssi-platform/shared/components/layouts/DashboardLayout'
@@ -13,13 +13,15 @@ import { DashboardContextProvider, useDashboardContext } from 'apps/ssi-platform
 import React, { useState } from 'react'
 
 import { formatDate } from '@ssi-ms/utils'
+import { RevokeCredential } from 'apps/ssi-platform/shared/components/modals/revoke'
+import { revokeCredentialRequest } from 'apps/ssi-platform/shared/Api/RevokeApi'
 
 const CredentialDetailPage = () => {
   const { router, identity } = useDashboardContext()
   const { id } = router.query
-  const { data, isLoading } = useCredential(id as string)
+  const { data, isLoading, mutate } = useCredential(id as string)
   const [transferCode, setTransferCode] = useState<string | undefined>(undefined)
-  const { dangerToast } = useToasts()
+  const { dangerToast, successToast } = useToasts()
 
   const isHolder = hasRoleHolder(identity.metadata.role)
 
@@ -35,6 +37,24 @@ const CredentialDetailPage = () => {
     }
 
     setTransferCode(response.message)
+  }
+
+  const onRevokeCredential = async (reason: string) => {
+    const dto: IVerifiableCredentialRevocationDTO = {
+      credential: id as string,
+      issuer: identity.did,
+      reason,
+    }
+
+    const response = await revokeCredentialRequest(dto)
+
+    if (response.ok) {
+      successToast({ description: response.message })
+      mutate()
+      return
+    }
+
+    dangerToast({ description: response.message })
   }
 
   if (isLoading) {
@@ -57,6 +77,15 @@ const CredentialDetailPage = () => {
     <>
       <Breadcrumbs pathname={router.pathname} />
       <PageTitle label={`Credential ${data.credential.type}`} />
+      {data.credential.isRevoked && (
+        <Alert status="error" p={4} my={4} w="fit-content">
+          <AlertIcon />
+          <AlertTitle>This credential is revoked by issuer</AlertTitle>
+          {isHolder && (
+            <AlertDescription>You can transfer it, but it won't be accepted for verification</AlertDescription>
+          )}
+        </Alert>
+      )}
       <Box>
         {isHolder && (
           <TransferCredentialModal
@@ -65,6 +94,7 @@ const CredentialDetailPage = () => {
             onOpen={onTransferCredential}
           />
         )}
+        {!isHolder && !data.credential.isRevoked && <RevokeCredential onRevokeCredential={onRevokeCredential} />}
       </Box>
       <SimpleGrid gap={5} w={'75%'}>
         <TableWidget title="Basic info" body={basicInfo} />

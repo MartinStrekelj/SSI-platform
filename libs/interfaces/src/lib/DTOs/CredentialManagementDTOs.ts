@@ -47,3 +47,6 @@ export const isCreatePresentationRequest = (tbd: any): tbd is ICreatePresentatio
 
 export const isPresentation = (result: any): result is UniqueVerifiablePresentation =>
   result.verifiablePresentation !== undefined
+
+export const isVCRevocationRequest = (tbd: any): tbd is IVerifiableCredentialRevocationDTO =>
+  tbd.credential !== undefined && tbd.issuer !== undefined

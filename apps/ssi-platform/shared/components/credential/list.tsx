@@ -29,6 +29,7 @@ export const CredentialsList = () => {
       alignItems={['center', null, 'flex-start']}
       spacing="30px"
       w={'100%'}
+      flexWrap="wrap"
     >
       {credentials.map((credential) => (
         <Credential isLink key={credential.id} credential={credential} />

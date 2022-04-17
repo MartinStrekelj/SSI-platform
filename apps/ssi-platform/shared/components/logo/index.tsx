@@ -1,10 +1,14 @@
 import { Heading } from '@chakra-ui/react'
 import React from 'react'
 
-const Logo = () => {
+interface ILogoProps {
+  white?: boolean
+}
+
+const Logo = ({ white = false }: ILogoProps) => {
   return (
     <Heading
-      bgGradient="linear(to-r, primary.600, primary.500, secondary.500)"
+      bgGradient={`linear(to-r, ${white ? 'white, white' : 'primary.600, primary.500, secondary.500'})`}
       bgClip="text"
       fontSize={['4xl', '5xl', '6xl']}
       fontWeight="extrabold"

@@ -2,7 +2,7 @@ import { View, Text, ScrollView } from 'react-native'
 import React, { useEffect, useMemo, useState } from 'react'
 import { ICredentialRequestInput } from '@veramo/selective-disclosure'
 
-import t from '../../theme'
+import t, { themeBox } from '../../theme'
 import { ISingleDisclosureDTO } from '@ssi-ms/interfaces'
 import { handleSDRRequest } from '../../Veramo/handleSDRMessage'
 import { ActivityIndicator, Avatar, Button, Colors, Divider, Headline, Subheading } from 'react-native-paper'
@@ -77,47 +77,51 @@ const SDRequestView = ({ sdrDTO }: ISDRequestViewProps) => {
     : 'To prove the claims you can provide saved credentials and/or presentations'
 
   return (
-    <View>
-      <Headline style={[t.mB4, t.fontSansBold, t.textCenter]}>Verification request</Headline>
-      <Divider />
-      <View style={[t.flex, t.justifyCenter, t.itemsCenter, t.pB5]}>
-        <Avatar.Icon icon="shield-key-outline" size={84} />
-      </View>
-      <ScrollView>
-        <Subheading style={[t.textCenter]}>
-          <Text style={textEmphasis}>{data.metadata.verifier}</Text> wants you to provide:{'\n'}
-          <Text style={textEmphasis}>{data.metadata.title}</Text>
-        </Subheading>
-        <BoxWidget head={HEADERS} body={widgetValues} title={'Requested claims'} />
-        <Subheading style={[t.textCenter, t.pB2]}>{text}</Subheading>
+    <>
+      <ScrollView style={themeBox}>
+        <View>
+          <Headline style={[t.mB4, t.fontSans, t.textCenter]}>Verification request</Headline>
+          <Divider />
+          <View style={[t.flex, t.justifyCenter, t.itemsCenter, t.pB5]}>
+            <Avatar.Icon icon="shield-key-outline" size={84} />
+          </View>
+          <Subheading style={[t.textCenter]}>
+            <Text style={textEmphasis}>{data.metadata.verifier}</Text> wants you to provide:{'\n'}
+            <Text style={textEmphasis}>{data.metadata.title}</Text>
+          </Subheading>
+        </View>
+        <ScrollView>
+          <BoxWidget head={HEADERS} body={widgetValues} title={'Requested claims'} />
+          <Subheading style={[t.textCenter, t.pB2]}>{text}</Subheading>
 
-        {hasSelectedSomething && (
+          {hasSelectedSomething && (
+            <Button
+              loading={isSubmitting}
+              icon={'send'}
+              mode="contained"
+              style={[t.p1, t.mB4]}
+              onPress={handleSubmitCredential}
+            >
+              Submit
+            </Button>
+          )}
+
           <Button
-            loading={isSubmitting}
-            icon={'send'}
-            mode="contained"
+            disabled={isSubmitting}
+            icon={'wallet-plus'}
+            mode={hasSelectedSomething ? 'text' : 'contained'}
             style={[t.p1, t.mB4]}
-            onPress={handleSubmitCredential}
+            onPress={handleToggleModal}
           >
-            Submit
+            Select credentials
           </Button>
-        )}
-
-        <Button
-          disabled={isSubmitting}
-          icon={'wallet-plus'}
-          mode={hasSelectedSomething ? 'text' : 'contained'}
-          style={[t.p1, t.mB4]}
-          onPress={handleToggleModal}
-        >
-          Select credentials
-        </Button>
-        <Button disabled={isSubmitting} icon={'cancel'} mode="text" style={[t.p1]}>
-          Decline
-        </Button>
+          <Button disabled={isSubmitting} icon={'cancel'} mode="text" style={[t.p1]}>
+            Decline
+          </Button>
+        </ScrollView>
+        <SdrModal open={modalOpen} toggleModal={handleToggleModal} />
       </ScrollView>
-      <SdrModal open={modalOpen} toggleModal={handleToggleModal} />
-    </View>
+    </>
   )
 }
 

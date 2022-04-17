@@ -12,6 +12,8 @@ import { useToasts } from 'apps/ssi-platform/shared/hooks/useToasts'
 import { DashboardContextProvider, useDashboardContext } from 'apps/ssi-platform/shared/lib/DashboardContext'
 import React, { useState } from 'react'
 
+import { formatDate } from '@ssi-ms/utils'
+
 const CredentialDetailPage = () => {
   const { router, identity } = useDashboardContext()
   const { id } = router.query
@@ -42,8 +44,8 @@ const CredentialDetailPage = () => {
   const basicInfo = [
     ['From', data.credential.issuer],
     ['To', data.credential.subject],
-    ['Issued on', data.credential.issuanceDate],
-    ['Expiry date', data.credential.expiryDate],
+    ['Issued on', formatDate(data.credential.issuanceDate)],
+    ['Expiry date', formatDate(data.credential.expiryDate)],
   ]
 
   const claimsInfo = {

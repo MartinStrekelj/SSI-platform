@@ -2,7 +2,7 @@
 
 // Main menu componets
 export enum MenuOptions {
-  CREDENTIAL_GENERATION = 'credentil_generation',
+  CREDENTIAL_GENERATION = 'credential_generation',
   CREDENTIAL_MANAGEMENT = 'credential_management',
   CREDENTIAL_VERIFICATION = 'credential_verification',
 }

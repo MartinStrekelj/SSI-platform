@@ -1,11 +1,23 @@
-import { SharedUiLayout } from '@ssi-ms/shared-ui-layout';
+import {
+  NavigationBar,
+  HeroSection,
+  HowItWorksSection,
+  PreviewOfWalletSection,
+  Footer,
+  HowToStartSection,
+} from '../shared/components/landing'
 
-export function Index() {
+export function LandingPage() {
   return (
-    <div>
-      <h1>Index page</h1>
-    </div>
-  );
+    <>
+      <NavigationBar />
+      <HeroSection />
+      <HowItWorksSection />
+      <HowToStartSection />
+      {/* <PreviewOfWalletSection /> */}
+      <Footer />
+    </>
+  )
 }
 
-export default Index;
+export default LandingPage

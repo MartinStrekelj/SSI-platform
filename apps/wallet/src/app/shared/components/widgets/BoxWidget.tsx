@@ -17,7 +17,7 @@ export const BoxWidget = ({ head, title, body }: IBoxWidgetProps) => {
       body.map((values, i: number) => (
         <DataTable.Row key={`row-${i}`}>
           {values.map((value, j: number) => (
-            <DataTable.Cell key={`cell-${j}-${i}`}>{value}</DataTable.Cell>
+            <DataTable.Cell key={`cell-${j}-${i}`}>{JSON.stringify(value)}</DataTable.Cell>
           ))}
         </DataTable.Row>
       )),

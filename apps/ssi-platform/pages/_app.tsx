@@ -14,8 +14,8 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <ChakraProvider theme={theme}>
-      <Layout>
-        <ContextProvider>
+      <ContextProvider>
+        <Layout>
           <Head>
             <title>SSI Platform</title>
             <link
@@ -26,8 +26,8 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           <main className="app">
             <Component {...pageProps} />
           </main>
-        </ContextProvider>
-      </Layout>
+        </Layout>
+      </ContextProvider>
     </ChakraProvider>
   )
 }

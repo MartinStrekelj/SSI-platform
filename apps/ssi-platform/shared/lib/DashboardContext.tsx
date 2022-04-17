@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { fetchIdentity } from 'apps/ssi-platform/shared/Api/IdentityApi'
+import { fetchIdentity, logoutUser } from 'apps/ssi-platform/shared/Api/IdentityApi'
 import { IIdentity } from '@ssi-ms/interfaces'
 import { NextRouter, useRouter } from 'next/router'
 import { FullPageLoader } from '../components/loaders/fullpage'
@@ -8,6 +8,7 @@ import { useToasts } from '../hooks/useToasts'
 interface IDashboardContext {
   identity: undefined | IIdentity
   router?: NextRouter
+  onLogout?: () => Promise<void>
 }
 
 export const DashboardContext = React.createContext<IDashboardContext>({
@@ -37,6 +38,11 @@ export const DashboardContextProvider = ({ children }) => {
     return () => {}
   }, [])
 
+  const onLogout = async () => {
+    await logoutUser()
+    router.replace('/', {}, { scroll: true })
+  }
+
   if (!identity || isLoading) {
     return <FullPageLoader />
   }
@@ -46,6 +52,7 @@ export const DashboardContextProvider = ({ children }) => {
       value={{
         identity,
         router,
+        onLogout,
       }}
     >
       {children}

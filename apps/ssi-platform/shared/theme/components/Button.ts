@@ -2,6 +2,7 @@ import { ComponentStyleConfig, theme } from '@chakra-ui/theme'
 
 const Button: ComponentStyleConfig = {
   baseStyle: {
+    rounded: 'full',
     fontWeight: 'bold',
   },
   sizes: theme.components.Button.sizes,

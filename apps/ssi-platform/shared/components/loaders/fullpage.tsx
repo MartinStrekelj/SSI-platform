@@ -12,7 +12,7 @@ export const FullPageLoader = ({ relative = false }: IFullPageLoaderProps) => {
       right={0}
       left={0}
       bottom={0}
-      h={'100%'}
+      h={relative ? 'relative' : '100vh'}
       w={'100%'}
       zIndex={100}
       position={relative ? 'relative' : 'absolute'}

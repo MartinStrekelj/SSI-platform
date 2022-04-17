@@ -2,10 +2,6 @@ html {
     scroll-behavior: smooth;
 }
 
-
-
-
-
 * {
     scrollbar-width: thin;
     scrollbar-color: #3182CE #E2E8F0;

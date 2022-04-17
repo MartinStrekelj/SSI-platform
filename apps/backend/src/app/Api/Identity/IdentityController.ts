@@ -1,6 +1,7 @@
 import { AUTHORITY_ROLES, IdentityResponse, IIdentityMetadata, ROLES } from '@ssi-ms/interfaces'
 import { Response, Request } from 'express'
 import { resolveRequestIdentity } from '../../Services/AuthService'
+import { removeCookie } from '../../Services/CookieService'
 import { checkIfAuthorityDid } from '../../Veramo/AuthorityDIDs'
 
 // Provides identity resolution for platform
@@ -10,7 +11,7 @@ export const resolveIdentityFromJWT = async (req: Request, res: Response) => {
     const requestIdentity = await resolveRequestIdentity(at)
 
     if (!requestIdentity) {
-      throw new Error()
+      throw new Error('Could not resolve identity')
     }
 
     const authority = await checkIfAuthorityDid(requestIdentity)
@@ -35,4 +36,9 @@ export const resolveIdentityFromJWT = async (req: Request, res: Response) => {
   } catch (e) {
     return res.status(401).send({ message: 'Access denied' })
   }
+}
+
+export const logoutUserAction = async (req: Request, res: Response) => {
+  removeCookie(res)
+  return res.send({})
 }

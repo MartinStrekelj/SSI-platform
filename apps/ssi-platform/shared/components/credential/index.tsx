@@ -1,9 +1,10 @@
 import React from 'react'
-import { Box, Flex, Heading, LinkBox, LinkOverlay } from '@chakra-ui/react'
+import { Box, Flex, Heading, Icon, IconButton, LinkBox, LinkOverlay, Tooltip } from '@chakra-ui/react'
 import { IVerifiableCredentialDTO } from '@ssi-ms/interfaces'
 import Link from 'next/link'
 import { ConditionalWrapper } from '../conditionalwrapper'
 import Logo from '../logo'
+import { AlertTriangle } from 'react-feather'
 
 const CREDENTIAL_SIZE = {
   HEIGHT: 270,
@@ -42,8 +43,33 @@ export const Credential = ({ credential, isLink = false }: ICredentialProps) => 
           <Logo white />
         </Box>
 
-        {/* <Flex w="100%" h={'50%'} bg={'white'}></Flex> */}
+        <RevokeWarning isRevoked={credential.isRevoked} />
+
+        <Flex w="100%" h={'50%'} bg={'white'} rounded="base" p={4} alignItems="center">
+          <Heading fontSize={['2xl', '4xl']}>{credential.type}</Heading>
+        </Flex>
       </Flex>
     </ConditionalWrapper>
+  )
+}
+
+const RevokeWarning = ({ isRevoked }: { isRevoked: boolean }) => {
+  if (!isRevoked) {
+    return null
+  }
+
+  return (
+    <Tooltip label="This credential was revoked" aria-label="A tooltip">
+      <IconButton
+        position={'absolute'}
+        top={4}
+        right={4}
+        p={2}
+        variant="ghost"
+        rounded="full"
+        aria-label="revoke-warning"
+        icon={<Icon as={AlertTriangle} w={6} h={6} />}
+      />
+    </Tooltip>
   )
 }

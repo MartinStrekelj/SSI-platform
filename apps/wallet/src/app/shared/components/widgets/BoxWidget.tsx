@@ -1,6 +1,6 @@
 import { View } from 'react-native'
 import React, { useCallback } from 'react'
-import { DataTable, Title } from 'react-native-paper'
+import { DataTable, Text, Title } from 'react-native-paper'
 
 import t from '../../theme'
 
@@ -17,7 +17,9 @@ export const BoxWidget = ({ head, title, body }: IBoxWidgetProps) => {
       body.map((values, i: number) => (
         <DataTable.Row key={`row-${i}`}>
           {values.map((value, j: number) => (
-            <DataTable.Cell key={`cell-${j}-${i}`}>{JSON.stringify(value)}</DataTable.Cell>
+            <View style={[t.flex1, t.justifyCenter, t.itemsStart, t.p2]} key={`cell-${j}-${i}`}>
+              <Text style={[t.fontSans, t.textLeft]}>{displayValue(value).trim()}</Text>
+            </View>
           ))}
         </DataTable.Row>
       )),
@@ -32,4 +34,16 @@ export const BoxWidget = ({ head, title, body }: IBoxWidgetProps) => {
       </DataTable>
     </View>
   )
+}
+
+const displayValue = (value: any) => {
+  if (!value) {
+    return 'N/A'
+  }
+
+  if (typeof value !== 'string') {
+    return JSON.stringify(value)
+  }
+
+  return value
 }

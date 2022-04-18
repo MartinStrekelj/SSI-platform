@@ -14,7 +14,5 @@ export const formatDate = (input?: string | Date) => {
     date = input
   }
 
-  console.log(date)
-
   return format(date, COMMON_DATE_FORMAT)
 }

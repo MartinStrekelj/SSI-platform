@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, Text } from 'react-native'
+import { FlatList, Text } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { UniqueVerifiableCredential, UniqueVerifiablePresentation } from '@veramo/data-store'
 import { Searchbar } from 'react-native-paper'

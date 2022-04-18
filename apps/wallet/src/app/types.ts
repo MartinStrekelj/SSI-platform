@@ -1,3 +1,4 @@
+import { IVerifiableData } from '@ssi-ms/interfaces'
 import { UniqueVerifiableCredential } from '@veramo/data-store'
 
 export enum Screens {
@@ -6,6 +7,7 @@ export enum Screens {
   CREDENTIALS = 'Credentials',
   PRESENTATION = 'Presentation',
   MODAL = 'Modal',
+  CREDENTIAL_DETAILS = 'Credential details',
 }
 
 export type RootStackParamList = {
@@ -14,4 +16,5 @@ export type RootStackParamList = {
   [Screens.CREDENTIALS]: undefined
   [Screens.PRESENTATION]: { data: UniqueVerifiableCredential[] }
   [Screens.MODAL]: { message: string }
+  [Screens.CREDENTIAL_DETAILS]: { data: IVerifiableData }
 }

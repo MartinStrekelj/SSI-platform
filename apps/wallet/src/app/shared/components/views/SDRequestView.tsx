@@ -59,7 +59,7 @@ const SDRequestView = ({ sdrDTO }: ISDRequestViewProps) => {
   const handleToggleModal = () => setModal(!modalOpen)
 
   if (isLoading) {
-    return <ActivityIndicator color={Colors.blue400} />
+    return <ActivityIndicator color={Colors.white} />
   }
 
   if (!data) {
@@ -80,7 +80,7 @@ const SDRequestView = ({ sdrDTO }: ISDRequestViewProps) => {
     <>
       <ScrollView style={themeBox}>
         <View>
-          <Headline style={[t.mB4, t.fontSans, t.textCenter]}>Verification request</Headline>
+          <Headline style={[t.mB4, t.fontSans, t.textCenter, t.uppercase]}>Verification request</Headline>
           <Divider />
           <View style={[t.flex, t.justifyCenter, t.itemsCenter, t.pB5]}>
             <Avatar.Icon icon="shield-key-outline" size={84} />
@@ -91,8 +91,11 @@ const SDRequestView = ({ sdrDTO }: ISDRequestViewProps) => {
           </Subheading>
         </View>
         <ScrollView>
-          <BoxWidget head={HEADERS} body={widgetValues} title={'Requested claims'} />
-          <Subheading style={[t.textCenter, t.pB2]}>{text}</Subheading>
+          <View style={[t.mY4]}>
+            <BoxWidget head={HEADERS} body={widgetValues} title={'Requested claims'} />
+          </View>
+
+          <Subheading style={[t.textCenter, t.pB2, t.fontSans]}>{text}</Subheading>
 
           {hasSelectedSomething && (
             <Button
@@ -114,9 +117,6 @@ const SDRequestView = ({ sdrDTO }: ISDRequestViewProps) => {
             onPress={handleToggleModal}
           >
             Select credentials
-          </Button>
-          <Button disabled={isSubmitting} icon={'cancel'} mode="text" style={[t.p1]}>
-            Decline
           </Button>
         </ScrollView>
         <SdrModal open={modalOpen} toggleModal={handleToggleModal} />

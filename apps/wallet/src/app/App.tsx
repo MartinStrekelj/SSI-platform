@@ -8,6 +8,8 @@ import ScanScreen from './screens/ScanScreen'
 import CredentialsScreen from './screens/CredentialsScreen'
 import PresentationScreen from './screens/PresentationScreen'
 import ModalScreen from './screens/ModalScreen'
+import CredentialDetailsScreen from './screens/CredentialDetailsScreen'
+
 import { Screens } from './types'
 import { CUSTOM_NAVIGATION_THEME, CUSTOM_PAPER_THEME } from './shared/theme'
 
@@ -37,6 +39,7 @@ const App = () => (
           component={PresentationScreen}
           options={{ title: 'Create presentation' }}
         />
+        <Stack.Screen name={Screens.CREDENTIAL_DETAILS} component={CredentialDetailsScreen} />
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen name={Screens.MODAL} component={ModalScreen} options={{ title: 'Scan result' }} />
         </Stack.Group>

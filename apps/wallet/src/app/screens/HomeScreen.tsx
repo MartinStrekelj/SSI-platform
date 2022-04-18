@@ -9,7 +9,10 @@ import { agent } from '../shared/Veramo/setup'
 import t from '../shared/theme'
 import { RootStackParamList, Screens } from '../types'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { StatusBar } from '../shared/components/statusbar'
+import { ActivityIndicator, Avatar, Colors, Headline, Subheading } from 'react-native-paper'
+import { useCredentials } from '../shared/hooks/useCredentials'
+import { BoxWidget } from '../shared/components/widgets/BoxWidget'
 
 interface Identifier {
   did: string
@@ -17,43 +20,63 @@ interface Identifier {
 
 type IHomeScreenProps = NativeStackScreenProps<RootStackParamList, Screens.WALLET>
 
-const HomeScreen = ({navigation }: IHomeScreenProps) => {
-  const [identifiers, setIdentifiers] = useState<Identifier[]>([])
+const HomeScreen = ({ navigation }: IHomeScreenProps) => {
+  const [identity, setIdentity] = useState<Identifier | null>(null)
+  const { myCredentials, myPresentations } = useCredentials()
 
   useEffect(() => {
     const onAppInit = async () => {
       try {
-        const holder = await agent.didManagerCreate({ alias: 'holder' })
-        setIdentifiers((s) => s.concat([holder]))
+        await agent.didManagerCreate({ alias: 'holder' })
       } catch (e) {
         // Ignore error, since this means that we already have an DID for this phone
+      } finally {
+        const _ids = await agent.didManagerFind()
+        console.log({ holder: _ids[0].did })
+        setIdentity(_ids[0])
       }
-      const _ids = await agent.didManagerFind()
-      console.log(_ids)
-      setIdentifiers(_ids)
     }
 
     onAppInit()
   }, [])
 
+  if (identity === null) {
+    return <ActivityIndicator color={Colors.blue500} />
+  }
+
+  const info = {
+    title: 'Holder info:',
+    body: [['DID', identity.did]],
+  }
+
+  const stats = {
+    title: 'Holder stats:',
+    body: [
+      ['Credentials', myCredentials.length],
+      ['Presentations', myPresentations.length],
+    ],
+  }
+
   return (
     <>
-      <SafeAreaView style={[t.pX4]}>
-        <Text style={[t.text5xl, t.textPrimary, t.pY5, t.fontSansBold, t.textCenter]}>SSI-Mobile wallet</Text>
-        <View style={[t.pX4, t.flex, t.flexRow, t.justifyCenter, t.itemsCenter]}>
-          <Text style={[t.textXl, t.fontMonoBold, t.pR1]}>DID:</Text>
-
-          <ScrollView>
-            {identifiers.map((ident) => (
-              <Text key={ident.did} style={[t.textLg]}>
-                {ident.did}
-              </Text>
-            ))}
-          </ScrollView>
+      <StatusBar onBackClick={navigation.goBack} title={'My wallet information'} />
+      <ScrollView style={[t.pX4, t.flex1]}>
+        <View style={[t.wFull, t.justifyCenter, t.itemsCenter, t.flex1]}>
+          <Avatar.Icon size={72} icon="shield-account-outline" />
+          <Headline style={[t.textCenter, t.fontSans]}>{'SSI HOLDER \n ACCOUNT'}</Headline>
         </View>
-        <Button onPress={() => navigation.navigate(Screens.CREDENTIALS)} label="credentials" />
-        <Button onPress={() => navigation.navigate(Screens.SCANNER)} label="scan" />
-      </SafeAreaView>
+        <Subheading style={[t.textCenter, t.fontSans]}>
+          DID is your public address that is used to identify you in the SSI process
+        </Subheading>
+
+        <View style={[t.pX2]}>
+          <BoxWidget body={info.body} />
+        </View>
+
+        <View style={[t.pX4, t.flex1]}>
+          <BoxWidget title={stats.title} body={stats.body} />
+        </View>
+      </ScrollView>
     </>
   )
 }

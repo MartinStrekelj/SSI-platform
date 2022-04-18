@@ -4,12 +4,13 @@ import { UniqueVerifiableCredential } from '@veramo/data-store'
 import { ListCredentials } from '../shared/components/credential/list'
 
 import t from '../shared/theme'
-import { ActivityIndicator, AnimatedFAB, Colors, Headline, Button, Subheading, Switch } from 'react-native-paper'
+import { ActivityIndicator, AnimatedFAB, Colors, Headline, Button, Subheading } from 'react-native-paper'
 import { RootStackParamList, Screens } from '../types'
 import { FloatingMenu } from '../shared/components/FloatingMenu'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useIsFocused } from '@react-navigation/native'
 import { useCredentials } from '../shared/hooks/useCredentials'
+import { IVerifiableData } from '@ssi-ms/interfaces'
 
 const MIN_NUMBER_FOR_PRESENTATION = 1
 
@@ -26,9 +27,8 @@ const CredentialsScreen = ({ navigation }: ICredentialsScreenProps) => {
     setForMerge([])
   }
 
-  const goToCredentialDetailPage = (credential: UniqueVerifiableCredential) => {
-    console.log('TODO')
-  }
+  const goToCredentialDetailPage = (datum: IVerifiableData) =>
+    navigation.navigate(Screens.CREDENTIAL_DETAILS, { data: datum })
 
   const handleMarkForMerge = (newCredential: UniqueVerifiableCredential) => {
     // Remove marked
@@ -71,6 +71,7 @@ const CredentialsScreen = ({ navigation }: ICredentialsScreenProps) => {
         marked={selectedForMerge.map((vc) => vc.hash)}
         withSearchBar
         onCredentialClick={isCreatePresentationOn ? handleMarkForMerge : goToCredentialDetailPage}
+        onPresentationClick={isCreatePresentationOn ? undefined : goToCredentialDetailPage}
       />
       <AnimatedFAB
         extended

@@ -10,6 +10,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { SelectClaims } from '../shared/components/claims/select'
 import { ErrorComponent } from '../shared/components/Error'
 import PresentationCreateContextProvider, { usePresentationContext } from '../shared/lib/PresentationCreateContext'
+import { StatusBar } from '../shared/components/statusbar'
 
 const MIN_NUMBER_OF_CLAIMS = 1
 
@@ -38,14 +39,17 @@ const PresentationScreen = ({ navigation, route }: IPresentationScreenProps) => 
   const { data } = route.params
 
   return (
-    <SafeAreaView style={[t.pX4, t.pT2, t.hFull]}>
-      <PresentationCreateContextProvider>
-        <Subheading style={[t.textBlack]}>Please select credential claims to costruct presentation</Subheading>
-        <Divider accessible style={[t.bgGray400, t.p0_5, t.rounded, t.mY2]} />
-        <ScrollView>{data.map(renderCredentialClaimsSelect)}</ScrollView>
-        <SubmitNewPresentationButton />
-      </PresentationCreateContextProvider>
-    </SafeAreaView>
+    <>
+      <StatusBar onBackClick={navigation.goBack} title="Create new presentation" />
+      <SafeAreaView style={[t.pX4, t.pT2, t.hFull]}>
+        <PresentationCreateContextProvider>
+          <Subheading style={[t.textBlack]}>Please select credential claims to costruct presentation</Subheading>
+          <Divider accessible style={[t.bgGray400, t.p0_5, t.rounded, t.mY2]} />
+          <ScrollView>{data.map(renderCredentialClaimsSelect)}</ScrollView>
+          <SubmitNewPresentationButton />
+        </PresentationCreateContextProvider>
+      </SafeAreaView>
+    </>
   )
 }
 

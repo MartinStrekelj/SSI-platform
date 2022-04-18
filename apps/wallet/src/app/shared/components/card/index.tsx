@@ -1,8 +1,10 @@
 import React from 'react'
-import { View } from 'react-native'
-import { Card, Headline, Paragraph } from 'react-native-paper'
+import { Card, Paragraph } from 'react-native-paper'
 
 import t from '../../theme'
+
+const imageURL =
+  'https://images.pexels.com/photos/7130498/pexels-photo-7130498.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
 
 interface ICardComponentProps {
   marked?: boolean
@@ -19,7 +21,7 @@ export const CardComponent = (props: ICardComponentProps) => (
   >
     <Card.Cover
       source={{
-        uri: 'https://images.unsplash.com/photo-1571715268998-d6e79bed5fc9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80',
+        uri: imageURL,
       }}
     />
     <Card.Title title={props.title} titleStyle={[t.fontSansBold]} />

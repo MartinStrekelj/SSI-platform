@@ -1,7 +1,7 @@
 import { VerifiableCredential } from '@veramo/core'
 import React, { useState } from 'react'
 import { ScrollView, View } from 'react-native'
-import { Button, Divider, Headline } from 'react-native-paper'
+import { Avatar, Button, Divider, Headline } from 'react-native-paper'
 
 import t from '../../theme'
 import ClaimsInfo from '../credential/claimsInfo'
@@ -29,14 +29,18 @@ export const CredentialTransferView = ({ credential, redirect }: ICredentialTran
   // const cancelTransferCredential = () => redirect()
 
   return (
-    <View>
-      <Headline style={[t.mB4, t.fontSansBold]}>Credential Transfer request</Headline>
+    <View style={[t.bgWhite, t.flex1, t.p4, t.rounded]}>
+      <View style={[t.itemsCenter, t.p4]}>
+        <Avatar.Icon size={72} icon={'card-bulleted'} />
+      </View>
+
+      <Headline style={[t.mB4, t.fontSansBold, t.textCenter, t.uppercase]}>Credential Transfer request</Headline>
       <Divider />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <CredentialBasicInfo credential={credential} />
         <ClaimsInfo credential={credential} />
         <Divider />
-        <Button mode="contained" loading={isLoading} onPress={handleSaveCredential}>
+        <Button style={[t.p1, t.mT2]} mode="contained" loading={isLoading} onPress={handleSaveCredential}>
           {!isLoading && 'Save credential'}
         </Button>
       </ScrollView>

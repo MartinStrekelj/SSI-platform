@@ -35,7 +35,7 @@ const SdrModal = ({ open, toggleModal }: ISdrModalProps) => {
         <Modal visible={open} style={[t.p4, t.flex]}>
           <View style={[t.hFull, t.wFull, t.bgWhite, t.p3, t.pT12, t.rounded]}>
             <IconButton icon="close-thick" style={[t.absolute, t.top0, t.right1]} onPress={toggleModal} />
-            <Subheading style={[t.textCenter]}>
+            <Subheading style={[t.textCenter, t.fontSansMedium]}>
               Please select a credential that you want to submit for verification {'\n \n'}
               Currently selected: <Text style={[t.fontSansBoldItalic, t.textXl]}>{marked.length}</Text>
             </Subheading>

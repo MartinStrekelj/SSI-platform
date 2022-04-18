@@ -14,5 +14,5 @@ export const CredentialBasicInfo = ({ credential }: IBasicInfoProps) => {
     ['Expiry date', credential.issuanceDate],
     ['Issued on', credential.expirationDate ?? 'N/A'],
   ]
-  return <BoxWidget body={data} title="Basic info" />
+  return <BoxWidget body={data} title="Basic information" />
 }

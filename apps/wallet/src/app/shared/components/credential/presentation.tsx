@@ -1,6 +1,7 @@
 import React from 'react'
 import { UniqueVerifiablePresentation } from '@veramo/data-store'
 import { CardComponent } from '../card'
+import { formatDate } from '@ssi-ms/utils'
 
 interface IPresentationProps {
   presentation: UniqueVerifiablePresentation
@@ -11,11 +12,13 @@ interface IPresentationProps {
 export const PresentationCard = ({ presentation, onPress, marked = false }: IPresentationProps) => {
   const { verifiablePresentation } = presentation
 
+  const content = `Created on: ${formatDate(verifiablePresentation.issuanceDate)}`
+
   return (
     <CardComponent
       marked={marked}
       title={'Custom presentation'}
-      content={verifiablePresentation.verifiableCredential[0].credentialSubject.claims}
+      content={content}
       onPress={() => onPress(presentation)}
     />
   )

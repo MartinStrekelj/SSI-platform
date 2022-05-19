@@ -7,9 +7,15 @@ import { checkPresentationClaimsValidity } from '../Services/DataIntegrityServic
 
 const VC_TYPE = 'VerifiableCredential'
 
-type CreateVC = (credentialPayload: IVerifiableCredentialDTO) => Promise<VerifiableCredential | false>
+type CreateVC = (
+  credentialPayload: IVerifiableCredentialDTO,
+  saveCredential: boolean
+) => Promise<VerifiableCredential | false>
 
-export const createVerifiableCredential: CreateVC = async (credentialPayload: IVerifiableCredentialDTO) => {
+export const createVerifiableCredential: CreateVC = async (
+  credentialPayload: IVerifiableCredentialDTO,
+  saveCredential = true
+) => {
   const agentsOk = await resolveBothAgents({
     issuer: credentialPayload.issuer,
     subject: credentialPayload.subject,
@@ -30,7 +36,7 @@ export const createVerifiableCredential: CreateVC = async (credentialPayload: IV
       type: [VC_TYPE, credentialPayload.type], // TITLE eg. Potrdilo o opravljeni maturi
     },
     proofFormat: 'jwt',
-    save: true,
+    save: saveCredential,
   }
   try {
     return await agent.createVerifiableCredential(data)

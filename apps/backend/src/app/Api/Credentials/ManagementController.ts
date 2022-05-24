@@ -10,6 +10,7 @@ import { UniqueVerifiableCredential } from '@veramo/data-store'
 import { Request, Response } from 'express'
 import { prepareDTOFromVC, prepareVerifiableCredentialsDTOs } from '../../Services/DTOConverter'
 import { generateQRfromString } from '../../Services/QRService'
+import { prepareCredentialsFromClaims } from '../../Services/PresentationService'
 import { checkIfAuthorityDid } from '../../Veramo/AuthorityDIDs'
 import createDIDMessage from '../../Veramo/createDIDMessage'
 import { createVCforPresentation } from '../../Veramo/IssueCredentials'
@@ -101,10 +102,10 @@ export const createPresentation = async (req: Request, res: Response) => {
       throw new Error('Bad body')
     }
 
-    const vc = await createVCforPresentation(body.claims, did)
+    const VCs = await prepareCredentialsFromClaims(body.claims)
 
     const message: IDIDCommMessage = {
-      body: vc,
+      body: VCs,
       to: did,
       id: MESSAGE_TYPE.PRESENTATION,
       type: 'DIDCommV2Message-sent',

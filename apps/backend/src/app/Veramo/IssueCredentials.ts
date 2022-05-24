@@ -46,17 +46,17 @@ export const createVerifiableCredential: CreateVC = async (
   }
 }
 
-const resolveBothAgents = async ({ issuer, subject }: { issuer: string; subject: string }) => {
+const resolveBothAgents = async ({ issuer: issuerDid, subject: subjectDID }: { issuer: string; subject: string }) => {
   try {
-    const i = await agent.resolveDid({ didUrl: issuer })
-    const s = await agent.resolveDid({ didUrl: subject })
+    const issuer = await agent.resolveDid({ didUrl: issuerDid })
+    const subject = await agent.resolveDid({ didUrl: subjectDID })
 
-    if (i.didDocument === null || s.didDocument === null) {
+    if (issuer.didDocument === null || subject.didDocument === null) {
       throw new Error('Error when resolving identifiers')
     }
 
     // Check authority is the issues
-    const isAuthortiy = await checkIfAuthorityDid(issuer)
+    const isAuthortiy = await checkIfAuthorityDid(issuerDid)
 
     if (!isAuthortiy) {
       throw new Error('Only authorities can issue verifiable credentials!')
@@ -80,6 +80,8 @@ const resolveBothAgents = async ({ issuer, subject }: { issuer: string; subject:
  *
  * Important to do all of the data integrity checks
  * before using this function
+ *
+ * @deprecated -> use PresentationService
  */
 export const createVCforPresentation = async (claims: IPresentationClaim[], subjectDID: string) => {
   const allClaimsAreValid = await checkPresentationClaimsValidity(claims)

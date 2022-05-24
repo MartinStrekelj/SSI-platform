@@ -16,9 +16,11 @@ export const prepareCredentialsFromClaims = async (claims: IPresentationClaim[])
     const credential = credentials[i]
     const credentialClaims = claims.filter((c) => c.vc === credential)
     const newCredential = await matchClaimsWithCredential(credential, credentialClaims)
-    if (newCredential) {
-      result = [...result, newCredential]
+    if (!newCredential) {
+      throw new Error('Invalid credential DTO')
     }
+
+    result = [...result, newCredential]
   }
 
   return result
@@ -39,12 +41,12 @@ const matchClaimsWithCredential = async (credential: string, claims: IPresentati
       type: c.type,
     }
   })
-  const areClaimsValid = newClaims.every((c) => {
-    const titles: string[] = credentialClaims.reduce((acc, c) => [...acc, c.title], [])
-    if (!titles.includes(c.title)) {
-      return false
-    }
-    return credentialClaims[c.title] === c.value
+
+  const areClaimsValid = newClaims.every((submitedClaim) => {
+    return !!credentialClaims.find(
+      (credentailClaim) =>
+        credentailClaim.title === submitedClaim.title && credentailClaim.value === submitedClaim.value
+    )
   })
 
   if (!areClaimsValid) {

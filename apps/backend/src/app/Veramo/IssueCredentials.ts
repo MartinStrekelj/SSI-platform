@@ -9,7 +9,7 @@ const VC_TYPE = 'VerifiableCredential'
 
 type CreateVC = (
   credentialPayload: IVerifiableCredentialDTO,
-  saveCredential: boolean
+  saveCredential?: boolean
 ) => Promise<VerifiableCredential | false>
 
 export const createVerifiableCredential: CreateVC = async (

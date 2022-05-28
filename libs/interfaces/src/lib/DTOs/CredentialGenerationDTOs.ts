@@ -4,6 +4,14 @@ export enum CLAIM_TYPES {
   CHECKBOX = 'checkbox',
 }
 
+export enum COMPARISON_TYPE {
+  EQUALS = 'equals',
+  LESS_THAN = 'less_than',
+  MORE_THAN = 'more_than',
+  MORE_OR_EQUALS = 'more_or_equals',
+  LESS_OR_EQUALS = 'less_or_equals',
+}
+
 export interface IVerifiableCredentialDTO {
   id?: string
   issuer: string
@@ -19,6 +27,7 @@ export interface IVerifiableCredentialDTO {
 export interface IClaim {
   id?: number
   type?: CLAIM_TYPES
+  comparison?: COMPARISON_TYPE
   title: string
   value: IClaimValueTypes
 }

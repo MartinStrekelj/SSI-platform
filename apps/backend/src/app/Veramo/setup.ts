@@ -44,8 +44,8 @@ import { MessageHandler } from '@veramo/message-handler'
 // This will be the name for the local sqlite database for demo purposes
 const DATABASE_FILE = 'database.sqlite'
 
-const INFURA_PROJECT_ID = process.env.INFURA_PROJECT_ID
-const dbEncryptionKey = process.env.INFURA_DB_KEY
+const INFURA_PROJECT_ID = 'fafaa91460c845668f9a320ccb90a916'
+const dbEncryptionKey = '34a89015e491a984bfe6e38e7623833209de9065a36124564aded4144ffb1291'
 
 const dbConnection = createConnection({
   type: 'sqlite',

@@ -4,6 +4,8 @@ import { getLocalCredentials, getLocalPresentations } from '../Veramo/getLocalCr
 
 export const useCredentials = () => {
   const [isLoading, setLoading] = useState<boolean>(true)
+  const [refresh, setRefresh] = useState<boolean>(false)
+
   const [myCredentials, setCredentials] = useState<undefined | UniqueVerifiableCredential[]>(undefined)
   const [myPresentations, setPresentations] = useState<undefined | UniqueVerifiablePresentation[]>(undefined)
 
@@ -16,7 +18,9 @@ export const useCredentials = () => {
       setLoading(false)
     }
     fetchLocalCredentials()
-  }, [])
+  }, [refresh])
 
-  return { myCredentials, myPresentations, isLoading }
+  const useRefresh = () => setRefresh(!refresh)
+
+  return { myCredentials, myPresentations, isLoading, useRefresh }
 }

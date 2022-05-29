@@ -19,7 +19,7 @@ type ICredentialsScreenProps = NativeStackScreenProps<RootStackParamList, Screen
 const CredentialsScreen = ({ navigation }: ICredentialsScreenProps) => {
   const [selectedForMerge, setForMerge] = useState<undefined | UniqueVerifiableCredential[]>([])
   const isFocused = useIsFocused()
-  const { myCredentials, myPresentations, isLoading } = useCredentials()
+  const { myCredentials, myPresentations, isLoading, useRefresh } = useCredentials()
   const [isCreatePresentationOn, setIsSwitchOn] = useState<boolean>(false)
 
   const onCancelMergePress = () => {
@@ -86,6 +86,7 @@ const CredentialsScreen = ({ navigation }: ICredentialsScreenProps) => {
         onOpenScannerClick={handleMenuScannerPress}
         onWalletInformationClick={handleMenuWalletPress}
         onCreateVPClick={handleMenuMergePress}
+        onCredentialsRefresh={useRefresh}
         visible={isFocused && !isCreatePresentationOn}
       />
       <View style={[t.absolute, t.flex1, t.top0, t.bottom0, t.left0, t.right0, t.negativeZ]}>

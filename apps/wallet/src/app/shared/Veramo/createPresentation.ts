@@ -2,12 +2,15 @@ import { VerifiableCredential } from '@veramo/core'
 import { getMyDid } from '../lib/DIDService'
 import { agent } from './setup'
 
-export const createPresentation = async (VC: VerifiableCredential) => {
+const VP_TYPE = 'VerifiablePresentation'
+
+export const createPresentation = async (VCs: VerifiableCredential[], presentationName = 'Custom presentation') => {
   const identity = await getMyDid()
   await agent.createVerifiablePresentation({
     presentation: {
+      type: [VP_TYPE, presentationName],
       holder: identity.did,
-      verifiableCredential: [VC],
+      verifiableCredential: VCs,
     },
     proofFormat: 'jwt',
     save: true,

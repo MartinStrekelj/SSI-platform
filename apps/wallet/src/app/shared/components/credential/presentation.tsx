@@ -17,7 +17,7 @@ export const PresentationCard = ({ presentation, onPress, marked = false }: IPre
   return (
     <CardComponent
       marked={marked}
-      title={'Custom presentation'}
+      title={verifiablePresentation.type[1] || 'Custom presentation'}
       content={content}
       onPress={() => onPress(presentation)}
     />

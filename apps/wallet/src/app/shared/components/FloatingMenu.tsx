@@ -5,6 +5,7 @@ interface IFloatingMenuProps {
   onOpenScannerClick: () => void
   onCreateVPClick: () => void
   onWalletInformationClick: () => void
+  onCredentialsRefresh: () => void
   visible: boolean
 }
 
@@ -12,6 +13,7 @@ export const FloatingMenu = ({
   onOpenScannerClick,
   onCreateVPClick,
   onWalletInformationClick,
+  onCredentialsRefresh,
   visible = false,
 }: IFloatingMenuProps) => {
   const [expanded, setExpanded] = useState<boolean>(false)
@@ -43,6 +45,12 @@ export const FloatingMenu = ({
             icon: 'wallet',
             label: 'Wallet information',
             onPress: () => handleMenuClick(onWalletInformationClick),
+            small: false,
+          },
+          {
+            icon: 'refresh',
+            label: 'Refresh credentials',
+            onPress: onCredentialsRefresh,
             small: false,
           },
         ]}

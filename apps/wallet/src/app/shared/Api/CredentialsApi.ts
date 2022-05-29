@@ -16,7 +16,7 @@ const CredentailsApi = create({
   baseURL: 'http://localhost:3333/api/credentials',
 })
 
-export const createPresentationRequest = async (claims: IPresentationClaim[]) => {
+export const createPresentationRequest = async (claims: IPresentationClaim[], presentationName: string) => {
   try {
     const headers = await prepareRequestHeaders()
     const response = await CredentailsApi.post('/presentation', { claims }, headers)
@@ -26,8 +26,8 @@ export const createPresentationRequest = async (claims: IPresentationClaim[]) =>
 
     const { message } = response.data as ICreatePresentationResponse
     const unpackedMessage = await unpackDIDMessage(message)
-    const proxyVC = unpackedMessage.message.body as VerifiableCredential
-    await createPresentation(proxyVC)
+    const proxyVCs = unpackedMessage.message.body as VerifiableCredential[]
+    await createPresentation(proxyVCs, presentationName)
     return { ok: true, message: 'New Verifiable presentation created!' }
   } catch (e) {
     console.error(e)

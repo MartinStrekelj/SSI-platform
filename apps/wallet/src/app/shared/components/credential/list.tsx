@@ -45,7 +45,7 @@ export const ListCredentials = ({
           marked={marked && marked.includes(credential.hash)}
         />
       ),
-    [filtered, onCredentialClick, marked]
+    [filtered, onCredentialClick, marked, credentials, presentations]
   )
 
   useEffect(() => {

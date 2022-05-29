@@ -9,6 +9,7 @@ import { ActivityIndicator, Colors } from 'react-native-paper'
 import { BoxWidget } from '../shared/components/widgets/BoxWidget'
 
 import t from '../shared/theme'
+import { getAllPresentationClaims } from '../shared/lib/PresentationService'
 
 type ICredentialDetailsScreenProps = NativeStackScreenProps<RootStackParamList, Screens.CREDENTIAL_DETAILS>
 
@@ -31,11 +32,11 @@ const CredentialDetailsScreen = ({ navigation, route }: ICredentialDetailsScreen
     if (isPresentation(data.data)) {
       const { verifiablePresentation } = data.data
       state = {
-        title: 'Custom presentation',
+        title: verifiablePresentation.type[1] || 'Custom presentation',
         issuedOn: formatDate(verifiablePresentation.issuanceDate),
         expiry: formatDate(verifiablePresentation.expirationDate),
-        claims: JSON.parse(verifiablePresentation.verifiableCredential[0].credentialSubject.claims) as IClaim[],
-        issuedBy: `Self issued (but confirmed by RS Authority))`,
+        claims: getAllPresentationClaims(verifiablePresentation) as IClaim[],
+        issuedBy: verifiablePresentation.holder,
       }
     } else {
       const { verifiableCredential } = data.data

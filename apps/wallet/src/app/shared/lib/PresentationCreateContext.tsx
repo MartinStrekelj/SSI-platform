@@ -12,6 +12,8 @@ interface IPresentationCreate {
   removeClaim: (c: IPresentationClaim) => void
   createNewPresentation: () => void
   isSelected: (c: IPresentationClaim) => boolean
+  presentationName: string
+  setName: (s: string) => void
 }
 
 interface IProvider {
@@ -24,6 +26,8 @@ const PresentationCreateContext = createContext<IPresentationCreate>({
   removeClaim: (c: IPresentationClaim) => {},
   createNewPresentation: () => {},
   isSelected: (c: IPresentationClaim) => false,
+  presentationName: '',
+  setName: (s: string) => {},
 })
 
 interface ISnackbarComponent {
@@ -35,6 +39,7 @@ export const usePresentationContext = () => useContext(PresentationCreateContext
 
 const PresentationCreateContextProvider = ({ children }: IProvider) => {
   const [selectedClaims, setSelectedClaims] = useState<IPresentationClaim[]>([])
+  const [presentationName, setName] = useState<string>('')
   const [isLoading, setLoading] = useState<boolean>(false)
   const [snackbar, setSnackbar] = useState<ISnackbarComponent | null>(null)
   const navigation = useNavigation()
@@ -46,7 +51,7 @@ const PresentationCreateContextProvider = ({ children }: IProvider) => {
 
   const createNewPresentation = async () => {
     setLoading(true)
-    const response = await createPresentationRequest(selectedClaims)
+    const response = await createPresentationRequest(selectedClaims, presentationName)
     setLoading(false)
     if (response.ok) {
       return setSnackbar({
@@ -73,7 +78,7 @@ const PresentationCreateContextProvider = ({ children }: IProvider) => {
 
   return (
     <PresentationCreateContext.Provider
-      value={{ selectedClaims, addClaim, removeClaim, createNewPresentation, isSelected }}
+      value={{ selectedClaims, addClaim, removeClaim, createNewPresentation, isSelected, presentationName, setName }}
     >
       {isLoading ? <ActivityIndicator /> : children}
       <Snackbar onDismiss={handleSnackbarDismiss} visible={!!snackbar} duration={300}>

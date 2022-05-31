@@ -46,7 +46,6 @@ export const handleSDRRequest = async ({ sdr, presentation }: IHandleSDRRequestA
   // Manually check for data comparisons (>, <, <=, >=)
   if (sdrValidity) {
     sdrValidity = manualComparisonCheck(selectiveDislosure, preparedPresentation)
-    console.log({ sdrValidity })
   }
 
   updateCachedValue(sdrValidity, sdr)
@@ -118,8 +117,6 @@ const manualComparisonCheck = (
   presentation: VerifiablePresentation
 ) => {
   const sdrComparions = selectiveDislosure.claims.filter((claim) => !claim.essential)
-
-  console.log({ sdrComparions })
 
   if (sdrComparions.length <= 0) {
     return true

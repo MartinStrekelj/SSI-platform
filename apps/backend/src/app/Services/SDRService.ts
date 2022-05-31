@@ -1,4 +1,11 @@
-import { ICachedSDRequest, IClaim, ISingleDisclosureDTO, IVerificationPolicy, SDR_STATUS } from '@ssi-ms/interfaces'
+import {
+  COMPARISON_TYPE,
+  ICachedSDRequest,
+  IClaim,
+  ISingleDisclosureDTO,
+  IVerificationPolicy,
+  SDR_STATUS,
+} from '@ssi-ms/interfaces'
 import { createSDR, validateSDR } from '../Veramo/SingleDisclosureRequest'
 import { v4 as uuidv4 } from 'uuid'
 import { add } from 'date-fns'
@@ -26,13 +33,23 @@ export const createSDRfromPolicy = async (policy: IVerificationPolicy) => {
 }
 
 export const handleSDRRequest = async ({ sdr, presentation }: IHandleSDRRequestArgs) => {
+  let sdrValidity = false
+
   const message = await agent.handleMessage({ raw: sdr.sdr, save: false })
   const selectiveDislosure = message.data as ISelectiveDisclosureRequest
   const preparedPresentation = preparePresentationForValidation(presentation)
 
+  // Veramo validity check for proof and data equality
   const response = await validateSDR(preparedPresentation, selectiveDislosure)
-  updateCachedValue(response.valid, sdr)
-  return response.valid
+  sdrValidity = response.valid
+
+  // Manually check for data comparisons (>, <, <=, >=)
+  if (sdrValidity) {
+    sdrValidity = manualComparisonCheck(selectiveDislosure, preparedPresentation)
+  }
+
+  updateCachedValue(sdrValidity, sdr)
+  return sdrValidity
 }
 
 const updateCachedValue = (isValid: boolean, cachedValue: ICachedSDRequest) => {
@@ -81,7 +98,7 @@ const extendWithCustomData = async (sdr: string, policy: IVerificationPolicy) =>
     metadata: {
       verifier: authority.alias,
       verifierDID: authority.did,
-      title: 'To be implemented in policy',
+      title: `Verification request from ${authority.alias}`,
     },
     sdr,
   }
@@ -93,4 +110,52 @@ const extendWithCustomData = async (sdr: string, policy: IVerificationPolicy) =>
   }
 
   return { dto, cacheValue }
+}
+
+const manualComparisonCheck = (
+  selectiveDislosure: ISelectiveDisclosureRequest,
+  presentation: VerifiablePresentation
+) => {
+  const sdrComparions = selectiveDislosure.claims.filter((claim) => !claim.essential)
+
+  if (sdrComparions.length <= 0) {
+    return true
+  }
+
+  const presentationClaims = extractClaims(presentation)
+
+  return sdrComparions.every((claim) => {
+    const presentationClaim = presentationClaims.find((c) => {
+      if (c[claim.claimType] !== undefined) {
+        return c
+      }
+    })
+
+    if (!presentationClaim) {
+      return false
+    }
+
+    const comparisonValue = parseInt(claim.claimValue)
+    const presentationClaimValue = parseInt(presentationClaim[claim.claimType])
+
+    switch (claim.reason) {
+      case COMPARISON_TYPE.EQUALS:
+        return presentationClaimValue === comparisonValue
+      case COMPARISON_TYPE.LESS_OR_EQUALS:
+        return presentationClaimValue <= comparisonValue
+      case COMPARISON_TYPE.LESS_THAN:
+        return presentationClaimValue < comparisonValue
+      case COMPARISON_TYPE.MORE_OR_EQUALS:
+        return presentationClaimValue >= comparisonValue
+      case COMPARISON_TYPE.MORE_THAN:
+        return presentationClaimValue > comparisonValue
+    }
+  })
+}
+
+const extractClaims = (presentation: VerifiablePresentation) => {
+  return presentation.verifiableCredential.reduce((aggr, current) => {
+    const claims = current.credentialSubject
+    return [...aggr, claims]
+  }, [])
 }

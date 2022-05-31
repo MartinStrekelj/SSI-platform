@@ -5,16 +5,18 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Select,
   Switch,
 } from '@chakra-ui/react'
-import { CLAIM_TYPES, IClaim, IClaimValueTypes, ISchema } from '@ssi-ms/interfaces'
-import React from 'react'
+import { CLAIM_TYPES, COMPARISON_TYPE, IClaim, IClaimValueTypes, ISchema } from '@ssi-ms/interfaces'
+import React, { ChangeEventHandler } from 'react'
 
 const NO_NEGATIVES: number = 0
 
 interface ICreateSchemaFieldsFromSchemaArgs {
   schema: ISchema
   handleClaimValueChange: (idx: number, value: IClaimValueTypes) => void
+  handleComparisonChange: (idx: number, value: COMPARISON_TYPE) => void
   onDisable?: (idx: number, value: boolean) => void
 }
 
@@ -23,6 +25,7 @@ export const useSchemaFields = () => {
     schema,
     handleClaimValueChange,
     onDisable,
+    handleComparisonChange,
   }: ICreateSchemaFieldsFromSchemaArgs) => {
     let emptyClaimsFields: IClaim[] = []
     const schemaFields: (React.ReactNode | string)[][] = schema.fields.data.reduce((acc, field, idx: number) => {
@@ -61,6 +64,22 @@ export const useSchemaFields = () => {
       emptyClaimsFields = [...emptyClaimsFields, newClaim]
 
       let schemaField = [field.title, component]
+
+      if (!!handleComparisonChange) {
+        // Handle comparison
+        const comparisonComponent = (
+          <Select name={field.title} onChange={(e) => handleComparisonChange(idx, e.target.value as COMPARISON_TYPE)}>
+            {Object.values(COMPARISON_TYPE).map((comparison: string) => (
+              <option key={comparison} value={comparison}>
+                {comparison}
+              </option>
+            ))}
+          </Select>
+        )
+
+        const comparison = field.type === CLAIM_TYPES.NUMERIC ? comparisonComponent : COMPARISON_TYPE.EQUALS
+        schemaField = [...schemaField, comparison]
+      }
 
       if (!!onDisable) {
         const disableSwitch = <Switch onChange={(e) => onDisable(idx, e.target.checked)} />

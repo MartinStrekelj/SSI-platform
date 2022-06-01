@@ -5,6 +5,7 @@ import {
   MESSAGE_TYPE,
   isCreatePresentationRequest,
   ICreatePresentationResponse,
+  IExportCredentialToWallet,
 } from '@ssi-ms/interfaces'
 import { UniqueVerifiableCredential } from '@veramo/data-store'
 import { Request, Response } from 'express'
@@ -13,7 +14,6 @@ import { generateQRfromString } from '../../Services/QRService'
 import { prepareCredentialsFromClaims } from '../../Services/PresentationService'
 import { checkIfAuthorityDid } from '../../Veramo/AuthorityDIDs'
 import createDIDMessage from '../../Veramo/createDIDMessage'
-import { createVCforPresentation } from '../../Veramo/IssueCredentials'
 import findCredential from '../../Veramo/findCredential'
 import { listCredentialsWhereIssuer, listCredentialsWhereSubject } from '../../Veramo/ListCredentials'
 import { IDIDCommMessage } from '@veramo/did-comm'
@@ -82,11 +82,11 @@ export const transferCredential = async (req: Request, res: Response) => {
       to: did,
       id: MESSAGE_TYPE.TRANSFER,
       type: 'DIDCommV2Message-sent',
-      body: { credential },
+      body: { credential: body.hash },
     })
 
     const qrcode = await generateQRfromString(message.message)
-    const response: ITransferCredentialResponse = { qrcode: qrcode }
+    const response: ITransferCredentialResponse = { qrcode }
     return res.send(response)
   } catch (err: any) {
     console.error(err.message)
@@ -120,5 +120,22 @@ export const createPresentation = async (req: Request, res: Response) => {
     return res.send(response)
   } catch (e) {
     return res.status(400).send({ message: e.message })
+  }
+}
+
+export const exportCredentialToWallet = async (req: Request, res: Response) => {
+  const { body } = req
+
+  if (!isTransferCredentialRequest(body)) {
+    return res.status(400).send({ message: 'Bad request!' })
+  }
+
+  try {
+    const credential = await findCredential(body.hash)
+    const response: IExportCredentialToWallet = { credential }
+    return res.send(response)
+  } catch (err: any) {
+    console.error(err.message)
+    return res.status(400).send({ message: 'something went wrong!' })
   }
 }

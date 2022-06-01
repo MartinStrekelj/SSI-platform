@@ -11,8 +11,8 @@ interface IClaimInfoProps {
 const ClaimsInfo = ({ credential }: IClaimInfoProps) => {
   const claims = JSON.parse(credential.credentialSubject.claims)
   const data = {
-    head: ['#', 'Title', 'Type', 'Value'],
-    body: [...claims.map((claim: IClaim, i) => [i + 1, claim.title, claim.type, claim.value])],
+    head: ['Title', 'Value'],
+    body: [...claims.map((claim: IClaim) => [claim.title, claim.value])],
   }
   return <BoxWidget title="Claims" head={data.head} body={data.body} />
 }

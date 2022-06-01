@@ -1,6 +1,7 @@
 import { MESSAGE_TYPE, LOGIN_2FA_BODY, TRANSFER_BODY, ISingleDisclosureDTO } from '@ssi-ms/interfaces'
 import { LZW_decode } from '@ssi-ms/utils'
 import { VerifiableCredential } from '@veramo/core'
+import { importCredentialToWallet } from '../Api/CredentialsApi'
 import unpackDIDMessage from '../Veramo/unpackDIDMessage'
 
 export interface IScanMessagePayload {
@@ -13,7 +14,6 @@ type IHandleScanMessage = (msg: string) => Promise<IScanMessagePayload>
 // Every QR message received is first LZW encoded -> then IDID message encoded & protected
 export const handleScanMessage: IHandleScanMessage = async (encodedMessage: string) => {
   const lzw_decoded = LZW_decode(encodedMessage)
-  console.log({ lzw_decoded })
   try {
     const message = await unpackDIDMessage(lzw_decoded)
     console.log({ message })
@@ -24,8 +24,11 @@ export const handleScanMessage: IHandleScanMessage = async (encodedMessage: stri
 
       case MESSAGE_TYPE.TRANSFER:
         const { credential } = message.message.body as TRANSFER_BODY
-        return { type: MESSAGE_TYPE.TRANSFER, payload: credential }
-
+        console.log({ body: message.message.body })
+        const response = await importCredentialToWallet(credential)
+        if (response.ok) {
+          return { type: MESSAGE_TYPE.TRANSFER, payload: response.credential }
+        }
       default:
         throw new Error('This message type is not supported!')
     }

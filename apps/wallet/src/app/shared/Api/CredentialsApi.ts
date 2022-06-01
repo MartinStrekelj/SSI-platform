@@ -1,5 +1,6 @@
 import {
   ICreatePresentationResponse,
+  IExportCredentialToWallet,
   IGenericResponse,
   IPresentationClaim,
   ISendVerifiableDataForSDR,
@@ -75,4 +76,18 @@ const createPresentationFromVerifiableData = async (data: IVerifiableData[]) => 
 
   const presentation = await createPresentationWithMultipleCredentials(credentials)
   return presentation
+}
+
+export const importCredentialToWallet = async (hash: string) => {
+  const headers = await prepareRequestHeaders()
+  try {
+    const response = await CredentailsApi.post('/export', { hash }, headers)
+    if (response.status >= 400) {
+      throw new Error('Something went wrong!')
+    }
+    const { credential } = response.data as IExportCredentialToWallet
+    return { ok: true, message: 'Success', credential }
+  } catch (e) {
+    return { ok: false, message: e.message, credential: null }
+  }
 }

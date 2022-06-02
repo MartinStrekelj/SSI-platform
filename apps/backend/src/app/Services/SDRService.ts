@@ -42,7 +42,6 @@ export const handleSDRRequest = async ({ sdr, presentation }: IHandleSDRRequestA
   // Veramo validity check for proof and data equality
   const response = await validateSDR(preparedPresentation, selectiveDislosure)
   sdrValidity = response.valid
-
   // Manually check for data comparisons (>, <, <=, >=)
   if (sdrValidity) {
     sdrValidity = manualComparisonCheck(selectiveDislosure, preparedPresentation)
@@ -137,6 +136,8 @@ const manualComparisonCheck = (
 
     const comparisonValue = parseInt(claim.claimValue)
     const presentationClaimValue = parseInt(presentationClaim[claim.claimType])
+
+    console.log(claim.claimType, { comparisonValue, presentationClaimValue, comparison: claim.reason })
 
     switch (claim.reason) {
       case COMPARISON_TYPE.EQUALS:

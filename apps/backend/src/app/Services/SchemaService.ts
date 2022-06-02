@@ -32,7 +32,7 @@ export const insertNewSchema = async (schema: ISchema) => {
   const { data: schemas, error } = await supabase.from(SCHEMAS_TABLE).upsert([newSchemaData])
 
   if (error !== null || schemas.length < 1) {
-    console.error(!!error ? error.message : 'To many schemas')
+    console.error(!error ? 'To many schemas' : error.message)
     return null
   }
 
@@ -48,7 +48,7 @@ export const updateSchema = async ({ uuid, data }: IUpdateSchemaArgs) => {
     .eq('id', uuid)
 
   if (error !== null || schemas.length < 1) {
-    console.error(!!error ? error.message : 'To many schemas')
+    console.error(!error ? 'To many schemas' : error.message)
     return null
   }
 

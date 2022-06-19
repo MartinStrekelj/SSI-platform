@@ -33,7 +33,7 @@ const convertClaimsToSDRInput = (claims: IClaim[]) => {
       essential: false,
       claimType: claim.title,
       claimValue: JSON.stringify(claim.value),
-      reason: claim.comparison, // used as comparison type payload
+      reason: claim.comparison || COMPARISON_TYPE.EQUALS, // used as comparison type payload
     }
 
     // Only require the value for strict comparison types

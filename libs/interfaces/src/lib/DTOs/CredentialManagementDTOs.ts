@@ -1,5 +1,6 @@
 import { IPresentationClaim, IVerifiableCredentialDTO } from './CredentialGenerationDTOs'
 import { UniqueVerifiableCredential, UniqueVerifiablePresentation } from '@veramo/data-store'
+import { VerifiableCredential } from '@veramo/core'
 
 export interface IListCredentialsDTO {
   credentials: IVerifiableCredentialDTO[]
@@ -15,6 +16,10 @@ export interface ITransferCredentialRequest {
 
 export interface ITransferCredentialResponse {
   qrcode: string
+}
+
+export interface IExportCredentialToWallet {
+  credential: VerifiableCredential
 }
 
 export interface ICreatePresentationRequest {

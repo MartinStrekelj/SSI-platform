@@ -37,7 +37,7 @@ export const usePolicies = () => {
 export const usePolicy = (id: string) => {
   const { data, error, isValidating } = useSWR(`/${id}?policy`, policyFetcher)
   return {
-    data: data as IVerificationPoliciesResponse,
+    data: data as IVerificationPolicyResponse,
     isLoading: isValidating || (!error && !data),
     isError: error,
   }

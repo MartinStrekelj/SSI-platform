@@ -12,5 +12,5 @@ export interface LOGIN_2FA_BODY {
 }
 
 export interface TRANSFER_BODY {
-  credential: VerifiableCredential // full credential
+  credential: string // credential indicator
 }

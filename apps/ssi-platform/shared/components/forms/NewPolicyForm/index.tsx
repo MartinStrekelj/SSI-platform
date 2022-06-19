@@ -1,5 +1,5 @@
 import { Box, FormControl, FormLabel, Icon, Input, Select } from '@chakra-ui/react'
-import { IClaim, IClaimValueTypes, IIdentity, IVerificationPolicyDTO } from '@ssi-ms/interfaces'
+import { COMPARISON_TYPE, IClaim, IClaimValueTypes, IIdentity, IVerificationPolicyDTO } from '@ssi-ms/interfaces'
 import { useSchemas } from 'apps/ssi-platform/shared/Api/SchemasApi'
 import { useSchemaFields } from 'apps/ssi-platform/shared/hooks/useSchemaFields'
 import { useFormik } from 'formik'
@@ -57,11 +57,26 @@ export const NewPolicyForm = ({ verifier, isSubmitting, handleSubmit }: INewPoli
       schema: selectedSchema,
       handleClaimValueChange,
       onDisable: handleDisable,
+      handleComparisonChange,
     })
 
     formik.values.claims = emptyClaimsFields
     setFields(schemaFields)
   }, [formik.values.schema])
+
+  const handleComparisonChange = (idx: number, type: COMPARISON_TYPE) => {
+    const updatedClaims = produce(formik.values.claims, (draft: IClaim[]) => {
+      if (idx !== -1) {
+        draft[idx] = {
+          ...draft[idx],
+          comparison: type,
+        }
+      }
+    })
+
+    formik.values.claims = updatedClaims
+    formik.setFieldValue('claims', updatedClaims)
+  }
 
   const handleClaimValueChange = (idx: number, newValue: IClaimValueTypes) => {
     const updatedClaims = produce(formik.values.claims, (draft: IClaim[]) => {
@@ -136,7 +151,7 @@ export const NewPolicyForm = ({ verifier, isSubmitting, handleSubmit }: INewPoli
 
         {claimFields && (
           <Box w="100%">
-            <TableWidget head={['title', 'value', 'enabled']} body={claimFields} />
+            <TableWidget head={['title', 'value', 'comparison', 'enabled']} body={claimFields} />
           </Box>
         )}
 

@@ -11,9 +11,6 @@ export const generateQRfromString = async (
   }
 ) => {
   const compressedMessage = LZW_encode(value)
-  console.log({
-    compressedMessage: compressedMessage.length,
-  })
   try {
     const url = await qrcode.toDataURL(compressedMessage, options)
     return url

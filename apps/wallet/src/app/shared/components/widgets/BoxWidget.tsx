@@ -37,7 +37,7 @@ export const BoxWidget = ({ head, title, body }: IBoxWidgetProps) => {
 }
 
 const displayValue = (value: any) => {
-  if (!value) {
+  if (!value && typeof value !== 'number') {
     return 'N/A'
   }
 

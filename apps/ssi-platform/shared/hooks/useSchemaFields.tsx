@@ -1,5 +1,6 @@
 import {
   Checkbox,
+  Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -16,7 +17,7 @@ const NO_NEGATIVES: number = 0
 interface ICreateSchemaFieldsFromSchemaArgs {
   schema: ISchema
   handleClaimValueChange: (idx: number, value: IClaimValueTypes) => void
-  handleComparisonChange: (idx: number, value: COMPARISON_TYPE) => void
+  handleComparisonChange?: (idx: number, value: COMPARISON_TYPE) => void
   onDisable?: (idx: number, value: boolean) => void
 }
 
@@ -50,6 +51,10 @@ export const useSchemaFields = () => {
               </NumberInputStepper>
             </NumberInput>
           )
+          break
+        case CLAIM_TYPES.TEXT:
+          defaultValue = ''
+          component = <Input onChange={(e) => handleClaimValueChange(idx, e.target.value)}></Input>
           break
         default:
           break

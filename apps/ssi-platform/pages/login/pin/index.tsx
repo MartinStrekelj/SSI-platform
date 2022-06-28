@@ -1,37 +1,27 @@
-import React, { useEffect } from 'react';
-import {
-  Button,
-  HStack,
-  PinInput,
-  PinInputField,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
-import { PIN_LENGTH } from '@ssi-ms/utils';
-import Link from 'next/link';
+import React, { useEffect } from 'react'
+import { Button, HStack, PinInput, PinInputField, Text, VStack } from '@chakra-ui/react'
+import { PIN_LENGTH } from '@ssi-ms/utils'
+import Link from 'next/link'
 
-import {
-  useLoginAttemptContext,
-  LoginContextProvider,
-} from 'apps/ssi-platform/shared/lib/LoginAttemptContext';
-import { useRouter } from 'next/router';
-import CenteredBoxLayout from 'apps/ssi-platform/shared/components/layouts/CenteredBoxLayout';
+import { useLoginAttemptContext, LoginContextProvider } from 'apps/ssi-platform/shared/lib/LoginAttemptContext'
+import { useRouter } from 'next/router'
+import CenteredBoxLayout from 'apps/ssi-platform/shared/components/layouts/CenteredBoxLayout'
 
 const Pin = () => {
-  const { qrcode, userDID, handleEnteredPin } = useLoginAttemptContext();
-  const router = useRouter();
+  const { qrcode, userDID, handleEnteredPin } = useLoginAttemptContext()
+  const router = useRouter()
 
   // Go back to initial step if no qrcode present
   useEffect(() => {
     if (qrcode === undefined || userDID === undefined) {
-      router.push('/login');
+      router.push('/login')
     }
-  }, []);
+  }, [])
 
   return (
     <VStack>
-      <Text fontSize={['2xl', null, '4xl']}>Welcome_title</Text>
-      <Text fontSize={['lg', null, 'xl']}>Welcome_description</Text>
+      <Text fontSize={['2xl', null, '4xl']}>Enter PIN</Text>
+      <Text fontSize={['lg', null, 'xl']}>Scan this QR code and enter the PIN</Text>
       <img src={qrcode} />
       <HStack>
         <PinInput
@@ -61,9 +51,9 @@ const Pin = () => {
         </Button>
       </Link>
     </VStack>
-  );
-};
+  )
+}
 
-export default Pin;
-Pin.provider = LoginContextProvider;
-Pin.layout = CenteredBoxLayout;
+export default Pin
+Pin.provider = LoginContextProvider
+Pin.layout = CenteredBoxLayout

@@ -1,4 +1,4 @@
-import { IClaim } from '@ssi-ms/interfaces'
+import { COMPARISON_TYPE, IClaim } from '@ssi-ms/interfaces'
 
 type IGeneratePinUtilFunc = () => string
 type IProbabilyFunc = (p: number) => boolean
@@ -95,3 +95,6 @@ export const generateRandomNumberId = () => Date.now() * Math.floor(Math.random(
 export const claimsMatches = (claim1: IClaim, claim2: IClaim) =>
   claim1.title === claim2.title && claim2.value === claim1.value && claim1.type === claim2.type
 
+export const displayComparisonType = (comp: COMPARISON_TYPE) => {
+  return comp.replace('_', ' ').toUpperCase()
+}

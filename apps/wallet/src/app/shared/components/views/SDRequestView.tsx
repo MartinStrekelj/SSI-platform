@@ -3,13 +3,14 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { ICredentialRequestInput } from '@veramo/selective-disclosure'
 
 import t, { themeBox } from '../../theme'
-import { ISingleDisclosureDTO } from '@ssi-ms/interfaces'
+import { COMPARISON_TYPE, ISingleDisclosureDTO } from '@ssi-ms/interfaces'
 import { handleSDRRequest } from '../../Veramo/handleSDRMessage'
 import { ActivityIndicator, Avatar, Button, Colors, Divider, Headline, Subheading } from 'react-native-paper'
 import { ErrorComponent } from '../Error'
 import { BoxWidget } from '../widgets/BoxWidget'
 import { useSDRContext } from '../../lib/SDRResponseContext'
 import SdrModal from '../modals/SdrModal'
+import { displayComparisonType } from '@ssi-ms/utils'
 
 interface ISDRequestViewProps {
   sdrDTO: ISingleDisclosureDTO
@@ -19,7 +20,7 @@ type ISDRData = ISingleDisclosureDTO & {
   claims: ICredentialRequestInput[]
 }
 
-const HEADERS = ['Title', 'Value']
+const HEADERS = ['Title', 'Type', 'Value']
 
 const textEmphasis = [t.fontSansBoldItalic, t.textXl]
 
@@ -36,7 +37,13 @@ const SDRequestView = ({ sdrDTO }: ISDRequestViewProps) => {
       return [[]]
     }
 
-    return data.claims.map((claim) => [claim.claimType, JSON.parse(claim.claimValue)])
+    console.log({ data: data.claims })
+
+    return data.claims.map((claim) => [
+      claim.claimType,
+      displayComparisonType(claim.reason as COMPARISON_TYPE),
+      JSON.parse(claim.claimValue),
+    ])
   }, [data])
 
   useEffect(() => {

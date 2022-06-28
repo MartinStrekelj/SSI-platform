@@ -144,6 +144,17 @@ export const IssueFromSchemaForm = ({
               <Input id="type" type="text" name="type" value={formik.values.type} onChange={formik.handleChange} />
               <FormHelperText>Type of credentials</FormHelperText>
             </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="expiryDate">Expiry date</FormLabel>
+              <Input
+                id="expiryDate"
+                type="date"
+                name="expiryDate"
+                value={formik.values.expiryDate}
+                onChange={formik.handleChange}
+              />
+              <FormHelperText>Expiry date for the VC</FormHelperText>
+            </FormControl>
           </>
         )}
         {claimFields && (

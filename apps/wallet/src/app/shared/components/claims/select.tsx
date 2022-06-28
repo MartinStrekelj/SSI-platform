@@ -55,7 +55,7 @@ const SelectOption = ({ claim }: ISelectOptionProps) => {
   return (
     <List.Item
       onPress={toggleChecked}
-      title={`${claim.title} ${claim.type} ${claim.value}`}
+      title={`${claim.title} | ${claim.value}`}
       right={() => <Checkbox status={checked} />}
     />
   )

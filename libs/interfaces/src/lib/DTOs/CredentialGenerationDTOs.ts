@@ -1,6 +1,6 @@
 export enum CLAIM_TYPES {
   NUMERIC = 'numeric',
-  SELECT = 'select',
+  TEXT = 'text',
   CHECKBOX = 'checkbox',
 }
 

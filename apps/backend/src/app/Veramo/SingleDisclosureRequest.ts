@@ -3,7 +3,7 @@ import { VerifiablePresentation } from '@veramo/core'
 import { ICredentialRequestInput, ISelectiveDisclosureRequest } from '@veramo/selective-disclosure'
 import { agent } from './setup'
 
-const STRICT_COMPARISON_TYPES = [CLAIM_TYPES.CHECKBOX, CLAIM_TYPES.SELECT]
+const STRICT_COMPARISON_TYPES = [CLAIM_TYPES.CHECKBOX, CLAIM_TYPES.TEXT]
 
 interface ICreateSDRArgs {
   issuer: string

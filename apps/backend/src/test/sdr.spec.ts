@@ -8,17 +8,15 @@ import {
   SDR_STATUS,
 } from '@ssi-ms/interfaces'
 import { createVerificationPolicy, removeVerificationPolicy } from '../app/Services/VerificationPolicyService'
-import { CONFIG, createSDRfromPolicy, handleSDRRequest } from '../app/Services/SDRService'
+import { CONFIG, createSDRfromPolicy } from '../app/Services/SDRService'
 import { agent } from '../app/Veramo/setup'
 import { isBefore, isAfter, add } from 'date-fns'
 import { readCacheKey } from '../app/Services/CacheService'
 import { generateQRfromString } from '../app/Services/QRService'
 import { ICredentialRequestInput } from '@veramo/selective-disclosure'
 import { UniqueVerifiableCredential, UniqueVerifiablePresentation } from '@veramo/data-store'
-import { brotliDecompressSync } from 'zlib'
 
 const SCHEMA_ID = '330af147-9fbb-41e4-b721-0623133079a7'
-const VALID_HOLDER_DID = 'did:key:z6MkrUW4hXEH91gWcPD9Ueuq5ud6XvFsizE2f5Xm3ESJ1Ydp'
 
 describe('SDR tests', () => {
   let issuerDID: string

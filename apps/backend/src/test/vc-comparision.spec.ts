@@ -18,8 +18,8 @@ const EQUAL_CLAIMS = [
   },
   {
     title: 'equals_select',
-    value: CLAIM_TYPES.SELECT,
-    type: CLAIM_TYPES.SELECT,
+    value: CLAIM_TYPES.TEXT,
+    type: CLAIM_TYPES.TEXT,
   },
 ]
 

@@ -1,5 +1,5 @@
 import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, SimpleGrid } from '@chakra-ui/react'
-import { hasRoleHolder, IClaimValueTypes, IVerifiableCredentialRevocationDTO } from '@ssi-ms/interfaces'
+import { CLAIM_TYPES, hasRoleHolder, IClaimValueTypes, IVerifiableCredentialRevocationDTO } from '@ssi-ms/interfaces'
 import { getCredentialTransferCode, useCredential } from 'apps/ssi-platform/shared/Api/CredentialsApi'
 import { Breadcrumbs } from 'apps/ssi-platform/shared/components/breadcrumbs'
 import DashboardLayout from 'apps/ssi-platform/shared/components/layouts/DashboardLayout'
@@ -70,7 +70,14 @@ const CredentialDetailPage = () => {
 
   const claimsInfo = {
     head: ['#', 'title', 'type', 'value'],
-    body: [...data.credential.claims.map((claim, i) => [i + 1, claim.title, claim.type, displayValue(claim.value)])],
+    body: [
+      ...data.credential.claims.map((claim, i) => [
+        i + 1,
+        claim.title,
+        claim.type,
+        displayValue(claim.value, claim.type),
+      ]),
+    ],
   }
 
   return (
@@ -104,9 +111,13 @@ const CredentialDetailPage = () => {
   )
 }
 
-const displayValue = (value: IClaimValueTypes) => {
+const displayValue = (value: IClaimValueTypes, type: CLAIM_TYPES) => {
   if (typeof value === 'boolean') {
     return value ? 'True' : 'False'
+  }
+
+  if (type === CLAIM_TYPES.DATE) {
+    return formatDate(value as string, 'dd.MM.yyyy')
   }
 
   return value

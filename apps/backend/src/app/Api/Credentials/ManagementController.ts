@@ -19,11 +19,6 @@ import { listCredentialsWhereIssuer, listCredentialsWhereSubject } from '../../V
 import { IDIDCommMessage } from '@veramo/did-comm'
 import { applyIsRevokedCheck, isCredentialRevoked } from '../../Services/RevocationService'
 
-export const listIssuedCredenetials = async (req: Request, res: Response) => {
-  const { did } = req.params as { did: string }
-  return res.status(400).send({ message: 'Not implemented!' })
-}
-
 export const listMyCredentials = async (req: Request, res: Response) => {
   const { did } = res.locals
 

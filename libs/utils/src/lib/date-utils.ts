@@ -2,7 +2,7 @@ import { format } from 'date-fns'
 
 const COMMON_DATE_FORMAT = "dd.MM.yyyy 'at' kk:mm"
 
-export const formatDate = (input?: string | Date) => {
+export const formatDate = (input?: string | Date, f = COMMON_DATE_FORMAT) => {
   if (!input) {
     return 'N/A'
   }
@@ -14,5 +14,5 @@ export const formatDate = (input?: string | Date) => {
     date = input
   }
 
-  return format(date, COMMON_DATE_FORMAT)
+  return format(date, f)
 }

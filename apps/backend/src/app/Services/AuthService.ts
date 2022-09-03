@@ -14,7 +14,6 @@ export const resolveRequestIdentity: IResolveRequestIdentity = async (jwt: strin
 
     return resolvedJWT.did
   } catch (error) {
-    console.error(error.message)
     return false
   }
 }

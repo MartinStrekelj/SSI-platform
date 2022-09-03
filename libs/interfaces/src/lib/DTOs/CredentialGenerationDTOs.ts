@@ -2,6 +2,7 @@ export enum CLAIM_TYPES {
   NUMERIC = 'numeric',
   TEXT = 'text',
   CHECKBOX = 'checkbox',
+  DATE = 'date',
 }
 
 export enum COMPARISON_TYPE {
@@ -32,7 +33,7 @@ export interface IClaim {
   value: IClaimValueTypes
 }
 
-export type IClaimValueTypes = string | number | boolean
+export type IClaimValueTypes = string | number | boolean | Date
 
 export type IPresentationClaim = IClaim & { vc: string }
 

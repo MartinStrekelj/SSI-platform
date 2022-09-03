@@ -37,8 +37,6 @@ const SDRequestView = ({ sdrDTO }: ISDRequestViewProps) => {
       return [[]]
     }
 
-    console.log({ data: data.claims })
-
     return data.claims.map((claim) => [
       claim.claimType,
       displayComparisonType(claim.reason as COMPARISON_TYPE),

@@ -11,8 +11,10 @@ import {
 } from '@chakra-ui/react'
 import { CLAIM_TYPES, COMPARISON_TYPE, IClaim, IClaimValueTypes, ISchema } from '@ssi-ms/interfaces'
 import React, { ChangeEventHandler } from 'react'
+import { DatePicker } from '@mantine/dates'
 
 const NO_NEGATIVES: number = 0
+const ALLOW_COMPARISON = [CLAIM_TYPES.NUMERIC, CLAIM_TYPES.DATE]
 
 interface ICreateSchemaFieldsFromSchemaArgs {
   schema: ISchema
@@ -56,6 +58,9 @@ export const useSchemaFields = () => {
           defaultValue = ''
           component = <Input onChange={(e) => handleClaimValueChange(idx, e.target.value)}></Input>
           break
+        case CLAIM_TYPES.DATE:
+          defaultValue = new Date()
+          component = <DatePicker defaultValue={defaultValue} />
         default:
           break
       }
@@ -82,7 +87,7 @@ export const useSchemaFields = () => {
           </Select>
         )
 
-        const comparison = field.type === CLAIM_TYPES.NUMERIC ? comparisonComponent : COMPARISON_TYPE.EQUALS
+        const comparison = ALLOW_COMPARISON.includes(field.type) ? comparisonComponent : COMPARISON_TYPE.EQUALS
         schemaField = [...schemaField, comparison]
       }
 

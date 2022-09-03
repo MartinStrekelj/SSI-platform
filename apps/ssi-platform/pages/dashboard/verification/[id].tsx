@@ -1,5 +1,6 @@
 import { Button, Flex } from '@chakra-ui/react'
-import { COMPARISON_TYPE } from '@ssi-ms/interfaces'
+import { CLAIM_TYPES, COMPARISON_TYPE, IClaimValueTypes } from '@ssi-ms/interfaces'
+import { formatDate } from '@ssi-ms/utils'
 import { usePolicy } from 'apps/ssi-platform/shared/Api/PolicyApi'
 import { Breadcrumbs } from 'apps/ssi-platform/shared/components/breadcrumbs'
 import DashboardLayout from 'apps/ssi-platform/shared/components/layouts/DashboardLayout'
@@ -8,6 +9,18 @@ import { PageTitle } from 'apps/ssi-platform/shared/components/pagetitle'
 import { TableWidget } from 'apps/ssi-platform/shared/components/widgets/table'
 import { DashboardContextProvider, useDashboardContext } from 'apps/ssi-platform/shared/lib/DashboardContext'
 import React from 'react'
+
+const displayValue = (value: IClaimValueTypes, type: CLAIM_TYPES) => {
+  if (typeof value === 'boolean') {
+    return value ? 'True' : 'False'
+  }
+
+  if (type === CLAIM_TYPES.DATE) {
+    return formatDate(value as string, 'dd.MM.yyyy')
+  }
+
+  return value
+}
 
 const PolicyDetailPage = () => {
   const { router } = useDashboardContext()
@@ -32,7 +45,7 @@ const PolicyDetailPage = () => {
     body: data.policy.fields.data.map((claim) => [
       claim.title,
       claim.type,
-      JSON.stringify(claim.value),
+      displayValue(claim.value, claim.type),
       claim.comparison || COMPARISON_TYPE.EQUALS,
     ]),
   }

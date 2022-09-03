@@ -137,8 +137,6 @@ const manualComparisonCheck = (
     const comparisonValue = parseInt(claim.claimValue)
     const presentationClaimValue = parseInt(presentationClaim[claim.claimType])
 
-    console.log(claim.claimType, { comparisonValue, presentationClaimValue, comparison: claim.reason })
-
     switch (claim.reason) {
       case COMPARISON_TYPE.EQUALS:
         return presentationClaimValue === comparisonValue

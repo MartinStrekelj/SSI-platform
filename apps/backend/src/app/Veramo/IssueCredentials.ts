@@ -36,7 +36,7 @@ export const createVerifiableCredential: CreateVC = async (
       type: [VC_TYPE, credentialPayload.type], // TITLE eg. Potrdilo o opravljeni maturi
     },
     proofFormat: 'jwt',
-    save: saveCredential,
+    save: process.env.NODE_ENV !== 'test' && saveCredential,
   }
   try {
     return await agent.createVerifiableCredential(data)

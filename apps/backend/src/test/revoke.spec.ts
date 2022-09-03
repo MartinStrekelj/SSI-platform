@@ -47,7 +47,6 @@ describe('Revocations tests', () => {
     const filteredVCs = await filterRevokedCredentials(credentials)
 
     expect(isRevoked).toBeFalsy()
-    expect(filteredVCs.length < credentials.length).toBeFalsy()
-    expect(filteredVCs.length === credentials.length).toBeTruthy()
+    expect(filteredVCs.length === credentials.length).toBeFalsy()
   })
 })

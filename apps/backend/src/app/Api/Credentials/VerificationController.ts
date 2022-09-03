@@ -56,7 +56,6 @@ export const verifyVerifiableData = async (req: Request, res: Response) => {
 
     return res.send({ message: 'Success!' })
   } catch (e) {
-    console.error(e.message)
     return res.status(400).send({ message: e.message })
   }
 }

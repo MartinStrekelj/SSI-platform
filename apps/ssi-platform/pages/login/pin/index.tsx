@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
-import { Button, HStack, PinInput, PinInputField, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, HStack, PinInput, PinInputField, Text, VStack } from '@chakra-ui/react'
 import { PIN_LENGTH } from '@ssi-ms/utils'
 import Link from 'next/link'
+import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 
 import { useLoginAttemptContext, LoginContextProvider } from 'apps/ssi-platform/shared/lib/LoginAttemptContext'
 import { useRouter } from 'next/router'
@@ -22,6 +23,16 @@ const Pin = () => {
     <VStack>
       <Text fontSize={['2xl', null, '4xl']}>Enter PIN</Text>
       <Text fontSize={['lg', null, 'xl']}>Scan this QR code and enter the PIN</Text>
+      <Box my={2}>
+        <CountdownCircleTimer
+          isPlaying
+          duration={60 * 5}
+          colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+          colorsTime={[7, 5, 2, 0]}
+        >
+          {({ remainingTime }) => <Text fontSize={'lg'}>{`${Math.floor(remainingTime / 60)} more minutes`}</Text>}
+        </CountdownCircleTimer>
+      </Box>
       <img src={qrcode} />
       <HStack>
         <PinInput
@@ -37,7 +48,7 @@ const Pin = () => {
           ))}
         </PinInput>
       </HStack>
-      <Link href={'/login'}>
+      <Link href={'/login'} passHref>
         <Button
           as="a"
           size="md"

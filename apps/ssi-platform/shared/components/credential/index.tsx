@@ -1,10 +1,11 @@
 import React from 'react'
-import { Box, Flex, Heading, Icon, IconButton, LinkBox, LinkOverlay, Tooltip } from '@chakra-ui/react'
+import { Box, Flex, Heading, Icon, IconButton, LinkBox, LinkOverlay, Text, Tooltip } from '@chakra-ui/react'
 import { IVerifiableCredentialDTO } from '@ssi-ms/interfaces'
 import Link from 'next/link'
 import { ConditionalWrapper } from '../conditionalwrapper'
 import Logo from '../logo'
 import { AlertTriangle } from 'react-feather'
+import { formatDate } from '@ssi-ms/utils'
 
 const CREDENTIAL_SIZE = {
   HEIGHT: 270,
@@ -41,6 +42,12 @@ export const Credential = ({ credential, isLink = false }: ICredentialProps) => 
       >
         <Box position={'absolute'} left={4} top={4}>
           <Logo white />
+        </Box>
+
+        <Box position={'absolute'} left={6} top={24}>
+          <Text color="white" fontWeight={500}>
+            Issued at: {formatDate(credential.issuanceDate, 'dd.MM.yyyy')}
+          </Text>
         </Box>
 
         <RevokeWarning isRevoked={credential.isRevoked} />

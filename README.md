@@ -1,94 +1,55 @@
+# SSI Platform
 
+An IT solution that will digitize securely the procedures of issuing, holding, and verifying verifiable credentials issued and accepted by different organizations.
 
-# SsiMs
+## Start local environment :computer:
 
-This project was generated using [Nx](https://nx.dev).
+Tested with:
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+- node v16.16.0
+- npm 8.3.1
 
-🔎 **Smart, Fast and Extensible Build System**
+### Set env variables and create extra tables
 
-## Adding capabilities to your workspace
+1. Set Supabase
+   1. Sign in and create a new database project
+   2. Create the following tables
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+![Employee data](/readme/supabase-policy.png?raw=true 'Employee Data title')
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+![Employee data](/readme/supabase-revoked.png?raw=true 'Employee Data title')
 
-Below are our core plugins:
+![Employee data](/readme/supabase-schemas.png?raw=true 'Employee Data title')
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+2. Create a project on [Infura](https://infura.io/)
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+3. Update env file with credentials from (1.) and (2.)
 
-## Generate an application
+### Start platform web app and backend
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+```bash
+npm install
+```
 
-> You can use any of the plugins above to generate applications as well.
+```bash
+npx nx run-many --parallel --target=serve --projects=ssi-platform,backend
+```
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+After the backend has succesfully started, you should get a console.log in the terminal with aurhority identifiers
 
-## Generate a library
+```ts
+[
+  ...,
+  Identifier {
+    did: '<some-did>',
+    provider: 'did:ethr:rinkeby',
+    alias: 'OKS',
+    controllerKeyId: '046bf71fa0ce82df0262d076d17835e196ac0c86eb246ed955940d367ba2ae68dc0cb966d87533d53757779d996c56f387431b4b3494c796d20d7876476125f625',
+    keys: [ [Key] ],
+    services: []
+  },
+  ...
+  ]
+```
 
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
-
-> You can also use any of the plugins above to generate libraries as well.
-
-Libraries are shareable across libraries and applications. They can be imported from `@ssi-ms/mylib`.
-
-## Development server
-
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx dep-graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-
-
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+You can copy any `Identifier.did` to login to the dashboard
